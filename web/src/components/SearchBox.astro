@@ -1,0 +1,97 @@
+---
+import { href } from '../lib/url.ts';
+import Icon from './Icon.astro';
+import L from './L.astro';
+
+interface Props {
+  value?: string;
+  autofocus?: boolean;
+  id?: string;
+}
+const { value = '', autofocus = false, id = 'q' } = Astro.props;
+const ph = {
+  en: 'Search questions, e.g. “photosynthesis” or “Ohm’s law”',
+  hi: 'प्रश्न खोजें, जैसे “प्रकाश संश्लेषण” या “ओम का नियम”',
+};
+---
+<form class="searchbox" action={href('/search/')} method="get" role="search">
+  <label class="sr-only" for={id}><L en="Search papers" hi="प्रश्नपत्र खोजें" /></label>
+  <Icon name="search" class="sb-icon" />
+  <input
+    id={id}
+    name="q"
+    type="search"
+    value={value}
+    autocomplete="off"
+    enterkeyhint="search"
+    placeholder={ph.en}
+    data-ph-en={ph.en}
+    data-ph-hi={ph.hi}
+    autofocus={autofocus}
+  />
+  <button class="btn btn-primary" type="submit"><L en="Search" hi="खोजें" /></button>
+</form>
+
+<style>
+  .searchbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 42rem;
+    padding: 0.35rem;
+    background: var(--surface);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .searchbox:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .searchbox :global(.sb-icon) {
+    width: 20px;
+    height: 20px;
+    margin-left: 0.6rem;
+    color: var(--muted);
+    flex: none;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    border: 0;
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+    outline: none;
+  }
+
+  input::placeholder {
+    color: var(--muted);
+    opacity: 1;
+  }
+
+  input::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+
+  .btn {
+    flex: none;
+  }
+
+  @media (max-width: 480px) {
+    input {
+      font-size: 0.95rem;
+    }
+
+    .btn {
+      padding-inline: 0.85rem;
+    }
+  }
+</style>

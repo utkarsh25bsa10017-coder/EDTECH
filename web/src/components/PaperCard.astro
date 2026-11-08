@@ -1,0 +1,98 @@
+---
+import type { PaperSummary } from '../lib/schema.ts';
+import {
+  EXTRACTION_LABEL,
+  KIND_LABEL,
+  KIND_SHORT,
+  LANG_LABEL,
+  QUESTIONS,
+  countLabel,
+  marksLabel,
+  paperName,
+} from '../lib/boards.ts';
+import { paperUrl } from '../lib/url.ts';
+import L from './L.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  paper: PaperSummary;
+  /** Show the full board/class/subject name (listings outside a subject page). */
+  full?: boolean;
+}
+const { paper: p, full = false } = Astro.props;
+const title = full
+  ? paperName(p)
+  : { en: `${KIND_LABEL[p.kind].en} ${p.year}`, hi: `${KIND_LABEL[p.kind].hi} ${p.year}` };
+const hasAnswers = p.solution_count > 0;
+---
+<article class="card card-link paper-card" data-kind={p.kind} data-lang={p.lang}>
+  <ul class="badges">
+    <li class={`badge kind-${p.kind}`}><L t={KIND_SHORT[p.kind]} /></li>
+    <li class="badge outline"><L t={LANG_LABEL[p.lang]} /></li>
+    {p.variant && <li class="badge outline"><L en="Set" hi="सेट" /> {p.variant}</li>}
+  </ul>
+  <h3><a class="stretched" href={paperUrl(p)}><L t={title} /></a></h3>
+  <p class="orig">{p.title}</p>
+  <ul class="facts">
+    {p.question_count > 0 ? (
+      <li><L t={countLabel(p.question_count, ...QUESTIONS)} /></li>
+    ) : (
+      <li><Icon name="file" size={15} /><L t={EXTRACTION_LABEL['pdf-only']} /></li>
+    )}
+    {p.max_marks && <li><L t={marksLabel(p.max_marks)} /></li>}
+    {hasAnswers ? (
+      <li class="good"><Icon name="check" size={15} /><L en="Answers" hi="उत्तर" /></li>
+    ) : p.solution_pdf ? (
+      <li><Icon name="file-check" size={15} /><L en="Marking scheme" hi="अंकन योजना" /></li>
+    ) : null}
+  </ul>
+</article>
+
+<style>
+  .paper-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding: 1rem 1.1rem 0.95rem;
+  }
+
+  h3 {
+    margin: 0.1rem 0 0;
+    font-size: 1.075rem;
+  }
+
+  .orig {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.9rem;
+    margin: auto 0 0;
+    padding: 0.55rem 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+    font-size: 0.875rem;
+    color: var(--ink-2);
+  }
+
+  .facts li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .facts .good {
+    color: var(--good);
+    font-weight: 600;
+  }
+</style>

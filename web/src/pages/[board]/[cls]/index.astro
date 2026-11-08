@@ -1,0 +1,107 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import Icon from '../../../components/Icon.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import EmptyState from '../../../components/EmptyState.astro';
+import { BOARDS, type Board } from '../../../lib/schema.ts';
+import { BOARD_INFO, KIND_SHORT, PAPERS, classLabel, classSlug, countLabel, parseClassSlug } from '../../../lib/boards.ts';
+import { papersWhere, subjectsFor } from '../../../lib/catalog.ts';
+import { boardUrl, classUrl, subjectUrl } from '../../../lib/url.ts';
+
+export const getStaticPaths = (() =>
+  BOARDS.flatMap((board) =>
+    BOARD_INFO[board].classes.map((cls) => ({ params: { board, cls: classSlug(cls) } })),
+  )) satisfies GetStaticPaths;
+
+const board = Astro.params.board as Board;
+const cls = parseClassSlug(Astro.params.cls)!;
+const info = BOARD_INFO[board];
+const alias = info.aliases?.[cls];
+const subjects = subjectsFor(board, cls);
+const total = papersWhere({ board, cls }).length;
+const cl = classLabel(cls);
+const heading = { en: `${info.short} ${cl.en}`, hi: `${info.short} ${cl.hi}` };
+---
+<Base
+  title={`${info.short} Class ${cls}${alias ? ` (${alias.en})` : ''} question papers`}
+  description={`${info.short} Class ${cls} previous year papers, sample papers and model papers by subject, with official PDFs and marking schemes.`}
+  board={board}
+>
+  <div class="container">
+    <Breadcrumbs
+      items={[
+        { label: { en: info.short, hi: info.short }, href: boardUrl(board) },
+        { label: cl, href: classUrl(board, cls) },
+      ]}
+    />
+    <header class="page-head">
+      <h1><L t={heading} />{alias && <span class="alias"> · <L t={alias} /></span>}</h1>
+      <ul class="stat-line">
+        <li><strong><L t={countLabel(total, ...PAPERS)} /></strong></li>
+        <li><L t={countLabel(subjects.length, { en: 'subject', hi: 'विषय' }, { en: 'subjects', hi: 'विषय' })} /></li>
+      </ul>
+    </header>
+
+    <section class="section" aria-label="Subjects">
+      {subjects.length > 0 ? (
+        <div class="grid">
+          {subjects.map((s) => (
+            <article class="card card-link subject-card">
+              <h2>
+                <a class="stretched" href={subjectUrl(board, cls, s.slug)}><L t={s.name} /></a>
+              </h2>
+              <p class="muted meta">
+                <L t={countLabel(s.count, ...PAPERS)} />
+                {' · '}
+                {s.minYear === s.maxYear ? s.maxYear : `${s.minYear}–${s.maxYear}`}
+              </p>
+              <ul class="badges">
+                {s.kinds.map((k) => <li class={`badge kind-${k}`}><L t={KIND_SHORT[k]} /></li>)}
+                {s.withAnswers > 0 && (
+                  <li class="badge good"><Icon name="check" /><L en="Answers" hi="उत्तर" /></li>
+                )}
+              </ul>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <EmptyState title={{ en: 'No papers here yet', hi: 'यहां अभी कोई प्रश्नपत्र नहीं' }}>
+          <p>
+            <L
+              en={`We haven’t added ${info.short} Class ${cls} papers yet. They appear as soon as they are collected from the official website.`}
+              hi={`${info.short} कक्षा ${cls} के प्रश्नपत्र अभी नहीं जोड़े गए हैं। आधिकारिक वेबसाइट से एकत्र होते ही वे यहां दिखेंगे।`}
+            />
+          </p>
+          <p>
+            <a class="btn" href={info.website} rel="noopener">
+              <L en="Open the official website" hi="आधिकारिक वेबसाइट खोलें" /><Icon name="external" />
+            </a>
+          </p>
+        </EmptyState>
+      )}
+    </section>
+  </div>
+</Base>
+
+<style>
+  .alias {
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .subject-card {
+    padding: 1rem 1.1rem 1.05rem;
+  }
+
+  .subject-card h2 {
+    font-size: 1.15rem;
+    margin: 0;
+  }
+
+  .meta {
+    margin: 0.15rem 0 0.7rem;
+    font-size: 0.9rem;
+  }
+</style>

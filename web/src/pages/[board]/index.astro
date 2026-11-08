@@ -1,0 +1,162 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/Base.astro';
+import L from '../../components/L.astro';
+import Icon from '../../components/Icon.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import { BOARDS, type Board } from '../../lib/schema.ts';
+import { BOARD_INFO, PAPERS, classLabel, countLabel } from '../../lib/boards.ts';
+import { papersWhere, subjectsFor } from '../../lib/catalog.ts';
+import { boardUrl, classUrl, subjectUrl } from '../../lib/url.ts';
+
+export const getStaticPaths = (() => BOARDS.map((board) => ({ params: { board } }))) satisfies GetStaticPaths;
+
+const board = Astro.params.board as Board;
+const info = BOARD_INFO[board];
+const total = papersWhere({ board }).length;
+const classes = info.classes.map((cls) => ({
+  cls,
+  alias: info.aliases?.[cls],
+  count: papersWhere({ board, cls }).length,
+  subjects: subjectsFor(board, cls),
+}));
+const range = `${info.classes[0]}–${info.classes.at(-1)}`;
+---
+<Base
+  title={`${info.short} question papers for classes ${range}`}
+  description={`${info.short} (${info.name.en}) previous year papers, sample and model papers for classes ${range}, linked to official PDFs.`}
+  board={board}
+>
+  <div class="container">
+    <Breadcrumbs items={[{ label: { en: info.short, hi: info.short }, href: boardUrl(board) }]} />
+    <header class="page-head">
+      <p class="eyebrow"><L t={info.name} /></p>
+      <h1><L t={{ en: `${info.short} question papers`, hi: `${info.short} प्रश्नपत्र` }} /></h1>
+      <p class="lead"><L t={info.blurb} /></p>
+      <ul class="stat-line">
+        <li><strong><L t={countLabel(total, ...PAPERS)} /></strong></li>
+        <li><L t={{ en: `Classes ${range}`, hi: `कक्षा ${range}` }} /></li>
+        <li>
+          <a href={info.website} rel="noopener"><L en="Official website" hi="आधिकारिक वेबसाइट" /></a>
+        </li>
+      </ul>
+    </header>
+
+    <section class="section" aria-label="Classes">
+      <div class="classes">
+        {classes.map((c) => (
+          <article class="card card-link class-card">
+            <div class="class-top">
+              <h2>
+                <a class="stretched" href={classUrl(board, c.cls)}><L t={classLabel(c.cls)} /></a>
+              </h2>
+              {c.alias && <span class="badge"><L t={c.alias} /></span>}
+              <Icon name="arrow-right" class="arrow" />
+            </div>
+            <p class="muted count">
+              {c.count > 0 ? (
+                <L t={{ en: `${countLabel(c.count, ...PAPERS).en} in ${c.subjects.length} subject${c.subjects.length === 1 ? '' : 's'}`, hi: `${c.subjects.length} विषयों में ${countLabel(c.count, ...PAPERS).hi}` }} />
+              ) : (
+                <L en="Papers coming soon" hi="प्रश्नपत्र जल्द आ रहे हैं" />
+              )}
+            </p>
+            {c.subjects.length > 0 && (
+              <ul class="subj">
+                {c.subjects.slice(0, 8).map((s) => (
+                  <li><a href={subjectUrl(board, c.cls, s.slug)}><L t={s.name} /></a></li>
+                ))}
+                {c.subjects.length > 8 && (
+                  <li class="more"><L t={{ en: `+${c.subjects.length - 8} more`, hi: `+${c.subjects.length - 8} और` }} /></li>
+                )}
+              </ul>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    {total === 0 && (
+      <EmptyState title={{ en: `${info.short} papers are on their way`, hi: `${info.short} प्रश्नपत्र जल्द आ रहे हैं` }}>
+        <p>
+          <L
+            en="We add papers only from the board’s official website. Meanwhile you can find them there directly."
+            hi="हम केवल बोर्ड की आधिकारिक वेबसाइट से प्रश्नपत्र जोड़ते हैं। तब तक आप उन्हें वहीं सीधे देख सकते हैं।"
+          />
+        </p>
+        <p>
+          <a class="btn" href={info.website} rel="noopener">
+            <L en="Open the official website" hi="आधिकारिक वेबसाइट खोलें" /><Icon name="external" />
+          </a>
+        </p>
+      </EmptyState>
+    )}
+  </div>
+</Base>
+
+<style>
+  .classes {
+    display: grid;
+    gap: 0.875rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  }
+
+  .class-card {
+    padding: 1.1rem 1.2rem 1.15rem;
+  }
+
+  .class-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .class-top h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .class-top :global(.arrow) {
+    margin-left: auto;
+    width: 20px;
+    color: var(--muted);
+  }
+
+  .count {
+    margin: 0.2rem 0 0;
+    font-size: 0.925rem;
+  }
+
+  .subj {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    list-style: none;
+    margin: 0.8rem 0 0;
+    padding: 0;
+  }
+
+  .subj a,
+  .subj .more {
+    display: inline-block;
+    padding: 0.1rem 0.6rem;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--ink-2);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .subj a:hover {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .subj .more {
+    background: transparent;
+    color: var(--muted);
+  }
+</style>

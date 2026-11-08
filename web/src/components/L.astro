@@ -1,0 +1,25 @@
+---
+// Bilingual text. Both languages are rendered; CSS shows the one chosen in
+// the UI language toggle (see .l-en / .l-hi in global.css).
+//   <L en="Papers" hi="प्रश्नपत्र" />  <L t={bi} />  <L as="p"><Fragment slot="en">…</Fragment><Fragment slot="hi">…</Fragment></L>
+interface Props {
+  en?: string;
+  hi?: string | null;
+  t?: { en: string; hi: string };
+  as?: string;
+  class?: string;
+}
+const { t, as: Tag = 'span', class: className } = Astro.props;
+const en = t?.en ?? Astro.props.en ?? '';
+const hi = t?.hi ?? Astro.props.hi ?? null;
+const slotted = Astro.slots.has('en');
+---
+{slotted ? (
+  <><Tag class:list={['l-en', className]} lang="en"><slot name="en" /></Tag><Tag class:list={['l-hi', className]} lang="hi"><slot name="hi" /></Tag></>
+) : hi && hi !== en ? (
+  <><Tag class:list={['l-en', className]} lang="en">{en}</Tag><Tag class:list={['l-hi', className]} lang="hi">{hi}</Tag></>
+) : Tag !== 'span' || className ? (
+  <Tag class={className}>{en}</Tag>
+) : (
+  <>{en}</>
+)}

@@ -1,0 +1,9 @@
+---
+interface Props { title: { en: string; hi: string } }
+import L from './L.astro';
+const { title } = Astro.props;
+---
+<div class="empty">
+  <h2><L t={title} /></h2>
+  <slot />
+</div>

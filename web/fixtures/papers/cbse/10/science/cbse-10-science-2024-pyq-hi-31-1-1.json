@@ -1,0 +1,24 @@
+{
+  "id": "cbse-10-science-2024-pyq-hi-31-1-1",
+  "board": "cbse",
+  "class": 10,
+  "subject_slug": "science",
+  "subject_name": {
+    "en": "Science",
+    "hi": "विज्ञान"
+  },
+  "year": 2024,
+  "session": "2023-24",
+  "kind": "pyq",
+  "lang": "hi",
+  "variant": "31/1/1",
+  "title": "Science Question Paper 2024 Set 31/1/1 (Hindi) (test fixture)",
+  "source_page": "https://cbseacademic.nic.in/fixture/pyq.html",
+  "paper_pdf": "https://cbseacademic.nic.in/fixture/science-31-1-1-hi.pdf",
+  "solution_pdf": null,
+  "duration_minutes": 180,
+  "max_marks": 80,
+  "extraction": "pdf-only",
+  "questions": [],
+  "scraped_at": "2026-11-08T22:00:00+00:00"
+}
