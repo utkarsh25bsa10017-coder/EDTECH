@@ -1,0 +1,24 @@
+{
+ "id": "up-10-disaster-management-2026-model-hi",
+ "board": "up",
+ "class": 10,
+ "subject_slug": "disaster-management",
+ "subject_name": {
+  "en": "Disaster Management",
+  "hi": null
+ },
+ "year": 2026,
+ "session": "2025-26",
+ "kind": "model",
+ "lang": "hi",
+ "variant": null,
+ "title": "UP Board Model Paper 2025-26: Class 10 Disaster Management",
+ "source_page": "https://upmsp.edu.in/Board_ModelPaper.aspx",
+ "paper_pdf": "https://upmsp.edu.in/Downloads/ModelPaper/class10/978-Disaster-Management.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:21:34+00:00"
+}

@@ -1,0 +1,24 @@
+{
+ "id": "up-9-sanskrit-2022-model-hi-question-bank",
+ "board": "up",
+ "class": 9,
+ "subject_slug": "sanskrit",
+ "subject_name": {
+  "en": "Sanskrit",
+  "hi": "संस्कृत"
+ },
+ "year": 2022,
+ "session": "2021-22",
+ "kind": "model",
+ "lang": "hi",
+ "variant": "Question Bank",
+ "title": "UP Board Question Bank 2021-22: Class 9 Sanskrit",
+ "source_page": "https://upmsp.edu.in/Board_QuestionBank.aspx",
+ "paper_pdf": "https://upmsp.edu.in/Downloads/QuestionBank/Class09/923%20Class-09th%20Sanskrit.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:23:14+00:00"
+}

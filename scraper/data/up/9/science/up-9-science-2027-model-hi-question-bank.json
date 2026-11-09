@@ -1,0 +1,24 @@
+{
+ "id": "up-9-science-2027-model-hi-question-bank",
+ "board": "up",
+ "class": 9,
+ "subject_slug": "science",
+ "subject_name": {
+  "en": "Science",
+  "hi": "विज्ञान"
+ },
+ "year": 2027,
+ "session": "2026-27",
+ "kind": "model",
+ "lang": "hi",
+ "variant": "Question Bank",
+ "title": "UP Board Question Bank 2026-27: Class 9 Science",
+ "source_page": "https://upmsp.edu.in/Board_QuestionBank.aspx",
+ "paper_pdf": "https://upmsp.edu.in/Downloads/QuestionBank/Class09/931%20Science_Class9th_QuestionBank.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:23:14+00:00"
+}

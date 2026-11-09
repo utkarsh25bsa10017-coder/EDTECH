@@ -1,0 +1,24 @@
+{
+ "id": "up-10-sanskrit-2027-model-hi",
+ "board": "up",
+ "class": 10,
+ "subject_slug": "sanskrit",
+ "subject_name": {
+  "en": "Sanskrit",
+  "hi": "संस्कृत"
+ },
+ "year": 2027,
+ "session": "2026-27",
+ "kind": "model",
+ "lang": "hi",
+ "variant": null,
+ "title": "UP Board Model Paper 2026-27: Class 10 Sanskrit",
+ "source_page": "https://upmsp.edu.in/Board_ModelPaper.aspx",
+ "paper_pdf": "https://upmsp.edu.in/Downloads/ModelPaper/class10/923-Sanskrit.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:21:34+00:00"
+}

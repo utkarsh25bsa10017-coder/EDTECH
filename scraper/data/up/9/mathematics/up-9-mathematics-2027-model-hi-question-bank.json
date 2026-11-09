@@ -1,0 +1,24 @@
+{
+ "id": "up-9-mathematics-2027-model-hi-question-bank",
+ "board": "up",
+ "class": 9,
+ "subject_slug": "mathematics",
+ "subject_name": {
+  "en": "Mathematics",
+  "hi": "गणित"
+ },
+ "year": 2027,
+ "session": "2026-27",
+ "kind": "model",
+ "lang": "hi",
+ "variant": "Question Bank",
+ "title": "UP Board Question Bank 2026-27: Class 9 Mathematics",
+ "source_page": "https://upmsp.edu.in/Board_QuestionBank.aspx",
+ "paper_pdf": "https://upmsp.edu.in/Downloads/QuestionBank/Class09/928%20Class-09th%20Math.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:23:14+00:00"
+}

@@ -1,0 +1,24 @@
+{
+ "id": "bihar-10-dance-2026-model-bi",
+ "board": "bihar",
+ "class": 10,
+ "subject_slug": "dance",
+ "subject_name": {
+  "en": "Dance",
+  "hi": null
+ },
+ "year": 2026,
+ "session": "2025-26",
+ "kind": "model",
+ "lang": "bi",
+ "variant": null,
+ "title": "Bihar Board Model Paper 2026: Class 10 Dance",
+ "source_page": "https://biharboardonline.com/modelpapermatric.html",
+ "paper_pdf": "https://biharboardonline.com/files/MatricModelPaper/2026/119_Dance.pdf",
+ "solution_pdf": null,
+ "duration_minutes": null,
+ "max_marks": null,
+ "extraction": "pdf-only",
+ "questions": [],
+ "scraped_at": "2026-11-09T00:19:54+00:00"
+}
