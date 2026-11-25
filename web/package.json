@@ -3,26 +3,20 @@
   "private": true,
   "type": "module",
   "version": "0.1.0",
-  "description": "Prashnottar: free board exam papers from official sources",
+  "description": "Prashnottar: practice papers and mock tests for BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI",
   "engines": {
     "node": ">=22.23.4"
   },
   "scripts": {
-    "seed": "node scripts/seed.ts",
-    "dev": "npm run seed && astro dev",
-    "dev:fixtures": "node scripts/seed.ts --papers-dir fixtures/papers && astro dev",
-    "build": "npm run seed && astro build && pagefind",
-    "build:fixtures": "node scripts/seed.ts --papers-dir fixtures/papers --strict && astro build && pagefind",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check",
-    "test": "node --test test/",
-    "test:smoke": "npm run build:fixtures && node test/smoke.mjs"
+    "check": "astro check"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/mukta": "^5.3.0",
     "astro": "^7.4.7",
-    "pagefind": "^1.6.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

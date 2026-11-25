@@ -1,0 +1,228 @@
+---
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import Icon from '../../../components/Icon.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { allPapers, EXAM_INFO, paperJson, type Exam, type Paper } from '../../../lib/exams.ts';
+import { examUrl, paperUrl, testUrl } from '../../../lib/url.ts';
+import '../../../styles/quiz.css';
+
+export function getStaticPaths() {
+  return allPapers().map((paper) => ({ params: { exam: paper.exam, paper: paper.id }, props: { paper } }));
+}
+
+const { paper } = Astro.props as { paper: Paper };
+const exam = paper.exam as Exam;
+const info = EXAM_INFO[exam];
+---
+<Base title={`${info.short.en} ${paper.title.en}: practice mode`} exam={exam}>
+  <div class="container">
+    <Breadcrumbs
+      items={[
+        { label: info.short, href: examUrl(exam) },
+        { label: paper.title, href: paperUrl(exam, paper.id) },
+        { label: { en: 'Practice', hi: 'अभ्यास' }, href: '' },
+      ]}
+    />
+    <header class="p-head">
+      <div>
+        <p class="eyebrow"><L t={info.short} /> · <L en="Practice mode" hi="अभ्यास मोड" /></p>
+        <h1><L t={paper.title} /></h1>
+      </div>
+      <div class="p-links">
+        <a class="btn btn-quiet" href={paperUrl(exam, paper.id)}><Icon name="file" /><L en="Question paper" hi="प्रश्नपत्र" /></a>
+        <a class="btn btn-quiet" href={testUrl(exam, paper.id)}><Icon name="clock" /><L en="Mock test" hi="मॉक टेस्ट" /></a>
+      </div>
+    </header>
+
+    {paper.status === 'draft' && (
+      <p class="draft-note">
+        <L en="Draft set: still being checked by subject experts." hi="ड्राफ़्ट सेट: विषय विशेषज्ञों द्वारा जांच जारी है।" />
+      </p>
+    )}
+
+    <div class="pr" data-practice>
+      <div class="pr-top">
+        <div class="filters" data-filters role="group" aria-label="Section"></div>
+        <div class="progress" aria-live="polite" data-progress></div>
+      </div>
+      <div class="dots" data-dots aria-label="Questions"></div>
+      <article class="card qcard" data-qcard></article>
+      <div class="pr-actions">
+        <button class="btn btn-quiet" type="button" data-prev><Icon name="arrow-left" /><L en="Previous" hi="पिछला" /></button>
+        <button class="btn btn-quiet" type="button" data-summary-btn><Icon name="list" /><L en="Summary" hi="सारांश" /></button>
+        <button class="btn btn-primary" type="button" data-next><L en="Next" hi="अगला" /><Icon name="arrow-right" /></button>
+      </div>
+      <section class="card summary" data-summary hidden></section>
+    </div>
+  </div>
+  <script type="application/json" id="paper-data" set:html={paperJson(paper)} />
+</Base>
+
+<script>
+  import { bi, esc, forget, items, LETTERS, load, loadPaper, save, topicStats, topicTable, tr } from '../../../scripts/quiz.ts';
+
+  const paper = loadPaper();
+  const all = items(paper);
+  const KEY = `pq-practice:${paper.exam}/${paper.id}`;
+  const answers: Record<string, number> = load<Record<string, number>>(KEY) ?? {};
+
+  let filter = 'all';
+  let list = all;
+  let pos = Math.max(0, list.findIndex((it) => answers[it.q.id] === undefined));
+
+  const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const card = $('[data-qcard]');
+  const dots = $('[data-dots]');
+  const prog = $('[data-progress]');
+  const summary = $('[data-summary]');
+  const filters = $('[data-filters]');
+
+  function renderFilters() {
+    const chips = [{ id: 'all', name: tr('All', 'सभी') }, ...paper.sections.map((s) => ({ id: s.id, name: s.name }))];
+    filters.innerHTML = chips
+      .map((c) => `<button type="button" class="chip" data-f="${esc(c.id)}" aria-pressed="${c.id === filter}">${bi(c.name)}</button>`)
+      .join('');
+    for (const b of filters.querySelectorAll<HTMLButtonElement>('[data-f]')) {
+      b.addEventListener('click', () => {
+        filter = b.dataset.f!;
+        list = filter === 'all' ? all : all.filter((it) => it.section.id === filter);
+        pos = 0;
+        renderFilters();
+        render();
+      });
+    }
+  }
+
+  function renderProgress() {
+    const done = all.filter((it) => answers[it.q.id] !== undefined);
+    const right = done.filter((it) => answers[it.q.id] === it.q.answer).length;
+    prog.innerHTML = `${bi(tr(`${done.length}/${all.length} attempted`, `${done.length}/${all.length} हल किए`))} · <span class="ok">${bi(tr(`${right} right`, `${right} सही`))}</span>`;
+  }
+
+  function renderDots() {
+    dots.innerHTML = list
+      .map((it, i) => {
+        const a = answers[it.q.id];
+        const st = a === undefined ? '' : a === it.q.answer ? 'right' : 'wrong';
+        return `<button type="button" class="dot ${st}" data-i="${i}" aria-current="${i === pos}" aria-label="Question ${it.n}">${it.n}</button>`;
+      })
+      .join('');
+    for (const b of dots.querySelectorAll<HTMLButtonElement>('[data-i]')) {
+      b.addEventListener('click', () => {
+        pos = Number(b.dataset.i);
+        render();
+      });
+    }
+  }
+
+  const DIFF = { easy: tr('Easy', 'सरल'), medium: tr('Medium', 'मध्यम'), hard: tr('Hard', 'कठिन') };
+
+  function renderCard() {
+    const it = list[pos];
+    if (!it) return;
+    const { q } = it;
+    const chosen = answers[q.id];
+    const done = chosen !== undefined;
+    const opts = q.options
+      .map((o, i) => {
+        let cls = '';
+        if (done && i === q.answer) cls = 'right';
+        else if (done && i === chosen) cls = 'wrong';
+        return `<li><button type="button" class="opt ${cls}" data-o="${i}" ${done ? 'disabled' : ''}><span class="ol">${LETTERS[i]}</span><span class="ot">${bi(o)}</span></button></li>`;
+      })
+      .join('');
+    const verdict = done
+      ? `<div class="verdict ${chosen === q.answer ? 'right' : 'wrong'}" role="status" tabindex="-1"><strong>${
+          chosen === q.answer ? bi(tr('Correct!', 'सही उत्तर!')) : bi(tr(`Not quite. The answer is ${LETTERS[q.answer]}.`, `सही उत्तर ${LETTERS[q.answer]} है।`))
+        }</strong><p>${bi(q.explanation)}</p></div>`
+      : '';
+    card.innerHTML = `
+      <div class="q-meta"><span>${bi(tr(`Question ${it.n} of ${all.length}`, `प्रश्न ${it.n} / ${all.length}`))}</span>
+        <span class="badge">${bi(q.topic)}</span><span class="badge diff-${q.difficulty}">${bi(DIFF[q.difficulty])}</span></div>
+      <p class="q-text">${bi(q.text)}</p>
+      <ol class="opts">${opts}</ol>
+      ${verdict}`;
+    for (const b of card.querySelectorAll<HTMLButtonElement>('[data-o]')) {
+      b.addEventListener('click', () => {
+        answers[q.id] = Number(b.dataset.o);
+        save(KEY, answers);
+        render();
+        card.querySelector<HTMLElement>('.verdict')?.focus();
+      });
+    }
+  }
+
+  function renderSummary() {
+    const done = all.filter((it) => answers[it.q.id] !== undefined);
+    const right = done.filter((it) => answers[it.q.id] === it.q.answer).length;
+    const pct = done.length ? Math.round((right / done.length) * 100) : 0;
+    summary.innerHTML = `
+      <h2>${bi(tr('Your summary', 'आपका सारांश'))}</h2>
+      <ul class="stats">
+        <li><strong>${done.length}/${all.length}</strong>${bi(tr('attempted', 'हल किए'))}</li>
+        <li><strong>${right}</strong>${bi(tr('right', 'सही'))}</li>
+        <li><strong>${done.length - right}</strong>${bi(tr('wrong', 'गलत'))}</li>
+        <li><strong>${pct}%</strong>${bi(tr('accuracy', 'सटीकता'))}</li>
+      </ul>
+      ${done.length ? topicTable(topicStats(all, (id) => answers[id])) : `<p class="muted">${bi(tr('Answer a few questions to see your topic report.', 'विषयवार रिपोर्ट देखने के लिए कुछ प्रश्न हल करें।'))}</p>`}
+      <div class="sum-actions">
+        <button type="button" class="btn btn-quiet" data-retry-wrong>${bi(tr('Retry wrong answers', 'गलत प्रश्न दोबारा करें'))}</button>
+        <button type="button" class="btn btn-quiet" data-reset>${bi(tr('Start over', 'फिर से शुरू करें'))}</button>
+      </div>`;
+    summary.querySelector('[data-reset]')!.addEventListener('click', () => {
+      for (const k of Object.keys(answers)) delete answers[k];
+      forget(KEY);
+      pos = 0;
+      summary.hidden = true;
+      render();
+    });
+    summary.querySelector('[data-retry-wrong]')!.addEventListener('click', () => {
+      const wrong = all.filter((it) => answers[it.q.id] !== undefined && answers[it.q.id] !== it.q.answer);
+      for (const it of wrong) delete answers[it.q.id];
+      save(KEY, answers);
+      list = wrong.length ? wrong : all;
+      filter = 'all';
+      pos = 0;
+      summary.hidden = true;
+      renderFilters();
+      render();
+    });
+  }
+
+  function render() {
+    renderProgress();
+    renderDots();
+    renderCard();
+    $<HTMLButtonElement>('[data-prev]').disabled = pos === 0;
+    const allDone = all.every((it) => answers[it.q.id] !== undefined);
+    if (allDone && summary.hidden) {
+      renderSummary();
+      summary.hidden = false;
+    }
+  }
+
+  $('[data-prev]').addEventListener('click', () => {
+    if (pos > 0) pos--;
+    render();
+  });
+  $('[data-next]').addEventListener('click', () => {
+    if (pos < list.length - 1) {
+      pos++;
+      render();
+      card.scrollIntoView({ block: 'nearest' });
+    } else {
+      renderSummary();
+      summary.hidden = false;
+      summary.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+  $('[data-summary-btn]').addEventListener('click', () => {
+    renderSummary();
+    summary.hidden = false;
+    summary.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  renderFilters();
+  render();
+</script>

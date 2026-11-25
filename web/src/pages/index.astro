@@ -2,176 +2,128 @@
 import Base from '../layouts/Base.astro';
 import L from '../components/L.astro';
 import Icon from '../components/Icon.astro';
-import SearchBox from '../components/SearchBox.astro';
-import PaperCard from '../components/PaperCard.astro';
-import EmptyState from '../components/EmptyState.astro';
-import { BOARDS } from '../lib/schema.ts';
-import { BOARD_INFO, PAPERS, classLabel, countLabel, type Bi } from '../lib/boards.ts';
-import { recentPapers, totals } from '../lib/catalog.ts';
-import { boardUrl, classUrl, href } from '../lib/url.ts';
-import { DESCRIPTION, REPO_URL, SITE_NAME, TAGLINE } from '../config.ts';
+import { EXAMS, EXAM_INFO, PASS_PRICE, papersFor, questionCount } from '../lib/exams.ts';
+import { examUrl, practiceUrl, pricingUrl, testUrl } from '../lib/url.ts';
+import { SITE_NAME } from '../config.ts';
 
-const t = totals();
-const recent = recentPapers(6);
-
-const jump: { label: Bi; url: string }[] = [
-  ['cbse', 10],
-  ['cbse', 12],
-  ['icse', 10],
-  ['isc', 12],
-  ['up', 10],
-  ['up', 12],
-  ['bihar', 10],
-  ['bihar', 12],
-].map(([b, c]) => {
-  const board = BOARD_INFO[b as keyof typeof BOARD_INFO];
-  const cls = c as number;
-  const alias = board.aliases?.[cls];
-  const label = alias ?? classLabel(cls);
-  return { label: { en: `${board.short} ${label.en}`, hi: `${board.short} ${label.hi}` }, url: classUrl(board.slug, cls) };
-});
-
-const site = Astro.site;
-const jsonLd = site
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'WebSite',
-      name: SITE_NAME,
-      url: new URL(href('/'), site).href,
-      description: DESCRIPTION,
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: `${new URL(href('/search/'), site).href}?q={search_term_string}`,
-        'query-input': 'required name=search_term_string',
-      },
-    }
-  : undefined;
+const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free);
 ---
-<Base title={`${SITE_NAME}: board exam papers with official answers`} jsonLd={jsonLd}>
+<Base title={`${SITE_NAME}: BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI practice`}>
   <section class="hero">
     <div class="container">
-      <p class="eyebrow">CBSE · ICSE · ISC · UP Board · Bihar Board</p>
+      <p class="eyebrow">BPSC TRE · Bihar Daroga · BPSC Prelims · UP SI</p>
       <h1>
-        <L en="Every board paper, straight from the source." hi="हर बोर्ड प्रश्नपत्र, सीधे स्रोत से।" />
+        <L en="Practise like it’s exam day." hi="ऐसे अभ्यास करें, जैसे आज ही परीक्षा हो।" />
       </h1>
       <p class="lead">
         <L
-          en="Previous year papers, sample papers and model papers for classes 9–12. Answers come only from official marking schemes. Free, with no sign-up."
-          hi="कक्षा 9–12 के पिछले वर्षों के प्रश्नपत्र, प्रतिदर्श प्रश्नपत्र और मॉडल प्रश्नपत्र। उत्तर केवल आधिकारिक अंकन योजनाओं से। निःशुल्क, बिना साइन-अप।"
+          en="Exam-style question papers, timed mock tests and topic practice with explanations, in Hindi and English. Start with a free practice set for your exam."
+          hi="परीक्षा जैसे प्रश्नपत्र, समयबद्ध मॉक टेस्ट और व्याख्या सहित विषयवार अभ्यास, हिन्दी और अंग्रेज़ी में। अपनी परीक्षा के निःशुल्क अभ्यास सेट से शुरू करें।"
         />
       </p>
-      <SearchBox />
-      {t.papers > 0 && (
-        <ul class="stat-line hero-stats">
-          <li><strong>{t.papers.toLocaleString('en-IN')}</strong> <L en="papers" hi="प्रश्नपत्र" /></li>
-          {t.questions > 0 && <li><strong>{t.questions.toLocaleString('en-IN')}</strong> <L en="questions" hi="प्रश्न" /></li>}
-          {t.answers > 0 && <li><strong>{t.answers.toLocaleString('en-IN')}</strong> <L en="official answers" hi="आधिकारिक उत्तर" /></li>}
-          <li><strong>{t.subjects.toLocaleString('en-IN')}</strong> <L en="subjects" hi="विषय" /></li>
-        </ul>
-      )}
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#exams-h"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /> <Icon name="arrow-right" /></a>
+        <a class="btn btn-quiet" href={pricingUrl()}><L t={{ en: `All 4 exams for ₹${PASS_PRICE.toLocaleString('en-IN')}`, hi: `चारों परीक्षाएं ₹${PASS_PRICE.toLocaleString('en-IN')} में` }} /></a>
+      </div>
     </div>
   </section>
 
-  <section class="container section" aria-labelledby="boards-h">
+  <section class="container section" aria-labelledby="exams-h">
     <div class="section-head">
-      <h2 id="boards-h"><L en="Choose your board" hi="अपना बोर्ड चुनें" /></h2>
+      <h2 id="exams-h"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /></h2>
     </div>
-    <div class="boards">
-      {BOARDS.map((b) => {
-        const info = BOARD_INFO[b];
-        const n = t.byBoard[b];
+    <div class="exams">
+      {EXAMS.map((e) => {
+        const info = EXAM_INFO[e];
+        const free = firstFree(e);
         return (
-          <article class="card card-link board-card" style={`--board: var(--board-${b})`}>
-            <span class="mono" aria-hidden="true">{info.short.replace(' Board', '')}</span>
-            <div class="board-body">
-              <h3><a class="stretched" href={boardUrl(b)}>{info.short}</a></h3>
-              <p class="board-name"><L t={info.name} /></p>
-              <p class="board-meta">
-                <L t={{ en: `Classes ${info.classes[0]}–${info.classes.at(-1)}`, hi: `कक्षा ${info.classes[0]}–${info.classes.at(-1)}` }} />
-                {' · '}
-                {n > 0 ? <L t={countLabel(n, ...PAPERS)} /> : <L en="Coming soon" hi="जल्द आ रहा है" />}
-              </p>
+          <article class="card exam-card" style={`--exam: var(--exam-${e})`}>
+            <div class="exam-top">
+              <span class="state"><L t={info.state} /></span>
+              <h3><a href={examUrl(e)}><L t={info.short} /></a></h3>
+              <p class="exam-name"><L t={info.name} /></p>
+              <p class="exam-blurb"><L t={info.blurb} /></p>
             </div>
-            <Icon name="arrow-right" class="board-arrow" />
+            <div class="exam-actions">
+              {free ? (
+                <>
+                  <a class="btn btn-primary" href={practiceUrl(e, free.id)}><Icon name="target" /><L en="Free practice" hi="निःशुल्क अभ्यास" /></a>
+                  <a class="btn btn-quiet" href={testUrl(e, free.id)}><Icon name="clock" /><L en="Mock test" hi="मॉक टेस्ट" /></a>
+                </>
+              ) : (
+                <a class="btn btn-quiet" href={examUrl(e)}><L en="See exam" hi="परीक्षा देखें" /></a>
+              )}
+            </div>
+            {free && (
+              <p class="exam-meta">
+                <L t={{ en: `Free set: ${questionCount(free)} questions`, hi: `निःशुल्क सेट: ${questionCount(free)} प्रश्न` }} />
+              </p>
+            )}
           </article>
         );
       })}
     </div>
   </section>
 
-  <section class="container section tight" aria-labelledby="jump-h">
-    <h2 id="jump-h" class="small-h"><L en="Jump to your class" hi="अपनी कक्षा पर जाएं" /></h2>
-    <ul class="chips">
-      {jump.map((j) => <li><a class="chip" href={j.url}><L t={j.label} /></a></li>)}
-    </ul>
-  </section>
-
-  <section class="container section" aria-labelledby="recent-h">
-    <div class="section-head">
-      <h2 id="recent-h"><L en="Recently added" hi="हाल ही में जोड़े गए" /></h2>
-      {recent.length > 0 && <a href={href('/search/')}><L en="Search all papers" hi="सभी प्रश्नपत्र खोजें" /></a>}
-    </div>
-    {recent.length > 0 ? (
-      <div class="grid">{recent.map((p) => <PaperCard paper={p} full />)}</div>
-    ) : (
-      <EmptyState title={{ en: 'The archive is being built', hi: 'संग्रह तैयार किया जा रहा है' }}>
-        <p>
-          <L
-            en="Papers appear here as soon as they are collected from the boards’ official websites. Check back soon."
-            hi="बोर्डों की आधिकारिक वेबसाइटों से एकत्र होते ही प्रश्नपत्र यहां दिखेंगे। जल्द ही दोबारा देखें।"
-          />
-        </p>
-      </EmptyState>
-    )}
-  </section>
-
-  <section class="container section" aria-labelledby="why-h">
-    <h2 id="why-h" class="sr-only"><L en="Why Prashnottar" hi="प्रश्नोत्तर क्यों" /></h2>
+  <section class="container section" aria-labelledby="modes-h">
+    <h2 id="modes-h"><L en="Three ways to prepare" hi="तैयारी के तीन तरीके" /></h2>
     <div class="why">
       <div>
-        <Icon name="shield" class="why-icon" />
-        <h3><L en="Official sources only" hi="केवल आधिकारिक स्रोत" /></h3>
+        <Icon name="target" class="why-icon" />
+        <h3><L en="Practice mode" hi="अभ्यास मोड" /></h3>
         <p>
           <L
-            en="Every paper links to the PDF on the board’s own website. Nothing is copied from coaching or guide-book sites."
-            hi="हर प्रश्नपत्र बोर्ड की अपनी वेबसाइट के PDF से जुड़ा है। कोचिंग या गाइड-बुक साइटों से कुछ नहीं लिया गया।"
+            en="One question at a time. See the right answer and why straight away, and track your weak topics."
+            hi="एक बार में एक प्रश्न। सही उत्तर और उसकी व्याख्या तुरंत देखें, और अपने कमज़ोर विषय पहचानें।"
           />
         </p>
       </div>
       <div>
-        <Icon name="file-check" class="why-icon" />
-        <h3><L en="Answers you can trust" hi="भरोसेमंद उत्तर" /></h3>
+        <Icon name="clock" class="why-icon" />
+        <h3><L en="Mock test" hi="मॉक टेस्ट" /></h3>
         <p>
           <L
-            en="Answers are shown only when they come from the board’s marking scheme and match the question exactly."
-            hi="उत्तर तभी दिखाए जाते हैं जब वे बोर्ड की अंकन योजना से हों और प्रश्न से ठीक मेल खाते हों।"
+            en="A timed test with a question palette, mark-for-review and a full score report, like the real computer-based exam."
+            hi="प्रश्न पैलेट, समीक्षा हेतु चिह्नित और पूरी स्कोर रिपोर्ट के साथ समयबद्ध टेस्ट, असली परीक्षा की तरह।"
           />
         </p>
       </div>
       <div>
-        <Icon name="phone" class="why-icon" />
-        <h3><L en="Fast on any phone" hi="हर फ़ोन पर तेज़" /></h3>
+        <Icon name="file" class="why-icon" />
+        <h3><L en="Question paper" hi="प्रश्नपत्र" /></h3>
         <p>
           <L
-            en="Pages are small and load quickly on slow connections, in English or Hindi. No app, no login, no ads."
-            hi="पेज हल्के हैं और धीमे नेटवर्क पर भी जल्दी खुलते हैं, हिन्दी या अंग्रेज़ी में। न ऐप, न लॉगिन, न विज्ञापन।"
+            en="The full paper laid out like an exam booklet, in Hindi and English. Print it and solve it on paper."
+            hi="पूरा प्रश्नपत्र परीक्षा पुस्तिका की तरह, हिन्दी और अंग्रेज़ी में। प्रिंट करें और कागज़ पर हल करें।"
           />
         </p>
       </div>
     </div>
-    <p class="muted foot-note">
-      <L t={TAGLINE} />. <a href={href('/about/')}><L en="How it works" hi="यह कैसे काम करता है" /></a> ·
-      <a href={REPO_URL} rel="noopener"><L en="Open source on GitHub" hi="GitHub पर ओपन सोर्स" /></a>
-    </p>
+  </section>
+
+  <section class="container section" aria-labelledby="pass-h">
+    <div class="pass card">
+      <div>
+        <h2 id="pass-h"><L en="One Pass, all four exams" hi="एक पास, चारों परीक्षाएं" /></h2>
+        <p class="muted">
+          <L
+            en="Full mock tests, topic-wise practice and solved past papers for BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI."
+            hi="बीपीएससी टीआरई, बिहार दरोगा, बीपीएससी प्रारंभिक और यूपी एसआई के लिए पूर्ण मॉक टेस्ट, विषयवार अभ्यास और हल सहित पिछले प्रश्नपत्र।"
+          />
+        </p>
+      </div>
+      <div class="pass-price">
+        <strong>₹{PASS_PRICE.toLocaleString('en-IN')}</strong>
+        <a class="btn btn-primary" href={pricingUrl()}><L en="See what’s included" hi="क्या-क्या मिलेगा" /></a>
+      </div>
+    </div>
   </section>
 </Base>
 
 <style>
   .hero {
-    padding-block: clamp(2.25rem, 1.5rem + 4vw, 4.5rem) clamp(1.5rem, 1rem + 2vw, 2.5rem);
-    background:
-      radial-gradient(60rem 22rem at 85% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%),
-      linear-gradient(to bottom, transparent, transparent);
+    padding-block: clamp(2.25rem, 1.5rem + 4vw, 4.5rem) clamp(1.75rem, 1rem + 2vw, 2.75rem);
+    background: radial-gradient(60rem 22rem at 85% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
     border-bottom: 1px solid var(--line);
   }
 
@@ -184,84 +136,77 @@ const jsonLd = site
     max-width: 22ch;
   }
 
-  .hero .lead {
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-stats {
-    margin-top: 1.1rem;
-  }
-
-  .tight {
-    padding-block: 0 0.5rem;
-  }
-
-  .small-h {
-    font-size: 1rem;
-    color: var(--ink-2);
-    margin-bottom: 0.75rem;
-  }
-
-  .boards {
-    display: grid;
-    gap: 0.875rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
-  }
-
-  .board-card {
+  .hero-cta {
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1.1rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
   }
 
-  .mono {
-    flex: none;
+  .exams {
     display: grid;
-    place-items: center;
-    width: 3.4rem;
-    height: 3.4rem;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--board) 13%, var(--surface));
-    color: var(--board);
-    font-weight: 800;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
   }
 
-  .board-body {
+  .exam-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.2rem 1.2rem 1rem;
+    border-top: 4px solid var(--exam);
+  }
+
+  .exam-top {
     flex: 1;
-    min-width: 0;
   }
 
-  .board-body h3 {
-    margin: 0;
-    font-size: 1.15rem;
+  .state {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--exam);
   }
 
-  .board-name {
-    margin: 0;
+  .exam-card h3 {
+    margin: 0.15rem 0 0.1rem;
+    font-size: 1.35rem;
+  }
+
+  .exam-card h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .exam-card h3 a:hover {
+    color: var(--exam);
+    text-decoration: underline;
+  }
+
+  .exam-name {
+    margin: 0 0 0.5rem;
     color: var(--ink-2);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .exam-blurb {
+    margin: 0;
+    color: var(--muted);
     font-size: 0.925rem;
-    line-height: 1.35;
   }
 
-  .board-meta {
-    margin: 0.2rem 0 0;
+  .exam-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .exam-meta {
+    margin: 0;
+    font-size: 0.825rem;
     color: var(--muted);
-    font-size: 0.85rem;
-  }
-
-  .board-card :global(.board-arrow) {
-    flex: none;
-    width: 20px;
-    color: var(--muted);
-    transition: transform 0.15s, color 0.15s;
-  }
-
-  .board-card:hover :global(.board-arrow) {
-    transform: translateX(3px);
-    color: var(--board);
   }
 
   .why {
@@ -290,8 +235,35 @@ const jsonLd = site
     color: var(--accent);
   }
 
-  .foot-note {
-    margin: 1rem 0 0;
-    font-size: 0.925rem;
+  .pass {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.5rem 1.75rem;
+    background: var(--accent-soft);
+    border-color: transparent;
+  }
+
+  .pass h2 {
+    margin: 0 0 0.35rem;
+  }
+
+  .pass p {
+    margin: 0;
+    max-width: 40rem;
+  }
+
+  .pass-price {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .pass-price strong {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--ink);
   }
 </style>

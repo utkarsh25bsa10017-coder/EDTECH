@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import Icon from '../components/Icon.astro';
+import { EXAMS, EXAM_INFO, PASS_FEATURES, PASS_PRICE } from '../lib/exams.ts';
+import { examUrl } from '../lib/url.ts';
+import { CHECKOUT_URL } from '../config.ts';
+
+const price = PASS_PRICE.toLocaleString('en-IN');
+const faqs = [
+  {
+    q: { en: 'Are the questions copied from coaching books?', hi: 'क्या प्रश्न कोचिंग की किताबों से लिए गए हैं?' },
+    a: {
+      en: 'No. Mock questions are written new, in the pattern of past papers and the official syllabus, and every question is checked by a subject reviewer before it goes live.',
+      hi: 'नहीं। मॉक प्रश्न पिछले प्रश्नपत्रों के पैटर्न और आधिकारिक पाठ्यक्रम के आधार पर नए लिखे जाते हैं, और हर प्रश्न लाइव होने से पहले विषय समीक्षक द्वारा जांचा जाता है।',
+    },
+  },
+  {
+    q: { en: 'How long does the Pass last?', hi: 'पास कितने समय तक चलेगा?' },
+    a: {
+      en: 'One exam cycle: until the next written exam for each of the four exams.',
+      hi: 'एक परीक्षा चक्र: चारों परीक्षाओं में से प्रत्येक की अगली लिखित परीक्षा तक।',
+    },
+  },
+  {
+    q: { en: 'Can I try before paying?', hi: 'क्या भुगतान से पहले आज़मा सकते हैं?' },
+    a: {
+      en: 'Yes. Every exam has a free practice set with practice mode, a timed mock test and the full question paper.',
+      hi: 'हां। हर परीक्षा का एक निःशुल्क अभ्यास सेट है, जिसमें अभ्यास मोड, समयबद्ध मॉक टेस्ट और पूरा प्रश्नपत्र है।',
+    },
+  },
+  {
+    q: { en: 'What if I am not happy?', hi: 'अगर मैं संतुष्ट न हूं तो?' },
+    a: {
+      en: 'Ask for a refund within 7 days of buying and you get your money back.',
+      hi: 'खरीदने के 7 दिनों के भीतर रिफ़ंड मांगें, आपका पैसा वापस मिल जाएगा।',
+    },
+  },
+];
+---
+<Base title="Pricing: the Prashnottar Pass" page="pricing">
+  <div class="container narrow">
+    <header class="page-head">
+      <p class="eyebrow"><L en="Pricing" hi="मूल्य" /></p>
+      <h1><L en="One Pass for all four exams" hi="चारों परीक्षाओं के लिए एक पास" /></h1>
+      <p class="lead">
+        <L
+          en="Most aspirants apply for more than one of these exams. The Pass covers all four for one price."
+          hi="ज़्यादातर अभ्यर्थी इनमें से एक से अधिक परीक्षाओं के लिए आवेदन करते हैं। पास एक ही कीमत में चारों परीक्षाओं को कवर करता है।"
+        />
+      </p>
+    </header>
+
+    <div class="plans">
+      <article class="card plan">
+        <h2><L en="Free" hi="निःशुल्क" /></h2>
+        <p class="price">₹0</p>
+        <ul class="features">
+          <li><Icon name="check" /><L en="One practice set per exam" hi="हर परीक्षा का एक अभ्यास सेट" /></li>
+          <li><Icon name="check" /><L en="Practice mode and timed mock test" hi="अभ्यास मोड और समयबद्ध मॉक टेस्ट" /></li>
+          <li><Icon name="check" /><L en="Printable question paper with answer key" hi="उत्तर कुंजी सहित प्रिंट योग्य प्रश्नपत्र" /></li>
+        </ul>
+        <a class="btn btn-quiet" href={examUrl(EXAMS[0])}><L en="Start free" hi="निःशुल्क शुरू करें" /></a>
+      </article>
+
+      <article class="card plan featured">
+        <h2><L en="Prashnottar Pass" hi="प्रश्नोत्तर पास" /></h2>
+        <p class="price">₹{price}<span><L en="one-time" hi="एक बार" /></span></p>
+        <ul class="features">
+          {PASS_FEATURES.map((f) => <li><Icon name="check" /><L t={f} /></li>)}
+        </ul>
+        <p class="covers">
+          {EXAMS.map((e, i) => <>{i > 0 && ' · '}<L t={EXAM_INFO[e].short} /></>)}
+        </p>
+        {CHECKOUT_URL ? (
+          <a class="btn btn-primary" href={CHECKOUT_URL} rel="noopener"><L t={{ en: `Get the Pass for ₹${price}`, hi: `₹${price} में पास लें` }} /></a>
+        ) : (
+          <button class="btn btn-primary" type="button" disabled><L en="Payments open soon" hi="भुगतान जल्द शुरू होगा" /></button>
+        )}
+      </article>
+    </div>
+
+    <section class="section" aria-labelledby="faq-h">
+      <h2 id="faq-h"><L en="Questions" hi="सवाल-जवाब" /></h2>
+      <div class="faqs">
+        {faqs.map((f) => (
+          <details class="card faq">
+            <summary><L t={f.q} /></summary>
+            <p><L t={f.a} /></p>
+          </details>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .narrow {
+    max-width: 56rem;
+  }
+
+  .plans {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+    align-items: start;
+  }
+
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.5rem;
+  }
+
+  .plan h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .featured {
+    border: 2px solid var(--accent);
+  }
+
+  .price {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .price span {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 0.4rem;
+  }
+
+  .features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .features li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .features :global(svg) {
+    width: 18px;
+    flex: none;
+    margin-top: 0.2rem;
+    color: var(--good);
+  }
+
+  .covers {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .plan .btn {
+    justify-content: center;
+  }
+
+  .faqs {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .faq {
+    padding: 0.9rem 1.1rem;
+  }
+
+  .faq summary {
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .faq p {
+    margin: 0.5rem 0 0;
+    color: var(--ink-2);
+  }
+</style>

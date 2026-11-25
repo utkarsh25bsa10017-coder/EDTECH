@@ -1,17 +1,16 @@
 ---
-import { BOARDS, type Board } from '../lib/schema.ts';
-import { BOARD_INFO } from '../lib/boards.ts';
-import { boardUrl, href } from '../lib/url.ts';
+import { EXAMS, EXAM_INFO, type Exam } from '../lib/exams.ts';
+import { examUrl, href, pricingUrl } from '../lib/url.ts';
 import { SITE_NAME, SITE_NAME_HI } from '../config.ts';
 import Icon from './Icon.astro';
 import Logo from './Logo.astro';
 import L from './L.astro';
 
 interface Props {
-  board?: Board;
-  page?: 'search' | 'about';
+  exam?: Exam;
+  page?: 'pricing';
 }
-const { board, page } = Astro.props;
+const { exam, page } = Astro.props;
 ---
 <header class="site-header">
   <div class="container bar">
@@ -23,16 +22,6 @@ const { board, page } = Astro.props;
       </span>
     </a>
     <div class="actions">
-      <a
-        class="icon-btn"
-        href={href('/search/')}
-        aria-label="Search papers"
-        data-label-en="Search papers"
-        data-label-hi="प्रश्नपत्र खोजें"
-        aria-current={page === 'search' ? 'page' : undefined}
-      >
-        <Icon name="search" />
-      </a>
       <button class="lang-btn" type="button" data-lang-toggle>
         <span class="l-en" lang="hi">हिन्दी</span>
         <span class="l-hi" lang="en">English</span>
@@ -50,25 +39,20 @@ const { board, page } = Astro.props;
       </button>
     </div>
   </div>
-  <nav class="board-nav" aria-label="Boards">
+  <nav class="board-nav" aria-label="Exams">
     <div class="container board-row">
-      {BOARDS.map((b) => (
-        <a href={boardUrl(b)} aria-current={board === b ? 'page' : undefined}>
-          {BOARD_INFO[b].short}
+      {EXAMS.map((e) => (
+        <a href={examUrl(e)} aria-current={exam === e ? 'page' : undefined}>
+          <L t={EXAM_INFO[e].short} />
         </a>
       ))}
       <span class="sep" aria-hidden="true"></span>
-      <a href={href('/about/')} aria-current={page === 'about' ? 'page' : undefined}>
-        <L en="About" hi="परिचय" />
+      <a class="pass-link" href={pricingUrl()} aria-current={page === 'pricing' ? 'page' : undefined}>
+        <L en="Get the Pass" hi="पास लें" />
       </a>
     </div>
   </nav>
 </header>
-
-<script>
-  import { initPrefs } from '../scripts/prefs.ts';
-  initPrefs();
-</script>
 
 <style>
   .site-header {
@@ -203,6 +187,10 @@ const { board, page } = Astro.props;
     background: var(--surface-2);
     box-shadow: inset 0 -2px 0 var(--accent);
     border-radius: 999px 999px 6px 6px;
+  }
+
+  .board-row a.pass-link {
+    color: var(--accent);
   }
 
   .sep {

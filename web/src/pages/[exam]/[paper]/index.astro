@@ -1,0 +1,554 @@
+---
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import Icon from '../../../components/Icon.astro';
+import { allPapers, durationLabel, EXAM_INFO, maxMarks, OPTION_LETTERS, questionCount, type Bi, type Exam, type Paper } from '../../../lib/exams.ts';
+import { examUrl, practiceUrl, testUrl } from '../../../lib/url.ts';
+
+export function getStaticPaths() {
+  return allPapers().map((paper) => ({ params: { exam: paper.exam, paper: paper.id }, props: { paper } }));
+}
+
+const { paper } = Astro.props as { paper: Paper };
+const exam = paper.exam as Exam;
+const info = EXAM_INFO[exam];
+const total = questionCount(paper);
+const marks = maxMarks(paper);
+const dur = durationLabel(paper.duration_minutes);
+const same = (t: Bi) => t.en.trim() === t.hi.trim();
+
+let n = 0;
+const numbered = paper.sections.map((s) => ({ ...s, questions: s.questions.map((q) => ({ ...q, n: ++n })) }));
+
+const instructions: Bi[] = [
+  { en: `This booklet contains ${total} questions. Check that every page is printed and none is missing.`, hi: `इस पुस्तिका में ${total} प्रश्न हैं। जांच लें कि सभी पृष्ठ छपे हैं और कोई पृष्ठ कम नहीं है।` },
+  { en: 'Each question has four options (A), (B), (C) and (D). Only one is correct.', hi: 'प्रत्येक प्रश्न के चार विकल्प (A), (B), (C) और (D) हैं। केवल एक ही सही है।' },
+  {
+    en: `Each correct answer carries ${paper.marks_per_question} mark${paper.marks_per_question === 1 ? '' : 's'}. ${paper.negative_marking > 0 ? `${paper.negative_marking} mark is deducted for every wrong answer.` : 'There is no negative marking in this practice set.'}`,
+    hi: `प्रत्येक सही उत्तर के लिए ${paper.marks_per_question} अंक है। ${paper.negative_marking > 0 ? `प्रत्येक गलत उत्तर पर ${paper.negative_marking} अंक काटा जाएगा।` : 'इस अभ्यास सेट में ऋणात्मक अंकन नहीं है।'}`,
+  },
+  { en: 'Darken only one circle for each question on the answer sheet with a blue or black ball-point pen.', hi: 'उत्तर पत्रक पर प्रत्येक प्रश्न के लिए नीले या काले बॉल-पॉइंट पेन से केवल एक ही गोला भरें।' },
+  { en: 'Use the blank page at the end of the booklet for rough work.', hi: 'रफ़ कार्य के लिए पुस्तिका के अंत में दिए खाली पृष्ठ का प्रयोग करें।' },
+  { en: 'If the Hindi and English versions differ, treat the Hindi version as final.', hi: 'हिन्दी और अंग्रेज़ी रूपांतर में अंतर होने पर हिन्दी रूपांतर अंतिम माना जाएगा।' },
+];
+---
+<Base
+  title={`${info.short.en} ${paper.title.en}: question paper`}
+  description={`${info.name.en} ${paper.title.en}: ${total} questions in Hindi and English, laid out like the exam booklet, with answer key.`}
+  exam={exam}
+>
+  <div class="container toolbar no-print">
+    <a class="btn btn-quiet" href={examUrl(exam)}><Icon name="arrow-left" /><L t={info.short} /></a>
+    <div class="tools">
+      <div class="seg" role="group" aria-label="Paper language">
+        <button type="button" data-plang="bi" aria-pressed="true"><L en="Both" hi="दोनों" /></button>
+        <button type="button" data-plang="hi" aria-pressed="false">हिन्दी</button>
+        <button type="button" data-plang="en" aria-pressed="false">English</button>
+      </div>
+      <label class="key-toggle"><input type="checkbox" data-key-toggle /> <L en="Answer key" hi="उत्तर कुंजी" /></label>
+      <button type="button" class="btn btn-quiet" data-print><Icon name="printer" /><L en="Print" hi="प्रिंट" /></button>
+      <a class="btn btn-quiet" href={practiceUrl(exam, paper.id)}><Icon name="target" /><L en="Practice" hi="अभ्यास" /></a>
+      <a class="btn btn-primary" href={testUrl(exam, paper.id)}><Icon name="clock" /><L en="Mock test" hi="मॉक टेस्ट" /></a>
+    </div>
+  </div>
+
+  {paper.status === 'draft' && (
+    <p class="container draft-note no-print">
+      <L
+        en="Draft set: these questions are still being checked by subject experts. If you spot a mistake, tell us."
+        hi="ड्राफ़्ट सेट: इन प्रश्नों की विषय विशेषज्ञों द्वारा जांच अभी जारी है। कोई गलती दिखे तो हमें बताएं।"
+      />
+    </p>
+  )}
+
+  <div class="booklet" data-plang-root="bi">
+    <section class="sheet cover">
+      <div class="cover-top">
+        <div class="box-field"><span class="hi-t">पुस्तिका सीरीज़</span> <span class="en-t">Booklet Series</span><strong class="series">A</strong></div>
+        <div class="box-field"><span class="hi-t">अनुक्रमांक</span> <span class="en-t">Roll No.</span>
+          <span class="roll">{Array.from({ length: 8 }, () => <i></i>)}</span>
+        </div>
+      </div>
+
+      <div class="cover-title">
+        <p class="brand-line">PRASHNOTTAR PRACTICE PAPER · प्रश्नोत्तर अभ्यास प्रश्नपत्र</p>
+        <h1>
+          <span class="hi-t">{info.name.hi}</span>
+          <span class="en-t">{info.name.en}</span>
+        </h1>
+        <p class="set-name"><span class="hi-t">{paper.title.hi}</span> <span class="en-t">{paper.title.en}</span></p>
+        <div class="tm">
+          <p><span class="hi-t">समय: {dur.hi}</span> <span class="en-t">Time: {dur.en}</span></p>
+          <p><span class="hi-t">पूर्णांक: {marks}</span> <span class="en-t">Maximum Marks: {marks}</span></p>
+        </div>
+      </div>
+
+      <div class="cand">
+        <p><span class="hi-t">अभ्यर्थी का नाम</span> <span class="en-t">Candidate’s name</span> <span class="line"></span></p>
+        <p><span class="hi-t">अभ्यर्थी के हस्ताक्षर</span> <span class="en-t">Candidate’s signature</span> <span class="line"></span></p>
+      </div>
+
+      <div class="instr">
+        <div class="instr-col hi-t" lang="hi">
+          <h2>परीक्षार्थियों के लिए निर्देश</h2>
+          <ol>{instructions.map((i) => <li>{i.hi}</li>)}</ol>
+        </div>
+        <div class="instr-col en-t" lang="en">
+          <h2>Instructions to candidates</h2>
+          <ol>{instructions.map((i) => <li>{i.en}</li>)}</ol>
+        </div>
+      </div>
+      <p class="cover-foot">
+        <span class="hi-t">जब तक कहा न जाए, इस पुस्तिका को न खोलें।</span>
+        <span class="en-t">Do not open this booklet until you are told to do so.</span>
+      </p>
+    </section>
+
+    <section class="sheet questions">
+      {numbered.map((s) => (
+        <div class="sec">
+          <h2 class="sec-h">
+            <span class="hi-t">खण्ड {s.id}: {s.name.hi}</span>
+            <span class="en-t">Section {s.id}: {s.name.en}</span>
+          </h2>
+          <ol class="qs">
+            {s.questions.map((q) => (
+              <li class="q" value={q.n}>
+                <span class="qn">{q.n}.</span>
+                <div class="qbody">
+                  {same(q.text) ? (
+                    <p class="qt">{q.text.hi}</p>
+                  ) : (
+                    <>
+                      <p class="qt hi-t" lang="hi">{q.text.hi}</p>
+                      <p class="qt en-t" lang="en">{q.text.en}</p>
+                    </>
+                  )}
+                  <ol class="opts">
+                    {q.options.map((o, i) => (
+                      <li>
+                        <span class="ol">({OPTION_LETTERS[i]})</span>
+                        {same(o) ? <span>{o.hi}</span> : <span><span class="hi-t" lang="hi">{o.hi}</span><span class="en-t sl" lang="en">{o.en}</span></span>}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      ))}
+      <p class="end-mark">*** <span class="hi-t">समाप्त</span> <span class="en-t">END</span> ***</p>
+    </section>
+
+    <section class="sheet rough">
+      <h2><span class="hi-t">रफ़ कार्य के लिए स्थान</span> <span class="en-t">Space for rough work</span></h2>
+    </section>
+
+    <section class="sheet key" data-key hidden>
+      <h2><span class="hi-t">उत्तर कुंजी</span> <span class="en-t">Answer key</span></h2>
+      <ol class="key-grid">
+        {numbered.flatMap((s) => s.questions).map((q) => <li><b>{q.n}</b> {OPTION_LETTERS[q.answer]}</li>)}
+      </ol>
+      <div class="key-explain">
+        {numbered.flatMap((s) => s.questions).map((q) => (
+          <p><b>{q.n}. ({OPTION_LETTERS[q.answer]})</b>{' '}
+            {same(q.explanation) ? q.explanation.hi : <><span class="hi-t" lang="hi">{q.explanation.hi}</span> <span class="en-t" lang="en">{q.explanation.en}</span></>}
+          </p>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-plang-root]')!;
+  for (const b of document.querySelectorAll<HTMLButtonElement>('[data-plang]')) {
+    b.addEventListener('click', () => {
+      root.dataset.plangRoot = b.dataset.plang!;
+      for (const o of document.querySelectorAll('[data-plang]')) o.setAttribute('aria-pressed', String(o === b));
+    });
+  }
+  const key = document.querySelector<HTMLElement>('[data-key]')!;
+  document.querySelector<HTMLInputElement>('[data-key-toggle]')!.addEventListener('change', (e) => {
+    key.hidden = !(e.target as HTMLInputElement).checked;
+    if (!key.hidden) key.scrollIntoView({ behavior: 'smooth' });
+  });
+  document.querySelector('[data-print]')!.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding-block: 1rem;
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+
+  .seg button {
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 44px;
+    background: var(--surface);
+    color: var(--ink-2);
+    border: 0;
+    cursor: pointer;
+  }
+
+  .seg button + button {
+    border-left: 1px solid var(--line-strong);
+  }
+
+  .seg button[aria-pressed='true'] {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  .key-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding-inline: 0.4rem;
+    cursor: pointer;
+  }
+
+  .draft-note {
+    margin-block: 0 1rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    background: var(--warn-soft);
+    color: var(--warn);
+    font-size: 0.925rem;
+  }
+
+  /* ------------------------------------------------- booklet: always paper-white */
+  .booklet {
+    --paper: #fffdf8;
+    --pink: #1d1d1d;
+    color: #141414;
+    font-family: 'Mukta', 'Noto Sans Devanagari', serif;
+    max-width: 52rem;
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .booklet[data-plang-root='hi'] .en-t,
+  .booklet[data-plang-root='en'] .hi-t {
+    display: none;
+  }
+
+  .sheet {
+    position: relative;
+    background: var(--paper);
+    border: 1px solid #d8d2c4;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
+    padding: 2.25rem clamp(1.1rem, 4vw, 2.75rem);
+    overflow: hidden;
+  }
+
+  .sheet::before {
+    content: 'PRASHNOTTAR';
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: clamp(3rem, 12vw, 7rem);
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    color: rgb(0 0 0 / 0.035);
+    transform: rotate(-30deg);
+    pointer-events: none;
+  }
+
+  .sheet h1,
+  .sheet h2,
+  .sheet p {
+    color: #141414;
+  }
+
+  .cover-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .box-field {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .series {
+    display: inline-grid;
+    place-items: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 2px solid #141414;
+    font-size: 1.25rem;
+  }
+
+  .roll {
+    display: inline-flex;
+  }
+
+  .roll i {
+    width: 1.6rem;
+    height: 1.9rem;
+    border: 1px solid #141414;
+    margin-left: -1px;
+  }
+
+  .cover-title {
+    text-align: center;
+    margin: 2rem 0 1.5rem;
+    border-block: 2px solid #141414;
+    padding-block: 1.25rem;
+  }
+
+  .brand-line {
+    margin: 0 0 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+
+  .cover-title h1 {
+    font-size: clamp(1.35rem, 1rem + 1.6vw, 1.9rem);
+    margin: 0;
+    display: grid;
+    gap: 0.15rem;
+  }
+
+  .set-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0.9rem;
+  }
+
+  .tm {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-weight: 600;
+  }
+
+  .tm p {
+    margin: 0;
+  }
+
+  .cand p {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.4rem;
+    margin: 0 0 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .line {
+    flex: 1;
+    border-bottom: 1px dotted #141414;
+    min-width: 6rem;
+    height: 1.2em;
+  }
+
+  .instr {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    border: 1px solid #141414;
+    padding: 1rem 1.1rem;
+    margin-top: 1.25rem;
+  }
+
+  .instr h2 {
+    font-size: 1rem;
+    text-align: center;
+    text-decoration: underline;
+    margin: 0 0 0.5rem;
+  }
+
+  .instr ol {
+    margin: 0;
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .cover-foot {
+    text-align: center;
+    font-weight: 700;
+    margin: 1.5rem 0 0;
+    display: grid;
+  }
+
+  /* questions in two columns on wide screens and in print, like a real booklet */
+  .questions {
+    column-gap: 2.25rem;
+    column-rule: 1px solid #b9b2a3;
+  }
+
+  @media (min-width: 900px) {
+    .questions {
+      columns: 2;
+    }
+  }
+
+  .sec-h {
+    column-span: all;
+    font-size: 1rem;
+    text-align: center;
+    border-block: 1px solid #141414;
+    padding-block: 0.35rem;
+    margin: 0 0 1rem;
+    display: grid;
+  }
+
+  .sec + .sec .sec-h {
+    margin-top: 1.25rem;
+  }
+
+  .qs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .q {
+    display: flex;
+    gap: 0.45rem;
+    break-inside: avoid;
+    margin-bottom: 1.1rem;
+    font-size: 0.975rem;
+    line-height: 1.5;
+  }
+
+  .qn {
+    font-weight: 700;
+    min-width: 1.6rem;
+  }
+
+  .qbody {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .qt {
+    margin: 0 0 0.25rem;
+    white-space: pre-line;
+  }
+
+  .qt.en-t {
+    color: #333;
+  }
+
+  .opts {
+    list-style: none;
+    margin: 0.3rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.2rem;
+  }
+
+  .opts li {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .ol {
+    font-weight: 600;
+    flex: none;
+  }
+
+  .booklet[data-plang-root='bi'] .sl::before {
+    content: ' / ';
+    color: #777;
+  }
+
+  .end-mark {
+    column-span: all;
+    text-align: center;
+    font-weight: 700;
+    margin: 1rem 0 0;
+  }
+
+  .rough {
+    min-height: 22rem;
+  }
+
+  .rough h2,
+  .key h2 {
+    font-size: 1rem;
+    text-align: center;
+    margin: 0 0 1rem;
+  }
+
+  .key-grid {
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(4.5rem, 1fr));
+    gap: 0.3rem;
+    font-size: 0.95rem;
+  }
+
+  .key-grid li {
+    border: 1px solid #b9b2a3;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .key-explain p {
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem;
+  }
+
+  @media print {
+    .booklet {
+      max-width: none;
+      padding: 0;
+      gap: 0;
+    }
+
+    .sheet {
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+      break-after: page;
+    }
+
+    .questions {
+      columns: 2;
+    }
+
+    .key:not([hidden]) {
+      break-before: page;
+    }
+  }
+</style>

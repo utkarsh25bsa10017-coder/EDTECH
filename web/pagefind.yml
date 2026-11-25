@@ -1,3 +1,0 @@
-site: dist
-# Index Hindi and English papers together so one search covers both.
-force_language: en

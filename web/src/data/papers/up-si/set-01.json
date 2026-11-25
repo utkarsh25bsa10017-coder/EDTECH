@@ -1,0 +1,317 @@
+{
+  "id": "set-01",
+  "exam": "up-si",
+  "title": { "en": "Practice Set 1", "hi": "अभ्यास सेट 1" },
+  "kind": "mock",
+  "free": true,
+  "status": "draft",
+  "duration_minutes": 25,
+  "marks_per_question": 1,
+  "negative_marking": 0,
+  "sections": [
+    {
+      "id": "A",
+      "name": { "en": "General Hindi", "hi": "सामान्य हिन्दी" },
+      "questions": [
+        {
+          "id": "A1",
+          "topic": { "en": "संधि", "hi": "संधि" },
+          "difficulty": "medium",
+          "text": { "en": "'जगन्नाथ' का सही संधि-विच्छेद है —", "hi": "'जगन्नाथ' का सही संधि-विच्छेद है —" },
+          "options": [
+            { "en": "जग + नाथ", "hi": "जग + नाथ" },
+            { "en": "जगत् + नाथ", "hi": "जगत् + नाथ" },
+            { "en": "जगा + नाथ", "hi": "जगा + नाथ" },
+            { "en": "जगन् + आथ", "hi": "जगन् + आथ" }
+          ],
+          "answer": 1,
+          "explanation": { "en": "जगत् + नाथ = जगन्नाथ। यहाँ 'त्' के बाद 'न' आने पर 'त्' का 'न्' हो जाता है, अतः यह व्यंजन संधि है।", "hi": "जगत् + नाथ = जगन्नाथ। यहाँ 'त्' के बाद 'न' आने पर 'त्' का 'न्' हो जाता है, अतः यह व्यंजन संधि है।" }
+        },
+        {
+          "id": "A2",
+          "topic": { "en": "समास", "hi": "समास" },
+          "difficulty": "easy",
+          "text": { "en": "'यथाशक्ति' में कौन-सा समास है?", "hi": "'यथाशक्ति' में कौन-सा समास है?" },
+          "options": [
+            { "en": "तत्पुरुष", "hi": "तत्पुरुष" },
+            { "en": "द्वंद्व", "hi": "द्वंद्व" },
+            { "en": "बहुव्रीहि", "hi": "बहुव्रीहि" },
+            { "en": "अव्ययीभाव", "hi": "अव्ययीभाव" }
+          ],
+          "answer": 3,
+          "explanation": { "en": "'यथाशक्ति' का विग्रह है 'शक्ति के अनुसार'। इसका पहला पद 'यथा' अव्यय है और वही प्रधान है, इसलिए यह अव्ययीभाव समास है।", "hi": "'यथाशक्ति' का विग्रह है 'शक्ति के अनुसार'। इसका पहला पद 'यथा' अव्यय है और वही प्रधान है, इसलिए यह अव्ययीभाव समास है।" }
+        },
+        {
+          "id": "A3",
+          "topic": { "en": "तत्सम-तद्भव", "hi": "तत्सम-तद्भव" },
+          "difficulty": "easy",
+          "text": { "en": "निम्नलिखित में से तत्सम शब्द कौन-सा है?", "hi": "निम्नलिखित में से तत्सम शब्द कौन-सा है?" },
+          "options": [
+            { "en": "सूर्य", "hi": "सूर्य" },
+            { "en": "खेत", "hi": "खेत" },
+            { "en": "दूध", "hi": "दूध" },
+            { "en": "हाथ", "hi": "हाथ" }
+          ],
+          "answer": 0,
+          "explanation": { "en": "'सूर्य' संस्कृत का मूल (तत्सम) शब्द है। खेत (क्षेत्र), दूध (दुग्ध) और हाथ (हस्त) तद्भव शब्द हैं।", "hi": "'सूर्य' संस्कृत का मूल (तत्सम) शब्द है। खेत (क्षेत्र), दूध (दुग्ध) और हाथ (हस्त) तद्भव शब्द हैं।" }
+        },
+        {
+          "id": "A4",
+          "topic": { "en": "मुहावरे", "hi": "मुहावरे" },
+          "difficulty": "medium",
+          "text": { "en": "मुहावरे 'अंगूठा दिखाना' का सही अर्थ है —", "hi": "मुहावरे 'अंगूठा दिखाना' का सही अर्थ है —" },
+          "options": [
+            { "en": "प्रशंसा करना", "hi": "प्रशंसा करना" },
+            { "en": "रास्ता बताना", "hi": "रास्ता बताना" },
+            { "en": "साफ़ इनकार कर देना", "hi": "साफ़ इनकार कर देना" },
+            { "en": "धमकी देना", "hi": "धमकी देना" }
+          ],
+          "answer": 2,
+          "explanation": { "en": "'अंगूठा दिखाना' का अर्थ है समय पर साफ़ मना कर देना, जैसे — ज़रूरत पड़ने पर उसने मदद से अंगूठा दिखा दिया।", "hi": "'अंगूठा दिखाना' का अर्थ है समय पर साफ़ मना कर देना, जैसे — ज़रूरत पड़ने पर उसने मदद से अंगूठा दिखा दिया।" }
+        },
+        {
+          "id": "A5",
+          "topic": { "en": "हिन्दी साहित्य", "hi": "हिन्दी साहित्य" },
+          "difficulty": "medium",
+          "text": { "en": "महाकाव्य 'कामायनी' के रचनाकार कौन हैं?", "hi": "महाकाव्य 'कामायनी' के रचनाकार कौन हैं?" },
+          "options": [
+            { "en": "सुमित्रानंदन पंत", "hi": "सुमित्रानंदन पंत" },
+            { "en": "जयशंकर प्रसाद", "hi": "जयशंकर प्रसाद" },
+            { "en": "महादेवी वर्मा", "hi": "महादेवी वर्मा" },
+            { "en": "सूर्यकांत त्रिपाठी 'निराला'", "hi": "सूर्यकांत त्रिपाठी 'निराला'" }
+          ],
+          "answer": 1,
+          "explanation": { "en": "'कामायनी' छायावाद के प्रमुख कवि जयशंकर प्रसाद की प्रसिद्ध रचना है, जिसमें मनु और श्रद्धा की कथा है।", "hi": "'कामायनी' छायावाद के प्रमुख कवि जयशंकर प्रसाद की प्रसिद्ध रचना है, जिसमें मनु और श्रद्धा की कथा है।" }
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": { "en": "Basic Law, Constitution & General Knowledge", "hi": "मूल विधि, संविधान एवं सामान्य ज्ञान" },
+      "questions": [
+        {
+          "id": "B1",
+          "topic": { "en": "Indian Constitution", "hi": "भारतीय संविधान" },
+          "difficulty": "medium",
+          "text": { "en": "In which Part of the Indian Constitution are the Fundamental Duties of citizens laid down?", "hi": "भारतीय संविधान के किस भाग में नागरिकों के मौलिक कर्तव्यों का उल्लेख है?" },
+          "options": [
+            { "en": "Part III", "hi": "भाग III" },
+            { "en": "Part IV", "hi": "भाग IV" },
+            { "en": "Part V", "hi": "भाग V" },
+            { "en": "Part IV-A", "hi": "भाग IV-क" }
+          ],
+          "answer": 3,
+          "explanation": { "en": "Fundamental Duties are in Part IV-A (Article 51A), added by the 42nd Constitutional Amendment Act, 1976.", "hi": "मौलिक कर्तव्य भाग IV-क (अनुच्छेद 51क) में हैं, जिन्हें 42वें संविधान संशोधन अधिनियम, 1976 द्वारा जोड़ा गया।" }
+        },
+        {
+          "id": "B2",
+          "topic": { "en": "Fundamental Rights", "hi": "मौलिक अधिकार" },
+          "difficulty": "medium",
+          "text": { "en": "Which Article of the Indian Constitution abolishes 'untouchability' and forbids its practice in any form?", "hi": "भारतीय संविधान का कौन-सा अनुच्छेद 'अस्पृश्यता' का अंत करता है और किसी भी रूप में इसके आचरण का निषेध करता है?" },
+          "options": [
+            { "en": "Article 17", "hi": "अनुच्छेद 17" },
+            { "en": "Article 14", "hi": "अनुच्छेद 14" },
+            { "en": "Article 19", "hi": "अनुच्छेद 19" },
+            { "en": "Article 21", "hi": "अनुच्छेद 21" }
+          ],
+          "answer": 0,
+          "explanation": { "en": "Article 17 abolishes untouchability. Article 14 is equality before law, Article 19 covers freedoms such as speech, and Article 21 protects life and personal liberty.", "hi": "अनुच्छेद 17 अस्पृश्यता का अंत करता है। अनुच्छेद 14 विधि के समक्ष समता, अनुच्छेद 19 वाक्-स्वातंत्र्य आदि स्वतंत्रताएँ और अनुच्छेद 21 प्राण एवं दैहिक स्वतंत्रता से संबंधित है।" }
+        },
+        {
+          "id": "B3",
+          "topic": { "en": "Directive Principles of State Policy", "hi": "राज्य के नीति निदेशक तत्व" },
+          "difficulty": "hard",
+          "text": { "en": "Which Article of the Directive Principles of State Policy directs the State to organise village panchayats?", "hi": "राज्य के नीति निदेशक तत्वों में से कौन-सा अनुच्छेद राज्य को ग्राम पंचायतों के गठन का निर्देश देता है?" },
+          "options": [
+            { "en": "Article 39", "hi": "अनुच्छेद 39" },
+            { "en": "Article 44", "hi": "अनुच्छेद 44" },
+            { "en": "Article 40", "hi": "अनुच्छेद 40" },
+            { "en": "Article 48", "hi": "अनुच्छेद 48" }
+          ],
+          "answer": 2,
+          "explanation": { "en": "Article 40 deals with the organisation of village panchayats. Article 44 is about a uniform civil code and Article 48 about agriculture and animal husbandry.", "hi": "अनुच्छेद 40 ग्राम पंचायतों के संगठन से संबंधित है। अनुच्छेद 44 समान नागरिक संहिता और अनुच्छेद 48 कृषि एवं पशुपालन से संबंधित है।" }
+        },
+        {
+          "id": "B4",
+          "topic": { "en": "Uttar Pradesh – History & Culture", "hi": "उत्तर प्रदेश – इतिहास एवं संस्कृति" },
+          "difficulty": "easy",
+          "text": { "en": "Gautama Buddha delivered his first sermon at Sarnath. Sarnath is located near which city of Uttar Pradesh?", "hi": "गौतम बुद्ध ने अपना पहला उपदेश सारनाथ में दिया था। सारनाथ उत्तर प्रदेश के किस नगर के निकट स्थित है?" },
+          "options": [
+            { "en": "Kushinagar", "hi": "कुशीनगर" },
+            { "en": "Shravasti", "hi": "श्रावस्ती" },
+            { "en": "Kaushambi", "hi": "कौशाम्बी" },
+            { "en": "Varanasi", "hi": "वाराणसी" }
+          ],
+          "answer": 3,
+          "explanation": { "en": "Sarnath is near Varanasi; the first sermon is known as 'Dharmachakra Pravartan'. Kushinagar is where the Buddha attained Mahaparinirvana.", "hi": "सारनाथ वाराणसी के निकट है; यहाँ दिए गए पहले उपदेश को 'धर्मचक्र प्रवर्तन' कहते हैं। कुशीनगर में बुद्ध को महापरिनिर्वाण प्राप्त हुआ था।" }
+        },
+        {
+          "id": "B5",
+          "topic": { "en": "Uttar Pradesh – Geography", "hi": "उत्तर प्रदेश – भूगोल" },
+          "difficulty": "medium",
+          "text": { "en": "Dudhwa National Park is located in which district of Uttar Pradesh?", "hi": "दुधवा राष्ट्रीय उद्यान उत्तर प्रदेश के किस जिले में स्थित है?" },
+          "options": [
+            { "en": "Lakhimpur Kheri", "hi": "लखीमपुर खीरी" },
+            { "en": "Lalitpur", "hi": "ललितपुर" },
+            { "en": "Sonbhadra", "hi": "सोनभद्र" },
+            { "en": "Mirzapur", "hi": "मिर्जापुर" }
+          ],
+          "answer": 0,
+          "explanation": { "en": "Dudhwa National Park lies in Lakhimpur Kheri district along the Indo-Nepal border and is known for tigers, swamp deer (barasingha) and one-horned rhinoceros.", "hi": "दुधवा राष्ट्रीय उद्यान भारत-नेपाल सीमा के पास लखीमपुर खीरी जिले में है और बाघ, बारहसिंगा तथा एक सींग वाले गैंडे के लिए प्रसिद्ध है।" }
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "name": { "en": "Numerical & Mental Ability", "hi": "संख्यात्मक एवं मानसिक योग्यता" },
+      "questions": [
+        {
+          "id": "C1",
+          "topic": { "en": "Percentage", "hi": "प्रतिशत" },
+          "difficulty": "easy",
+          "text": { "en": "When a number is increased by 20%, it becomes 360. What is the number?", "hi": "किसी संख्या में 20% की वृद्धि करने पर वह 360 हो जाती है। वह संख्या क्या है?" },
+          "options": [
+            { "en": "288", "hi": "288" },
+            { "en": "320", "hi": "320" },
+            { "en": "300", "hi": "300" },
+            { "en": "340", "hi": "340" }
+          ],
+          "answer": 2,
+          "explanation": { "en": "120% of x = 360, so x = 360 × 100/120 = 300.", "hi": "x का 120% = 360, अतः x = 360 × 100/120 = 300।" }
+        },
+        {
+          "id": "C2",
+          "topic": { "en": "Ratio", "hi": "अनुपात" },
+          "difficulty": "easy",
+          "text": { "en": "₹1,800 is divided among A, B and C in the ratio 2 : 3 : 4. What is C's share?", "hi": "₹1,800 को A, B और C में 2 : 3 : 4 के अनुपात में बाँटा जाता है। C का हिस्सा कितना है?" },
+          "options": [
+            { "en": "₹600", "hi": "₹600" },
+            { "en": "₹800", "hi": "₹800" },
+            { "en": "₹400", "hi": "₹400" },
+            { "en": "₹900", "hi": "₹900" }
+          ],
+          "answer": 1,
+          "explanation": { "en": "Total parts = 2 + 3 + 4 = 9. C's share = 1800 × 4/9 = ₹800.", "hi": "कुल भाग = 2 + 3 + 4 = 9। C का हिस्सा = 1800 × 4/9 = ₹800।" }
+        },
+        {
+          "id": "C3",
+          "topic": { "en": "Average", "hi": "औसत" },
+          "difficulty": "medium",
+          "text": { "en": "The average of 5 numbers is 24. If one number is removed, the average of the remaining numbers becomes 22. What is the removed number?", "hi": "5 संख्याओं का औसत 24 है। यदि एक संख्या हटा दी जाए, तो शेष संख्याओं का औसत 22 हो जाता है। हटाई गई संख्या क्या है?" },
+          "options": [
+            { "en": "28", "hi": "28" },
+            { "en": "30", "hi": "30" },
+            { "en": "34", "hi": "34" },
+            { "en": "32", "hi": "32" }
+          ],
+          "answer": 3,
+          "explanation": { "en": "Sum of 5 numbers = 5 × 24 = 120; sum of remaining 4 = 4 × 22 = 88. Removed number = 120 − 88 = 32.", "hi": "5 संख्याओं का योग = 5 × 24 = 120; शेष 4 का योग = 4 × 22 = 88। हटाई गई संख्या = 120 − 88 = 32।" }
+        },
+        {
+          "id": "C4",
+          "topic": { "en": "Simple Interest", "hi": "साधारण ब्याज" },
+          "difficulty": "hard",
+          "text": { "en": "At simple interest, a sum of money amounts to ₹7,800 in 3 years and to ₹8,400 in 5 years. What is the sum (principal)?", "hi": "साधारण ब्याज पर कोई धनराशि 3 वर्ष में ₹7,800 और 5 वर्ष में ₹8,400 हो जाती है। मूलधन कितना है?" },
+          "options": [
+            { "en": "₹6,600", "hi": "₹6,600" },
+            { "en": "₹6,900", "hi": "₹6,900" },
+            { "en": "₹7,000", "hi": "₹7,000" },
+            { "en": "₹7,200", "hi": "₹7,200" }
+          ],
+          "answer": 1,
+          "explanation": { "en": "Interest for 2 years = 8400 − 7800 = ₹600, so ₹300 per year. Interest for 3 years = ₹900. Principal = 7800 − 900 = ₹6,900.", "hi": "2 वर्ष का ब्याज = 8400 − 7800 = ₹600, अर्थात् ₹300 प्रति वर्ष। 3 वर्ष का ब्याज = ₹900। मूलधन = 7800 − 900 = ₹6,900।" }
+        },
+        {
+          "id": "C5",
+          "topic": { "en": "Time, Speed & Distance", "hi": "समय, चाल एवं दूरी" },
+          "difficulty": "medium",
+          "text": { "en": "A train 180 m long, running at 54 km/h, crosses a platform in 20 seconds. What is the length of the platform?", "hi": "180 मीटर लंबी एक रेलगाड़ी 54 किमी/घंटा की चाल से एक प्लेटफॉर्म को 20 सेकंड में पार करती है। प्लेटफॉर्म की लंबाई कितनी है?" },
+          "options": [
+            { "en": "120 m", "hi": "120 मीटर" },
+            { "en": "150 m", "hi": "150 मीटर" },
+            { "en": "180 m", "hi": "180 मीटर" },
+            { "en": "300 m", "hi": "300 मीटर" }
+          ],
+          "answer": 0,
+          "explanation": { "en": "54 km/h = 54 × 5/18 = 15 m/s. Distance in 20 s = 300 m = train + platform. Platform = 300 − 180 = 120 m.", "hi": "54 किमी/घंटा = 54 × 5/18 = 15 मीटर/सेकंड। 20 सेकंड में दूरी = 300 मीटर = रेलगाड़ी + प्लेटफॉर्म। प्लेटफॉर्म = 300 − 180 = 120 मीटर।" }
+        }
+      ]
+    },
+    {
+      "id": "D",
+      "name": { "en": "Mental Aptitude, Intelligence & Reasoning", "hi": "मानसिक अभिरुचि, बुद्धिलब्धि एवं तार्किक क्षमता" },
+      "questions": [
+        {
+          "id": "D1",
+          "topic": { "en": "Number Series", "hi": "संख्या श्रृंखला" },
+          "difficulty": "easy",
+          "text": { "en": "Find the next number in the series: 3, 7, 15, 31, 63, ?", "hi": "श्रृंखला की अगली संख्या ज्ञात कीजिए: 3, 7, 15, 31, 63, ?" },
+          "options": [
+            { "en": "125", "hi": "125" },
+            { "en": "126", "hi": "126" },
+            { "en": "127", "hi": "127" },
+            { "en": "129", "hi": "129" }
+          ],
+          "answer": 2,
+          "explanation": { "en": "Each term = previous term × 2 + 1. So 63 × 2 + 1 = 127.", "hi": "प्रत्येक पद = पिछला पद × 2 + 1। अतः 63 × 2 + 1 = 127।" }
+        },
+        {
+          "id": "D2",
+          "topic": { "en": "Coding-Decoding", "hi": "कूटलेखन-कूटवाचन" },
+          "difficulty": "medium",
+          "text": { "en": "In a certain code, MANGO is written as OCPIQ. How will APPLE be written in that code?", "hi": "किसी कूट भाषा में MANGO को OCPIQ लिखा जाता है। उसी कूट भाषा में APPLE को कैसे लिखा जाएगा?" },
+          "options": [
+            { "en": "CQQNG", "hi": "CQQNG" },
+            { "en": "CRRNG", "hi": "CRRNG" },
+            { "en": "CRRMG", "hi": "CRRMG" },
+            { "en": "BQQMF", "hi": "BQQMF" }
+          ],
+          "answer": 1,
+          "explanation": { "en": "Each letter is moved 2 places forward (M→O, A→C, N→P, G→I, O→Q). So A→C, P→R, P→R, L→N, E→G gives CRRNG.", "hi": "प्रत्येक अक्षर को 2 स्थान आगे बढ़ाया गया है (M→O, A→C, N→P, G→I, O→Q)। अतः A→C, P→R, P→R, L→N, E→G से CRRNG बनेगा।" }
+        },
+        {
+          "id": "D3",
+          "topic": { "en": "Blood Relations", "hi": "रक्त संबंध" },
+          "difficulty": "hard",
+          "text": { "en": "Pointing to a girl in a photograph, Arun said, \"Her mother is the only daughter of my mother.\" How is Arun related to the girl?", "hi": "एक तस्वीर में लड़की की ओर इशारा करते हुए अरुण ने कहा, \"इसकी माँ मेरी माँ की इकलौती पुत्री है।\" अरुण का उस लड़की से क्या संबंध है?" },
+          "options": [
+            { "en": "Brother", "hi": "भाई" },
+            { "en": "Father", "hi": "पिता" },
+            { "en": "Paternal uncle (chacha)", "hi": "चाचा" },
+            { "en": "Maternal uncle (mama)", "hi": "मामा" }
+          ],
+          "answer": 3,
+          "explanation": { "en": "The only daughter of Arun's mother is Arun's sister. She is the girl's mother, so Arun is the girl's maternal uncle (mama).", "hi": "अरुण की माँ की इकलौती पुत्री अरुण की बहन है। वही लड़की की माँ है, अतः अरुण लड़की का मामा है।" }
+        },
+        {
+          "id": "D4",
+          "topic": { "en": "Direction Sense", "hi": "दिशा ज्ञान" },
+          "difficulty": "hard",
+          "text": { "en": "Rahul walks 8 km north from his house, turns right and walks 6 km, then turns right again and walks 16 km. How far and in which direction is he now from his house?", "hi": "राहुल अपने घर से 8 किमी उत्तर की ओर चलता है, फिर दाएँ मुड़कर 6 किमी चलता है, फिर दोबारा दाएँ मुड़कर 16 किमी चलता है। अब वह अपने घर से कितनी दूरी पर और किस दिशा में है?" },
+          "options": [
+            { "en": "10 km, south-east", "hi": "10 किमी, दक्षिण-पूर्व" },
+            { "en": "10 km, north-east", "hi": "10 किमी, उत्तर-पूर्व" },
+            { "en": "14 km, south-east", "hi": "14 किमी, दक्षिण-पूर्व" },
+            { "en": "8 km, south", "hi": "8 किमी, दक्षिण" }
+          ],
+          "answer": 0,
+          "explanation": { "en": "He ends 6 km east and 16 − 8 = 8 km south of his house. Distance = √(6² + 8²) = 10 km, towards the south-east.", "hi": "अंत में वह घर से 6 किमी पूर्व और 16 − 8 = 8 किमी दक्षिण में है। दूरी = √(6² + 8²) = 10 किमी, दिशा दक्षिण-पूर्व।" }
+        },
+        {
+          "id": "D5",
+          "topic": { "en": "Police Aptitude (Situational)", "hi": "पुलिस अभिरुचि (परिस्थितिजन्य)" },
+          "difficulty": "easy",
+          "text": { "en": "While on night patrol, a Sub-Inspector finds a seriously injured road-accident victim lying by the road with no one else around. What should he do first?", "hi": "रात्रि गश्त के दौरान एक उपनिरीक्षक को सड़क किनारे दुर्घटना में गंभीर रूप से घायल एक व्यक्ति मिलता है और आसपास कोई नहीं है। उसे सबसे पहले क्या करना चाहिए?" },
+          "options": [
+            { "en": "Wait at the spot until the victim's family is traced and arrives", "hi": "घायल के परिजनों का पता लगने और उनके आने तक घटनास्थल पर प्रतीक्षा करना" },
+            { "en": "First go to the police station and complete the written formalities", "hi": "पहले थाने जाकर लिखित औपचारिकताएँ पूरी करना" },
+            { "en": "Arrange immediate medical aid by calling an ambulance or taking the victim to the nearest hospital, then begin legal action", "hi": "एम्बुलेंस बुलाकर या घायल को निकटतम अस्पताल पहुँचाकर तुरंत चिकित्सा सहायता दिलाना, फिर विधिक कार्यवाही शुरू करना" },
+            { "en": "Leave, if the spot falls outside his police station's jurisdiction", "hi": "यदि घटनास्थल उसके थाना क्षेत्र से बाहर है तो वहाँ से चले जाना" }
+          ],
+          "answer": 2,
+          "explanation": { "en": "Saving a life comes before every procedure or question of jurisdiction; the officer must ensure immediate medical help and then proceed with legal formalities.", "hi": "जान बचाना किसी भी प्रक्रिया या क्षेत्राधिकार के प्रश्न से पहले है; अधिकारी को तुरंत चिकित्सा सहायता सुनिश्चित करनी चाहिए और उसके बाद विधिक औपचारिकताएँ पूरी करनी चाहिए।" }
+        }
+      ]
+    }
+  ]
+}

@@ -4,7 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { DESCRIPTION, SITE_NAME } from '../config.ts';
 import { href } from '../lib/url.ts';
-import type { Board } from '../lib/schema.ts';
+import type { Exam } from '../lib/exams.ts';
 
 interface Props {
   /** Page title; the site name is appended unless it is already present. */
@@ -12,12 +12,14 @@ interface Props {
   description?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
-  board?: Board;
-  page?: 'search' | 'about';
+  exam?: Exam;
+  page?: 'pricing';
+  /** Full-screen test pages hide the site header and footer. */
+  bare?: boolean;
   ogType?: 'website' | 'article';
 }
 
-const { title, description = DESCRIPTION, jsonLd, noindex, board, page, ogType = 'website' } = Astro.props;
+const { title, description = DESCRIPTION, jsonLd, noindex, exam, page, bare, ogType = 'website' } = Astro.props;
 const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 const site = Astro.site;
 const canonical = site && !noindex ? new URL(Astro.url.pathname, site).href : undefined;
@@ -65,10 +67,14 @@ const ld = (jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []).map((d) =
   </head>
   <body>
     <a class="skip-link" href="#main"><span class="l-en">Skip to content</span><span class="l-hi" lang="hi">सामग्री पर जाएं</span></a>
-    <Header board={board} page={page} />
+    {!bare && <Header exam={exam} page={page} />}
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    {!bare && <Footer />}
+    <script>
+      import { initPrefs } from '../scripts/prefs.ts';
+      initPrefs();
+    </script>
   </body>
 </html>

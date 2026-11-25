@@ -1,8 +1,7 @@
 ---
-import { BOARDS } from '../lib/schema.ts';
-import { BOARD_INFO } from '../lib/boards.ts';
-import { boardUrl, href } from '../lib/url.ts';
-import { REPO_URL, SITE_NAME, SITE_NAME_HI, TAGLINE } from '../config.ts';
+import { EXAMS, EXAM_INFO } from '../lib/exams.ts';
+import { examUrl, href, pricingUrl } from '../lib/url.ts';
+import { SITE_NAME, SITE_NAME_HI, TAGLINE } from '../config.ts';
 import L from './L.astro';
 import Logo from './Logo.astro';
 ---
@@ -15,27 +14,25 @@ import Logo from './Logo.astro';
       </a>
       <p class="muted"><L t={TAGLINE} /></p>
     </div>
-    <nav aria-label="Boards">
-      <h2><L en="Boards" hi="बोर्ड" /></h2>
+    <nav aria-label="Exams">
+      <h2><L en="Exams" hi="परीक्षाएं" /></h2>
       <ul>
-        {BOARDS.map((b) => <li><a href={boardUrl(b)}>{BOARD_INFO[b].short}</a></li>)}
+        {EXAMS.map((e) => <li><a href={examUrl(e)}><L t={EXAM_INFO[e].short} /></a></li>)}
       </ul>
     </nav>
     <nav aria-label="Site">
       <h2><L en="Site" hi="साइट" /></h2>
       <ul>
-        <li><a href={href('/search/')}><L en="Search" hi="खोजें" /></a></li>
-        <li><a href={href('/about/')}><L en="About & sources" hi="परिचय और स्रोत" /></a></li>
-        <li><a href={`${REPO_URL}/issues/new`} rel="noopener"><L en="Report a problem" hi="समस्या बताएं" /></a></li>
-        <li><a href={REPO_URL} rel="noopener">GitHub</a></li>
+        <li><a href={href('/')}><L en="Home" hi="होम" /></a></li>
+        <li><a href={pricingUrl()}><L en="Pricing" hi="मूल्य" /></a></li>
       </ul>
     </nav>
   </div>
   <div class="container legal">
     <p>
       <L
-        en="Not affiliated with CBSE, CISCE, UPMSP or BSEB. Question papers and marking schemes belong to their respective boards; every PDF link points to the board’s own website."
-        hi="सीबीएसई, सीआईएससीई, यूपीएमएसपी या बीएसईबी से संबद्ध नहीं। प्रश्नपत्र और अंकन योजनाएं संबंधित बोर्डों की हैं; हर PDF लिंक बोर्ड की अपनी वेबसाइट पर जाता है।"
+        en="Prashnottar is an independent practice platform, not affiliated with BPSC, BPSSC, UPPRPB or any government body. Practice papers are our own questions written in the exam pattern; always check the official notification for the exact syllabus and pattern."
+        hi="प्रश्नोत्तर एक स्वतंत्र अभ्यास मंच है, बीपीएससी, बीपीएसएससी, यूपीपीआरपीबी या किसी सरकारी संस्था से संबद्ध नहीं। अभ्यास प्रश्नपत्र परीक्षा पैटर्न पर लिखे हमारे अपने प्रश्न हैं; सटीक पाठ्यक्रम और पैटर्न के लिए हमेशा आधिकारिक अधिसूचना देखें।"
       />
     </p>
   </div>

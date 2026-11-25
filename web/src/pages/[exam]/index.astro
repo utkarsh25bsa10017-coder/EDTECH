@@ -1,0 +1,222 @@
+---
+import Base from '../../layouts/Base.astro';
+import L from '../../components/L.astro';
+import Icon from '../../components/Icon.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import {
+  EXAMS,
+  EXAM_INFO,
+  PASS_FEATURES,
+  PASS_PRICE,
+  durationLabel,
+  maxMarks,
+  papersFor,
+  questionCount,
+  type Exam,
+} from '../../lib/exams.ts';
+import { examUrl, paperUrl, practiceUrl, pricingUrl, testUrl } from '../../lib/url.ts';
+
+export function getStaticPaths() {
+  return EXAMS.map((exam) => ({ params: { exam } }));
+}
+
+const exam = Astro.params.exam as Exam;
+const info = EXAM_INFO[exam];
+const papers = papersFor(exam);
+---
+<Base
+  title={`${info.short.en} practice papers and mock tests`}
+  description={`${info.name.en}: free practice set, timed mock test and exam-style question paper in Hindi and English.`}
+  exam={exam}
+>
+  <div class="container">
+    <Breadcrumbs items={[{ label: info.short, href: examUrl(exam) }]} />
+    <header class="page-head" style={`--exam: var(--exam-${exam})`}>
+      <p class="eyebrow exam-eyebrow"><L t={info.body} /></p>
+      <h1><L t={info.name} /></h1>
+      <p class="lead"><L t={info.blurb} /></p>
+      <ul class="chips subjects" aria-label="Subjects">
+        {info.subjects.map((s) => <li><span class="chip"><L t={s} /></span></li>)}
+      </ul>
+    </header>
+
+    <section class="section" aria-labelledby="free-h">
+      <div class="section-head">
+        <h2 id="free-h"><L en="Free practice sets" hi="निःशुल्क अभ्यास सेट" /></h2>
+      </div>
+      {papers.length === 0 ? (
+        <p class="muted"><L en="The first practice set is being written." hi="पहला अभ्यास सेट तैयार किया जा रहा है।" /></p>
+      ) : (
+        <div class="papers">
+          {papers.map((p) => (
+            <article class="card paper">
+              <div class="paper-head">
+                <h3><L t={p.title} /></h3>
+                <ul class="badges">
+                  {p.free ? <li class="badge good"><L en="Free" hi="निःशुल्क" /></li> : <li class="badge outline"><Icon name="lock" /><L en="Pass" hi="पास" /></li>}
+                  {p.status === 'draft' && <li class="badge draft"><L en="Draft: under expert review" hi="ड्राफ़्ट: विशेषज्ञ समीक्षा जारी" /></li>}
+                </ul>
+              </div>
+              <p class="paper-meta">
+                <L t={{ en: `${questionCount(p)} questions`, hi: `${questionCount(p)} प्रश्न` }} /> ·
+                <L t={{ en: `${maxMarks(p)} marks`, hi: `${maxMarks(p)} अंक` }} /> ·
+                <L t={durationLabel(p.duration_minutes)} />
+                {p.negative_marking > 0 && <> · <L t={{ en: `−${p.negative_marking} per wrong answer`, hi: `गलत उत्तर पर −${p.negative_marking}` }} /></>}
+              </p>
+              <p class="paper-sections">
+                {p.sections.map((s, i) => <>{i > 0 && ' · '}<L t={s.name} /></>)}
+              </p>
+              <div class="paper-actions">
+                <a class="btn btn-primary" href={practiceUrl(exam, p.id)}><Icon name="target" /><L en="Practice" hi="अभ्यास करें" /></a>
+                <a class="btn btn-quiet" href={testUrl(exam, p.id)}><Icon name="clock" /><L en="Take mock test" hi="मॉक टेस्ट दें" /></a>
+                <a class="btn btn-quiet" href={paperUrl(exam, p.id)}><Icon name="file" /><L en="Question paper" hi="प्रश्नपत्र" /></a>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <section class="section" aria-labelledby="pass-h">
+      <div class="card locked">
+        <div>
+          <h2 id="pass-h"><Icon name="lock" /> <L en="Unlock everything with the Pass" hi="पास से सब कुछ अनलॉक करें" /></h2>
+          <ul class="features">
+            {PASS_FEATURES.map((f) => <li><Icon name="check" /><L t={f} /></li>)}
+          </ul>
+        </div>
+        <div class="locked-cta">
+          <strong>₹{PASS_PRICE.toLocaleString('en-IN')}</strong>
+          <span class="muted"><L en="all 4 exams" hi="चारों परीक्षाएं" /></span>
+          <a class="btn btn-primary" href={pricingUrl()}><L en="Get the Pass" hi="पास लें" /></a>
+        </div>
+      </div>
+    </section>
+
+    <p class="muted note">
+      <L
+        en="The exact pattern, syllabus and marking change between notifications. Always confirm them in the latest official notification"
+        hi="सटीक पैटर्न, पाठ्यक्रम और अंकन हर अधिसूचना में बदल सकते हैं। इन्हें हमेशा नवीनतम आधिकारिक अधिसूचना में जांचें"
+      />{info.website ? <>: <a href={info.website} rel="noopener">{info.website.replace('https://', '')}</a>.</> : '.'}
+    </p>
+  </div>
+</Base>
+
+<style>
+  .exam-eyebrow {
+    color: var(--exam);
+  }
+
+  .subjects {
+    margin-top: 1rem;
+  }
+
+  .subjects .chip {
+    cursor: default;
+  }
+
+  .papers {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .paper {
+    padding: 1.2rem 1.3rem;
+  }
+
+  .paper-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+  }
+
+  .paper-head h3 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+
+  .badge.draft {
+    background: var(--warn-soft);
+    color: var(--warn);
+  }
+
+  .paper-meta {
+    margin: 0.4rem 0 0.15rem;
+    color: var(--ink-2);
+  }
+
+  .paper-sections {
+    margin: 0 0 0.9rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .paper-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .locked {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.4rem 1.6rem;
+    background: var(--accent-soft);
+    border-color: transparent;
+  }
+
+  .locked h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .locked h2 :global(svg) {
+    width: 20px;
+    color: var(--accent);
+  }
+
+  .features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .features li {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .features :global(svg) {
+    width: 18px;
+    flex: none;
+    color: var(--good);
+  }
+
+  .locked-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.35rem;
+  }
+
+  .locked-cta strong {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .note {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+</style>

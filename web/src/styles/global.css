@@ -35,11 +35,12 @@
   --kind-model: #8a4b00;
   --kind-model-soft: #fbead0;
 
-  --board-cbse: #2f3e9e;
-  --board-icse: #8b1e3f;
-  --board-isc: #6d2a7f;
-  --board-up: #1c6e45;
-  --board-bihar: #b0490c;
+  --exam-bpsc-tre: #2f3e9e;
+  --exam-bihar-daroga: #b0490c;
+  --exam-bpsc-cce: #6d2a7f;
+  --exam-up-si: #1c6e45;
+  --bad: #a1262b;
+  --bad-soft: #fbe4e4;
 
   --font: 'Mukta', system-ui, -apple-system, 'Segoe UI', 'Noto Sans Devanagari', 'Nirmala UI', sans-serif;
   --radius: 14px;
@@ -78,11 +79,12 @@
     --kind-specimen-soft: #34183a;
     --kind-model: #f2b866;
     --kind-model-soft: #33240f;
-    --board-cbse: #8e9bff;
-    --board-icse: #f08aa8;
-    --board-isc: #cf9ae0;
-    --board-up: #6fcf98;
-    --board-bihar: #f5a46b;
+    --exam-bpsc-tre: #8e9bff;
+    --exam-bihar-daroga: #f5a46b;
+    --exam-bpsc-cce: #cf9ae0;
+    --exam-up-si: #6fcf98;
+    --bad: #f19a9e;
+    --bad-soft: #36181a;
   }
 }
 
@@ -115,11 +117,12 @@
   --kind-specimen-soft: #34183a;
   --kind-model: #f2b866;
   --kind-model-soft: #33240f;
-  --board-cbse: #8e9bff;
-  --board-icse: #f08aa8;
-  --board-isc: #cf9ae0;
-  --board-up: #6fcf98;
-  --board-bihar: #f5a46b;
+  --exam-bpsc-tre: #8e9bff;
+  --exam-bihar-daroga: #f5a46b;
+  --exam-bpsc-cce: #cf9ae0;
+  --exam-up-si: #6fcf98;
+  --bad: #f19a9e;
+  --bad-soft: #36181a;
 }
 
 /* ---------------------------------------------------------------- language */

@@ -1,5 +1,4 @@
-import type { Board, PaperSummary } from './schema.ts';
-import { classSlug } from './boards.ts';
+import type { Exam } from './exams.ts';
 
 const BASE = import.meta.env.BASE_URL.replace(/\/+$/, '');
 
@@ -13,21 +12,8 @@ export function href(path = '/'): string {
   return BASE + (isPage ? `${pathname}/` : pathname) + rest;
 }
 
-export const boardUrl = (board: Board) => href(`/${board}/`);
-export const classUrl = (board: Board, cls: number) => href(`/${board}/${classSlug(cls)}/`);
-export const subjectUrl = (board: Board, cls: number, subject: string) =>
-  href(`/${board}/${classSlug(cls)}/${subject}/`);
-
-/** Last URL segment for a paper: the id without its board-class-subject prefix. */
-export function paperSlug(p: Pick<PaperSummary, 'id' | 'board' | 'class' | 'subject_slug'>): string {
-  const prefix = `${p.board}-${p.class}-${p.subject_slug}-`;
-  return p.id.startsWith(prefix) && p.id.length > prefix.length ? p.id.slice(prefix.length) : p.id;
-}
-
-export const paperUrl = (p: PaperSummary) =>
-  href(`/${p.board}/${classSlug(p.class)}/${p.subject_slug}/${paperSlug(p)}/`);
-
-/** Official PDF link, opened at a page when the viewer supports #page=. */
-export function pdfAt(url: string, page: number | null): string {
-  return page ? `${url}#page=${page}` : url;
-}
+export const examUrl = (exam: Exam) => href(`/${exam}/`);
+export const paperUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/`);
+export const practiceUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/practice/`);
+export const testUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/test/`);
+export const pricingUrl = () => href('/pricing/');

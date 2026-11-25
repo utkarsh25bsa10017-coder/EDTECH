@@ -1,0 +1,425 @@
+{
+  "id": "set-01",
+  "exam": "bihar-daroga",
+  "title": { "en": "Practice Set 1", "hi": "अभ्यास सेट 1" },
+  "kind": "mock",
+  "free": true,
+  "status": "draft",
+  "duration_minutes": 25,
+  "marks_per_question": 1,
+  "negative_marking": 0,
+  "sections": [
+    {
+      "id": "A",
+      "name": { "en": "General Studies", "hi": "सामान्य अध्ययन" },
+      "questions": [
+        {
+          "id": "A1",
+          "topic": { "en": "Bihar History", "hi": "बिहार का इतिहास" },
+          "difficulty": "medium",
+          "text": {
+            "en": "Nalanda Mahavihara, the ancient centre of learning in Bihar, was founded by which ruler?",
+            "hi": "बिहार के प्राचीन शिक्षा केंद्र नालंदा महाविहार की स्थापना किस शासक ने की थी?"
+          },
+          "options": [
+            { "en": "Chandragupta Maurya", "hi": "चंद्रगुप्त मौर्य" },
+            { "en": "Ashoka", "hi": "अशोक" },
+            { "en": "Kumaragupta I", "hi": "कुमारगुप्त प्रथम" },
+            { "en": "Harshavardhana", "hi": "हर्षवर्धन" }
+          ],
+          "answer": 2,
+          "explanation": {
+            "en": "Nalanda Mahavihara was founded in the 5th century CE by the Gupta ruler Kumaragupta I.",
+            "hi": "नालंदा महाविहार की स्थापना 5वीं शताब्दी ई. में गुप्त शासक कुमारगुप्त प्रथम ने की थी।"
+          }
+        },
+        {
+          "id": "A2",
+          "topic": { "en": "Bihar Geography", "hi": "बिहार का भूगोल" },
+          "difficulty": "easy",
+          "text": {
+            "en": "Which river is known as the 'Sorrow of Bihar'?",
+            "hi": "किस नदी को 'बिहार का शोक' कहा जाता है?"
+          },
+          "options": [
+            { "en": "Kosi", "hi": "कोसी" },
+            { "en": "Gandak", "hi": "गंडक" },
+            { "en": "Son", "hi": "सोन" },
+            { "en": "Bagmati", "hi": "बागमती" }
+          ],
+          "answer": 0,
+          "explanation": {
+            "en": "The Kosi frequently changes its course and causes severe floods in north Bihar, hence it is called the 'Sorrow of Bihar'.",
+            "hi": "कोसी नदी बार-बार अपना मार्ग बदलती है और उत्तर बिहार में भीषण बाढ़ लाती है, इसलिए इसे 'बिहार का शोक' कहा जाता है।"
+          }
+        },
+        {
+          "id": "A3",
+          "topic": { "en": "Bihar Art & Culture", "hi": "बिहार की कला एवं संस्कृति" },
+          "difficulty": "easy",
+          "text": {
+            "en": "Madhubani painting, a famous folk art of Bihar, is traditionally associated with which region?",
+            "hi": "बिहार की प्रसिद्ध लोक चित्रकला 'मधुबनी पेंटिंग' पारंपरिक रूप से किस क्षेत्र से जुड़ी है?"
+          },
+          "options": [
+            { "en": "Magadh", "hi": "मगध" },
+            { "en": "Bhojpur", "hi": "भोजपुर" },
+            { "en": "Anga", "hi": "अंग" },
+            { "en": "Mithila", "hi": "मिथिला" }
+          ],
+          "answer": 3,
+          "explanation": {
+            "en": "Madhubani painting, also called Mithila painting, originated in the Mithila region of north Bihar.",
+            "hi": "मधुबनी चित्रकला को मिथिला चित्रकला भी कहते हैं; इसका उद्भव उत्तर बिहार के मिथिला क्षेत्र में हुआ।"
+          }
+        },
+        {
+          "id": "A4",
+          "topic": { "en": "Bihar in the Freedom Struggle", "hi": "स्वतंत्रता आंदोलन में बिहार" },
+          "difficulty": "medium",
+          "text": {
+            "en": "Who persuaded Mahatma Gandhi to come to Champaran in 1917 to look into the plight of the indigo farmers?",
+            "hi": "1917 में नील किसानों की दुर्दशा देखने के लिए महात्मा गांधी को चंपारण आने के लिए किसने राजी किया था?"
+          },
+          "options": [
+            { "en": "Dr. Rajendra Prasad", "hi": "डॉ. राजेंद्र प्रसाद" },
+            { "en": "Raj Kumar Shukla", "hi": "राजकुमार शुक्ल" },
+            { "en": "Anugrah Narayan Sinha", "hi": "अनुग्रह नारायण सिन्हा" },
+            { "en": "J. B. Kripalani", "hi": "जे. बी. कृपलानी" }
+          ],
+          "answer": 1,
+          "explanation": {
+            "en": "Raj Kumar Shukla, an indigo cultivator from Champaran, met Gandhi at the 1916 Lucknow session of the Congress and persuaded him to visit Champaran.",
+            "hi": "चंपारण के नील किसान राजकुमार शुक्ल ने 1916 के कांग्रेस के लखनऊ अधिवेशन में गांधीजी से मिलकर उन्हें चंपारण आने के लिए राजी किया।"
+          }
+        },
+        {
+          "id": "A5",
+          "topic": { "en": "Bihar History", "hi": "बिहार का इतिहास" },
+          "difficulty": "medium",
+          "text": {
+            "en": "The tomb of Sher Shah Suri is located at which place in Bihar?",
+            "hi": "शेरशाह सूरी का मकबरा बिहार के किस स्थान पर स्थित है?"
+          },
+          "options": [
+            { "en": "Sasaram", "hi": "सासाराम" },
+            { "en": "Rajgir", "hi": "राजगीर" },
+            { "en": "Hajipur", "hi": "हाजीपुर" },
+            { "en": "Munger", "hi": "मुंगेर" }
+          ],
+          "answer": 0,
+          "explanation": {
+            "en": "Sher Shah Suri's tomb stands in the middle of an artificial lake at Sasaram in Rohtas district.",
+            "hi": "शेरशाह सूरी का मकबरा रोहतास जिले के सासाराम में एक कृत्रिम झील के बीच स्थित है।"
+          }
+        },
+        {
+          "id": "A6",
+          "topic": { "en": "Modern Indian History", "hi": "आधुनिक भारत का इतिहास" },
+          "difficulty": "hard",
+          "text": {
+            "en": "The Battle of Buxar (1764) was fought between the East India Company and a combined army. Who among the following was NOT part of that combined army?",
+            "hi": "बक्सर का युद्ध (1764) ईस्ट इंडिया कंपनी और एक संयुक्त सेना के बीच लड़ा गया था। निम्नलिखित में से कौन उस संयुक्त सेना में शामिल नहीं था?"
+          },
+          "options": [
+            { "en": "Mir Qasim", "hi": "मीर कासिम" },
+            { "en": "Shuja-ud-Daulah", "hi": "शुजाउद्दौला" },
+            { "en": "Shah Alam II", "hi": "शाह आलम द्वितीय" },
+            { "en": "Siraj-ud-Daulah", "hi": "सिराजुद्दौला" }
+          ],
+          "answer": 3,
+          "explanation": {
+            "en": "At Buxar the British defeated the combined forces of Mir Qasim, Shuja-ud-Daulah (Nawab of Awadh) and the Mughal emperor Shah Alam II; Siraj-ud-Daulah had already died after the Battle of Plassey in 1757.",
+            "hi": "बक्सर में अंग्रेजों ने मीर कासिम, अवध के नवाब शुजाउद्दौला और मुगल बादशाह शाह आलम द्वितीय की संयुक्त सेना को हराया था; सिराजुद्दौला की मृत्यु 1757 में प्लासी के युद्ध के बाद ही हो चुकी थी।"
+          }
+        },
+        {
+          "id": "A7",
+          "topic": { "en": "Indian Geography", "hi": "भारत का भूगोल" },
+          "difficulty": "medium",
+          "text": {
+            "en": "The Tropic of Cancer does NOT pass through which of the following states?",
+            "hi": "कर्क रेखा निम्नलिखित में से किस राज्य से होकर नहीं गुजरती है?"
+          },
+          "options": [
+            { "en": "Jharkhand", "hi": "झारखंड" },
+            { "en": "Bihar", "hi": "बिहार" },
+            { "en": "Tripura", "hi": "त्रिपुरा" },
+            { "en": "Mizoram", "hi": "मिजोरम" }
+          ],
+          "answer": 1,
+          "explanation": {
+            "en": "The Tropic of Cancer passes through eight states: Gujarat, Rajasthan, Madhya Pradesh, Chhattisgarh, Jharkhand, West Bengal, Tripura and Mizoram. Bihar lies entirely to its north.",
+            "hi": "कर्क रेखा आठ राज्यों — गुजरात, राजस्थान, मध्य प्रदेश, छत्तीसगढ़, झारखंड, पश्चिम बंगाल, त्रिपुरा और मिजोरम — से होकर गुजरती है; बिहार पूरी तरह इसके उत्तर में स्थित है।"
+          }
+        },
+        {
+          "id": "A8",
+          "topic": { "en": "Indian Polity", "hi": "भारतीय राजव्यवस्था" },
+          "difficulty": "medium",
+          "text": {
+            "en": "Fundamental Duties were added to the Indian Constitution by which Constitutional Amendment?",
+            "hi": "भारतीय संविधान में मौलिक कर्तव्य किस संविधान संशोधन द्वारा जोड़े गए?"
+          },
+          "options": [
+            { "en": "42nd Amendment", "hi": "42वाँ संशोधन" },
+            { "en": "44th Amendment", "hi": "44वाँ संशोधन" },
+            { "en": "52nd Amendment", "hi": "52वाँ संशोधन" },
+            { "en": "61st Amendment", "hi": "61वाँ संशोधन" }
+          ],
+          "answer": 0,
+          "explanation": {
+            "en": "The 42nd Amendment Act, 1976 added Part IV-A (Article 51A) on Fundamental Duties, on the recommendation of the Swaran Singh Committee.",
+            "hi": "42वें संविधान संशोधन अधिनियम, 1976 द्वारा स्वर्ण सिंह समिति की सिफारिश पर भाग IV-क (अनुच्छेद 51क) में मौलिक कर्तव्य जोड़े गए।"
+          }
+        },
+        {
+          "id": "A9",
+          "topic": { "en": "Indian Polity", "hi": "भारतीय राजव्यवस्था" },
+          "difficulty": "easy",
+          "text": {
+            "en": "What is the minimum age required to become a member of the Rajya Sabha?",
+            "hi": "राज्यसभा का सदस्य बनने के लिए न्यूनतम आयु कितनी होनी चाहिए?"
+          },
+          "options": [
+            { "en": "25 years", "hi": "25 वर्ष" },
+            { "en": "30 years", "hi": "30 वर्ष" },
+            { "en": "35 years", "hi": "35 वर्ष" },
+            { "en": "21 years", "hi": "21 वर्ष" }
+          ],
+          "answer": 1,
+          "explanation": {
+            "en": "Under Article 84, a person must be at least 30 years old to be a member of the Rajya Sabha (25 years for the Lok Sabha).",
+            "hi": "अनुच्छेद 84 के अनुसार राज्यसभा का सदस्य बनने के लिए न्यूनतम आयु 30 वर्ष है (लोकसभा के लिए 25 वर्ष)।"
+          }
+        },
+        {
+          "id": "A10",
+          "topic": { "en": "Indian Economy", "hi": "भारतीय अर्थव्यवस्था" },
+          "difficulty": "easy",
+          "text": {
+            "en": "Which of the following is a direct tax?",
+            "hi": "निम्नलिखित में से कौन-सा प्रत्यक्ष कर है?"
+          },
+          "options": [
+            { "en": "Goods and Services Tax (GST)", "hi": "वस्तु एवं सेवा कर (GST)" },
+            { "en": "Customs duty", "hi": "सीमा शुल्क" },
+            { "en": "Income tax", "hi": "आयकर" },
+            { "en": "Excise duty", "hi": "उत्पाद शुल्क" }
+          ],
+          "answer": 2,
+          "explanation": {
+            "en": "The burden of income tax falls on the same person on whom it is levied, so it is a direct tax; GST, customs duty and excise duty are indirect taxes.",
+            "hi": "आयकर का भार उसी व्यक्ति पर पड़ता है जिस पर यह लगाया जाता है, इसलिए यह प्रत्यक्ष कर है; GST, सीमा शुल्क और उत्पाद शुल्क अप्रत्यक्ष कर हैं।"
+          }
+        },
+        {
+          "id": "A11",
+          "topic": { "en": "General Science (Chemistry)", "hi": "सामान्य विज्ञान (रसायन विज्ञान)" },
+          "difficulty": "hard",
+          "text": {
+            "en": "Which of the following is a non-metal that exists as a liquid at room temperature?",
+            "hi": "निम्नलिखित में से कौन-सी अधातु कमरे के ताप पर द्रव अवस्था में पाई जाती है?"
+          },
+          "options": [
+            { "en": "Mercury", "hi": "पारा" },
+            { "en": "Gallium", "hi": "गैलियम" },
+            { "en": "Bromine", "hi": "ब्रोमीन" },
+            { "en": "Iodine", "hi": "आयोडीन" }
+          ],
+          "answer": 2,
+          "explanation": {
+            "en": "Bromine is the only non-metal that is liquid at room temperature. Mercury is also liquid but is a metal; gallium is a metal and iodine is a solid.",
+            "hi": "ब्रोमीन एकमात्र अधातु है जो कमरे के ताप पर द्रव होती है। पारा भी द्रव है, पर वह धातु है; गैलियम धातु है और आयोडीन ठोस है।"
+          }
+        },
+        {
+          "id": "A12",
+          "topic": { "en": "General Science (Physics)", "hi": "सामान्य विज्ञान (भौतिकी)" },
+          "difficulty": "medium",
+          "text": {
+            "en": "A person suffering from myopia (short-sightedness) should use spectacles with which type of lens?",
+            "hi": "निकट-दृष्टि दोष (मायोपिया) से पीड़ित व्यक्ति को किस प्रकार के लेंस वाला चश्मा पहनना चाहिए?"
+          },
+          "options": [
+            { "en": "Convex lens", "hi": "उत्तल लेंस" },
+            { "en": "Cylindrical lens", "hi": "बेलनाकार लेंस" },
+            { "en": "Plane glass", "hi": "समतल काँच" },
+            { "en": "Concave lens", "hi": "अवतल लेंस" }
+          ],
+          "answer": 3,
+          "explanation": {
+            "en": "In myopia the image of distant objects forms in front of the retina; a concave (diverging) lens shifts it back onto the retina.",
+            "hi": "निकट-दृष्टि दोष में दूर की वस्तुओं का प्रतिबिंब रेटिना के आगे बनता है; अवतल (अपसारी) लेंस उसे रेटिना पर ले आता है।"
+          }
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": { "en": "Reasoning & Mathematics", "hi": "तर्कशक्ति एवं गणित" },
+      "questions": [
+        {
+          "id": "B1",
+          "topic": { "en": "Number Series", "hi": "संख्या श्रृंखला" },
+          "difficulty": "easy",
+          "text": {
+            "en": "Find the next term in the series: 2, 6, 12, 20, 30, ?",
+            "hi": "श्रृंखला का अगला पद ज्ञात कीजिए: 2, 6, 12, 20, 30, ?"
+          },
+          "options": [
+            { "en": "40", "hi": "40" },
+            { "en": "42", "hi": "42" },
+            { "en": "44", "hi": "44" },
+            { "en": "36", "hi": "36" }
+          ],
+          "answer": 1,
+          "explanation": {
+            "en": "Differences are 4, 6, 8, 10, so the next difference is 12: 30 + 12 = 42. (Each term is n × (n + 1); 6 × 7 = 42.)",
+            "hi": "अंतर 4, 6, 8, 10 हैं, अतः अगला अंतर 12 होगा: 30 + 12 = 42। (प्रत्येक पद n × (n + 1) है; 6 × 7 = 42।)"
+          }
+        },
+        {
+          "id": "B2",
+          "topic": { "en": "Coding-Decoding", "hi": "कूटलेखन-कूटवाचन" },
+          "difficulty": "medium",
+          "text": {
+            "en": "In a certain code, MANGO is written as OCPIQ. How will APPLE be written in that code?",
+            "hi": "किसी कूट भाषा में MANGO को OCPIQ लिखा जाता है। उसी कूट भाषा में APPLE को कैसे लिखा जाएगा?"
+          },
+          "options": [
+            { "en": "CRRNG", "hi": "CRRNG" },
+            { "en": "BQQMF", "hi": "BQQMF" },
+            { "en": "CRRMG", "hi": "CRRMG" },
+            { "en": "CQRNG", "hi": "CQRNG" }
+          ],
+          "answer": 0,
+          "explanation": {
+            "en": "Each letter moves two places forward (M→O, A→C, N→P, G→I, O→Q). So A→C, P→R, P→R, L→N, E→G gives CRRNG.",
+            "hi": "प्रत्येक अक्षर वर्णमाला में दो स्थान आगे बढ़ता है (M→O, A→C, N→P, G→I, O→Q)। अतः A→C, P→R, P→R, L→N, E→G से CRRNG बनेगा।"
+          }
+        },
+        {
+          "id": "B3",
+          "topic": { "en": "Blood Relations", "hi": "रक्त संबंध" },
+          "difficulty": "easy",
+          "text": {
+            "en": "Pointing to a boy, Rita said, 'He is the son of the only son of my father's father.' How is the boy related to Rita?",
+            "hi": "एक लड़के की ओर इशारा करते हुए रीता ने कहा, 'यह मेरे पिता के पिता के इकलौते पुत्र का पुत्र है।' वह लड़का रीता का क्या लगता है?"
+          },
+          "options": [
+            { "en": "Cousin", "hi": "चचेरा भाई" },
+            { "en": "Uncle", "hi": "चाचा" },
+            { "en": "Brother", "hi": "भाई" },
+            { "en": "Nephew", "hi": "भतीजा" }
+          ],
+          "answer": 2,
+          "explanation": {
+            "en": "Father's father = grandfather; his only son = Rita's father. The son of Rita's father is Rita's brother.",
+            "hi": "पिता के पिता = दादा; दादा का इकलौता पुत्र = रीता के पिता। रीता के पिता का पुत्र रीता का भाई है।"
+          }
+        },
+        {
+          "id": "B4",
+          "topic": { "en": "Direction Sense", "hi": "दिशा ज्ञान" },
+          "difficulty": "medium",
+          "text": {
+            "en": "Ramesh walks 5 km towards the North, then turns right and walks 3 km, then turns right again and walks 9 km. How far is he now from his starting point?",
+            "hi": "रमेश उत्तर दिशा में 5 किमी चलता है, फिर दाएँ मुड़कर 3 किमी चलता है, फिर दोबारा दाएँ मुड़कर 9 किमी चलता है। अब वह अपने प्रारंभिक बिंदु से कितनी दूरी पर है?"
+          },
+          "options": [
+            { "en": "5 km", "hi": "5 किमी" },
+            { "en": "3 km", "hi": "3 किमी" },
+            { "en": "7 km", "hi": "7 किमी" },
+            { "en": "17 km", "hi": "17 किमी" }
+          ],
+          "answer": 0,
+          "explanation": {
+            "en": "North 5, then East 3, then South 9: he ends 3 km East and (9 − 5) = 4 km South of the start. Distance = √(3² + 4²) = √25 = 5 km.",
+            "hi": "उत्तर 5, फिर पूर्व 3, फिर दक्षिण 9: अंत में वह प्रारंभिक बिंदु से 3 किमी पूर्व और (9 − 5) = 4 किमी दक्षिण में है। दूरी = √(3² + 4²) = √25 = 5 किमी।"
+          }
+        },
+        {
+          "id": "B5",
+          "topic": { "en": "Percentage", "hi": "प्रतिशत" },
+          "difficulty": "medium",
+          "text": {
+            "en": "The price of an article is first increased by 20% and then decreased by 20%. What is the net change in its price?",
+            "hi": "किसी वस्तु के मूल्य में पहले 20% की वृद्धि की जाती है और फिर 20% की कमी। उसके मूल्य में कुल परिवर्तन कितना हुआ?"
+          },
+          "options": [
+            { "en": "No change", "hi": "कोई परिवर्तन नहीं" },
+            { "en": "4% increase", "hi": "4% की वृद्धि" },
+            { "en": "2% decrease", "hi": "2% की कमी" },
+            { "en": "4% decrease", "hi": "4% की कमी" }
+          ],
+          "answer": 3,
+          "explanation": {
+            "en": "Let the price be 100. After +20% it is 120; after −20% it is 120 × 0.8 = 96. Net change = 4% decrease.",
+            "hi": "मान लीजिए मूल्य 100 है। 20% वृद्धि के बाद 120; फिर 20% कमी के बाद 120 × 0.8 = 96। अतः कुल 4% की कमी।"
+          }
+        },
+        {
+          "id": "B6",
+          "topic": { "en": "Ratio & Average", "hi": "अनुपात एवं औसत" },
+          "difficulty": "easy",
+          "text": {
+            "en": "The ages of A and B are in the ratio 3 : 5 and their average age is 24 years. What is A's age?",
+            "hi": "A और B की आयु का अनुपात 3 : 5 है तथा उनकी औसत आयु 24 वर्ष है। A की आयु कितनी है?"
+          },
+          "options": [
+            { "en": "15 years", "hi": "15 वर्ष" },
+            { "en": "18 years", "hi": "18 वर्ष" },
+            { "en": "20 years", "hi": "20 वर्ष" },
+            { "en": "30 years", "hi": "30 वर्ष" }
+          ],
+          "answer": 1,
+          "explanation": {
+            "en": "Sum of ages = 24 × 2 = 48. A's age = 48 × 3/8 = 18 years (B = 30 years).",
+            "hi": "आयु का योग = 24 × 2 = 48। A की आयु = 48 × 3/8 = 18 वर्ष (B = 30 वर्ष)।"
+          }
+        },
+        {
+          "id": "B7",
+          "topic": { "en": "Time & Work", "hi": "समय और कार्य" },
+          "difficulty": "hard",
+          "text": {
+            "en": "A can finish a piece of work in 12 days and B in 18 days. They work together for 4 days, after which A leaves. In how many more days will B finish the remaining work?",
+            "hi": "A किसी काम को 12 दिनों में और B उसी काम को 18 दिनों में पूरा कर सकता है। दोनों 4 दिन साथ काम करते हैं, फिर A काम छोड़ देता है। शेष काम B कितने और दिनों में पूरा करेगा?"
+          },
+          "options": [
+            { "en": "6 days", "hi": "6 दिन" },
+            { "en": "10 days", "hi": "10 दिन" },
+            { "en": "8 days", "hi": "8 दिन" },
+            { "en": "12 days", "hi": "12 दिन" }
+          ],
+          "answer": 2,
+          "explanation": {
+            "en": "Total work = LCM(12, 18) = 36 units; A does 3 and B does 2 units/day. In 4 days together: 4 × 5 = 20 units. Remaining 16 units ÷ 2 = 8 days.",
+            "hi": "कुल काम = LCM(12, 18) = 36 इकाई; A प्रतिदिन 3 और B प्रतिदिन 2 इकाई करता है। 4 दिन में साथ मिलकर: 4 × 5 = 20 इकाई। शेष 16 इकाई ÷ 2 = 8 दिन।"
+          }
+        },
+        {
+          "id": "B8",
+          "topic": { "en": "Profit & Loss", "hi": "लाभ और हानि" },
+          "difficulty": "hard",
+          "text": {
+            "en": "A shopkeeper marks his goods 25% above the cost price and then allows a discount of 10% on the marked price. What is his profit percentage?",
+            "hi": "एक दुकानदार अपने सामान का अंकित मूल्य क्रय मूल्य से 25% अधिक रखता है और फिर अंकित मूल्य पर 10% की छूट देता है। उसका लाभ प्रतिशत कितना है?"
+          },
+          "options": [
+            { "en": "10%", "hi": "10%" },
+            { "en": "15%", "hi": "15%" },
+            { "en": "13.5%", "hi": "13.5%" },
+            { "en": "12.5%", "hi": "12.5%" }
+          ],
+          "answer": 3,
+          "explanation": {
+            "en": "Let CP = 100. Marked price = 125. Selling price = 125 × 0.9 = 112.5. Profit = 12.5%.",
+            "hi": "मान लीजिए क्रय मूल्य = 100। अंकित मूल्य = 125। विक्रय मूल्य = 125 × 0.9 = 112.5। लाभ = 12.5%।"
+          }
+        }
+      ]
+    }
+  ]
+}
