@@ -46,7 +46,7 @@ The paper has three parts: **I. Language**, **II. General Studies**, and **III. 
 | II. General Studies | Current affairs (national, international, Bihar) | Monthly current affairs magazines; Bihar budget and Economic Survey | Adda247 and Testbook current affairs quizzes |
 | II. General Studies | Mental ability and maths | R.S. Aggarwal's Quantitative Aptitude and Reasoning | Adda247 TRE mocks |
 | II. General Studies | Child development and pedagogy (where the level includes it) | CTET pedagogy guides; NCF 2005; RTE Act 2009 | TRE solved papers; CTET PYQ books |
-| III. Classes 1–5 | Maths & science, social science, Hindi, English, Urdu, Sanskrit and the other options listed | NCERT and Bihar SCERT class 1–8 books | Adda247 PRT mocks; PW PRT batch |
+| Classes 1–5 (no separate subject paper; school subjects are tested within Parts I–II) | Maths & science, social science, Hindi, English, Urdu, Sanskrit | NCERT and Bihar SCERT class 1–8 books | Adda247 PRT mocks; PW PRT batch |
 | III. Classes 6–8 | Maths & science, social science, Hindi, English, Sanskrit, Urdu and the other options listed | NCERT and Bihar SCERT class 6–10 books | Adda247 class 6–8 mocks |
 | III. Classes 9–10 | Hindi, English, Sanskrit, Urdu, mathematics, science, social science, and the other subjects in the notification | NCERT and Bihar SCERT class 9–12 books | YCT subject solved papers (e.g. Sanskrit 9–10); Adda247 subject mocks |
 | III. Classes 11–12 | Physics, chemistry, mathematics, botany, zoology, history, geography, economics, political science, sociology, psychology, philosophy, Hindi, English, Sanskrit, Urdu, accountancy, business studies, computer science, home science, music, fine arts, and the other subjects in the notification | NCERT class 11–12 plus a standard graduation-level text for the subject | Adda247 PGT mocks per subject (e.g. history PGT book, maths, computer science, philosophy series) |
@@ -227,7 +227,7 @@ These are the books aspirants study from. Our questions must agree with them on 
 
 ## 7. What this means for Prashnottar
 
-- **Books are cheap and everywhere.** A solved-paper book costs ₹250–550. Our ₹1,000 Pass must win on what a book can't do: timed computer-based mocks, instant explanations, weak-topic reports, and covering all four exams.
+- **Books are cheap and everywhere.** A solved-paper book costs ₹250–550. Our ₹1,000 Pass (sold per exam) must win on what a book can't do: timed computer-based mocks, instant explanations, weak-topic reports, and every subject of the exam in one place.
 - **Big apps sell breadth, not depth.** Adda247 and Testbook cover every exam, but their Bihar- and UP-specific material is thin and mostly bilingual by translation. A Hindi-first, exam-specific product is the gap.
 - **Daroga and TRE have the fewest English and online options.** Most Daroga material is Hindi print. An online, explained, bilingual Daroga set is the clearest opening.
 - **Subject gaps worth filling:** TRE language papers other than Hindi and English, most TRE class 11–12 subject papers outside the big subjects, UP SI's law section rewritten for BNS/BNSS/BSA, and UP SI's police-aptitude questions. All have little up-to-date practice material.

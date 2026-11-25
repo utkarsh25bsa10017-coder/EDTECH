@@ -3,6 +3,8 @@ import Base from '../../layouts/Base.astro';
 import L from '../../components/L.astro';
 import Icon from '../../components/Icon.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Syllabus from '../../components/Syllabus.astro';
+import { checkoutUrl } from '../../config.ts';
 import {
   EXAMS,
   EXAM_INFO,
@@ -23,6 +25,7 @@ export function getStaticPaths() {
 const exam = Astro.params.exam as Exam;
 const info = EXAM_INFO[exam];
 const papers = papersFor(exam);
+const buy = checkoutUrl(exam);
 ---
 <Base
   title={`${info.short.en} practice papers and mock tests`}
@@ -39,6 +42,13 @@ const papers = papersFor(exam);
         {info.subjects.map((s) => <li><span class="chip"><L t={s} /></span></li>)}
       </ul>
     </header>
+
+    <section class="section" aria-labelledby="syl-h" style={`--exam: var(--exam-${exam})`}>
+      <div class="section-head">
+        <h2 id="syl-h"><L en="Syllabus: every subject in the exam" hi="पाठ्यक्रम: परीक्षा के सभी विषय" /></h2>
+      </div>
+      <Syllabus exam={exam} />
+    </section>
 
     <section class="section" aria-labelledby="free-h">
       <div class="section-head">
@@ -80,15 +90,19 @@ const papers = papersFor(exam);
     <section class="section" aria-labelledby="pass-h">
       <div class="card locked">
         <div>
-          <h2 id="pass-h"><Icon name="lock" /> <L en="Unlock everything with the Pass" hi="पास से सब कुछ अनलॉक करें" /></h2>
+          <h2 id="pass-h"><Icon name="lock" /> <L t={{ en: `${info.short.en} Pass: unlock everything`, hi: `${info.short.hi} पास: सब कुछ अनलॉक करें` }} /></h2>
           <ul class="features">
             {PASS_FEATURES.map((f) => <li><Icon name="check" /><L t={f} /></li>)}
           </ul>
         </div>
         <div class="locked-cta">
           <strong>₹{PASS_PRICE.toLocaleString('en-IN')}</strong>
-          <span class="muted"><L en="all 4 exams" hi="चारों परीक्षाएं" /></span>
-          <a class="btn btn-primary" href={pricingUrl()}><L en="Get the Pass" hi="पास लें" /></a>
+          <span class="muted"><L t={{ en: `for ${info.short.en}, one-time`, hi: `${info.short.hi} के लिए, एक बार` }} /></span>
+          {buy ? (
+            <a class="btn btn-primary" href={buy} rel="noopener"><L en="Get the Pass" hi="पास लें" /></a>
+          ) : (
+            <a class="btn btn-primary" href={pricingUrl()}><L en="See pricing" hi="मूल्य देखें" /></a>
+          )}
         </div>
       </div>
     </section>

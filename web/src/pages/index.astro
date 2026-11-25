@@ -23,7 +23,7 @@ const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free
       </p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#exams-h"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /> <Icon name="arrow-right" /></a>
-        <a class="btn btn-quiet" href={pricingUrl()}><L t={{ en: `All 4 exams for ₹${PASS_PRICE.toLocaleString('en-IN')}`, hi: `चारों परीक्षाएं ₹${PASS_PRICE.toLocaleString('en-IN')} में` }} /></a>
+        <a class="btn btn-quiet" href={pricingUrl()}><L t={{ en: `Full Pass: ₹${PASS_PRICE.toLocaleString('en-IN')} per exam`, hi: `पूरा पास: ₹${PASS_PRICE.toLocaleString('en-IN')} प्रति परीक्षा` }} /></a>
       </div>
     </div>
   </section>
@@ -43,6 +43,9 @@ const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free
               <h3><a href={examUrl(e)}><L t={info.short} /></a></h3>
               <p class="exam-name"><L t={info.name} /></p>
               <p class="exam-blurb"><L t={info.blurb} /></p>
+              <ul class="exam-subjects" aria-label="Subjects">
+                {info.subjects.map((sub) => <li><L t={sub} /></li>)}
+              </ul>
             </div>
             <div class="exam-actions">
               {free ? (
@@ -104,16 +107,16 @@ const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free
   <section class="container section" aria-labelledby="pass-h">
     <div class="pass card">
       <div>
-        <h2 id="pass-h"><L en="One Pass, all four exams" hi="एक पास, चारों परीक्षाएं" /></h2>
+        <h2 id="pass-h"><L en="One Pass for your exam" hi="आपकी परीक्षा के लिए एक पास" /></h2>
         <p class="muted">
           <L
-            en="Full mock tests, topic-wise practice and solved past papers for BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI."
-            hi="बीपीएससी टीआरई, बिहार दरोगा, बीपीएससी प्रारंभिक और यूपी एसआई के लिए पूर्ण मॉक टेस्ट, विषयवार अभ्यास और हल सहित पिछले प्रश्नपत्र।"
+            en="Full mock tests, topic-wise practice and solved past papers covering every subject of your exam. Buy the Pass only for the exam you are preparing for."
+            hi="आपकी परीक्षा के हर विषय के पूर्ण मॉक टेस्ट, विषयवार अभ्यास और हल सहित पिछले प्रश्नपत्र। केवल उसी परीक्षा का पास लें जिसकी आप तैयारी कर रहे हैं।"
           />
         </p>
       </div>
       <div class="pass-price">
-        <strong>₹{PASS_PRICE.toLocaleString('en-IN')}</strong>
+        <strong>₹{PASS_PRICE.toLocaleString('en-IN')}<small><L en="per exam" hi="प्रति परीक्षा" /></small></strong>
         <a class="btn btn-primary" href={pricingUrl()}><L en="See what’s included" hi="क्या-क्या मिलेगा" /></a>
       </div>
     </div>
@@ -197,6 +200,24 @@ const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free
     font-size: 0.925rem;
   }
 
+  .exam-subjects {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .exam-subjects li {
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--exam) 10%, var(--surface));
+    color: var(--ink-2);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
   .exam-actions {
     display: flex;
     flex-wrap: wrap;
@@ -265,5 +286,12 @@ const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free
     font-size: 2rem;
     font-weight: 800;
     color: var(--ink);
+  }
+
+  .pass-price small {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted);
+    margin-left: 0.35rem;
   }
 </style>

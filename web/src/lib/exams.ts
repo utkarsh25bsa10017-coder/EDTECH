@@ -105,15 +105,16 @@ export const EXAM_INFO: Record<Exam, ExamInfo> = {
   },
 };
 
-/** What the Pass unlocks, listed on every exam page and on the pricing page. */
+/** What an exam's Pass unlocks, listed on every exam page and on the pricing page. */
 export const PASS_FEATURES: Bi[] = [
   { en: 'Full-length mock tests in the exam pattern', hi: 'परीक्षा पैटर्न पर पूर्ण मॉक टेस्ट' },
   { en: 'Topic-wise practice with explanations', hi: 'व्याख्या सहित विषयवार अभ्यास' },
   { en: 'Solved previous year papers', hi: 'हल सहित पिछले वर्षों के प्रश्नपत्र' },
   { en: 'Weak-topic report after every test', hi: 'हर टेस्ट के बाद कमज़ोर विषयों की रिपोर्ट' },
-  { en: 'All four exams in one Pass', hi: 'चारों परीक्षाएं एक ही पास में' },
+  { en: 'Every subject in the syllabus', hi: 'पाठ्यक्रम के सभी विषय' },
 ];
 
+/** Price of one exam's Pass, in rupees. Each exam is sold separately. */
 export const PASS_PRICE = 1000;
 
 /* ------------------------------------------------------------------ papers */
