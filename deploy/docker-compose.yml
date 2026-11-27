@@ -1,0 +1,56 @@
+# Prashnottar services on this server. Both bind to localhost only;
+# expose them publicly through Dokploy/Traefik when the domain is ready.
+#   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
+name: prashnottar
+
+services:
+  api:
+    build: ../server
+    env_file: ../server/.env
+    # Run as the host user so the admin panel can write review decisions
+    # back into content/bank (owned by that user). Set APP_UID/APP_GID in deploy/.env.
+    user: "${APP_UID:-1000}:${APP_GID:-1000}"
+    environment:
+      PROJECT_ROOT: /srv
+      DATA_DIR: /data
+    volumes:
+      - ../web/dist:/srv/web/dist:ro
+      - ../web/src/data/papers:/srv/web/src/data/papers:ro
+      - ../content:/srv/content
+      - ../server/data:/data
+    ports:
+      - "127.0.0.1:8787:8787"
+    mem_limit: 256m
+    restart: unless-stopped
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:latest
+    environment:
+      GENERIC_TIMEZONE: Asia/Kolkata
+      TZ: Asia/Kolkata
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_SECURE_COOKIE: "false"
+      N8N_BLOCK_ENV_ACCESS_IN_NODE: "false"
+      N8N_DIAGNOSTICS_ENABLED: "false"
+      N8N_LOG_LEVEL: ${N8N_LOG_LEVEL:-info}
+      N8N_PERSONALIZATION_ENABLED: "false"
+      # Set to the public https URL once n8n is exposed (needed for Meta's webhook)
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-http://localhost:5678/}
+      PRASHNOTTAR_API: http://api:8787
+      AUTOMATION_KEY: ${AUTOMATION_KEY}
+      WHATSAPP_PHONE_NUMBER_ID: ${WHATSAPP_PHONE_NUMBER_ID:-}
+      WHATSAPP_TOKEN: ${WHATSAPP_TOKEN:-}
+      WHATSAPP_API_BASE: ${WHATSAPP_API_BASE:-}
+      OWNER_WHATSAPP: ${OWNER_WHATSAPP:-}
+    volumes:
+      - n8n-data:/home/node/.n8n
+      - ../automation/n8n:/workflows:ro
+    ports:
+      - "127.0.0.1:5678:5678"
+    mem_limit: 768m
+    restart: unless-stopped
+    depends_on:
+      - api
+
+volumes:
+  n8n-data:

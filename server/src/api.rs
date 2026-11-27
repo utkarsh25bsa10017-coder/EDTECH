@@ -1,0 +1,846 @@
+use axum::{
+    body::Bytes,
+    extract::{ConnectInfo, Path, Query, State},
+    http::{header, HeaderMap, StatusCode},
+    response::{IntoResponse, Response},
+    Json,
+};
+use hmac::{Hmac, Mac};
+use rusqlite::{params, OptionalExtension};
+use serde::Deserialize;
+use serde_json::{json, Value};
+use sha2::Sha256;
+use std::net::SocketAddr;
+
+use crate::{
+    auth::{self, User},
+    claude::{self, ClaudeError},
+    content, now, AppState,
+};
+
+// ------------------------------------------------------------------ errors
+
+pub struct ApiError(StatusCode, String);
+
+impl ApiError {
+    fn bad(msg: &str) -> Self {
+        ApiError(StatusCode::BAD_REQUEST, msg.to_string())
+    }
+    fn unauthorized() -> Self {
+        ApiError(StatusCode::UNAUTHORIZED, "sign in required".into())
+    }
+    fn forbidden(msg: &str) -> Self {
+        ApiError(StatusCode::FORBIDDEN, msg.to_string())
+    }
+    fn not_found() -> Self {
+        ApiError(StatusCode::NOT_FOUND, "not found".into())
+    }
+    fn internal<E: std::fmt::Display>(e: E) -> Self {
+        tracing::error!("internal error: {e}");
+        ApiError(StatusCode::INTERNAL_SERVER_ERROR, "internal error".into())
+    }
+}
+
+impl IntoResponse for ApiError {
+    fn into_response(self) -> Response {
+        (self.0, Json(json!({ "error": self.1 }))).into_response()
+    }
+}
+
+type ApiResult<T> = Result<T, ApiError>;
+
+fn db(state: &AppState) -> ApiResult<std::sync::MutexGuard<'_, rusqlite::Connection>> {
+    state.db.lock().map_err(|_| ApiError::internal("db lock poisoned"))
+}
+
+fn require_admin(state: &AppState, headers: &HeaderMap) -> ApiResult<User> {
+    let user = auth::current_user(state, headers).ok_or_else(ApiError::unauthorized)?;
+    if !user.is_admin() {
+        return Err(ApiError::forbidden("admin only"));
+    }
+    Ok(user)
+}
+
+fn require_automation(state: &AppState, headers: &HeaderMap) -> ApiResult<()> {
+    let key = headers.get("x-automation-key").and_then(|v| v.to_str().ok()).unwrap_or("");
+    if state.cfg.automation_key.is_empty() || key != state.cfg.automation_key {
+        return Err(ApiError::forbidden("bad automation key"));
+    }
+    Ok(())
+}
+
+fn passes_for(conn: &rusqlite::Connection, phone: Option<&str>) -> Vec<String> {
+    let Some(phone) = phone else { return vec![] };
+    let mut stmt = match conn.prepare("SELECT DISTINCT exam FROM passes WHERE phone = ?1 AND expires_at > ?2") {
+        Ok(s) => s,
+        Err(_) => return vec![],
+    };
+    stmt.query_map(params![phone, now()], |r| r.get::<_, String>(0))
+        .map(|rows| rows.filter_map(|r| r.ok()).collect())
+        .unwrap_or_default()
+}
+
+fn session_response(state: &AppState, token: String, user: &User) -> Response {
+    let cookie = auth::session_cookie(&token, state.cfg.secure_cookies);
+    (
+        [(header::SET_COOKIE, cookie)],
+        Json(json!({ "token": token, "role": user.role, "name": user.name })),
+    )
+        .into_response()
+}
+
+// ------------------------------------------------------------------ auth
+
+#[derive(Deserialize)]
+pub struct LoginReq {
+    username: String,
+    password: String,
+}
+
+pub async fn login(State(state): State<AppState>, Json(req): Json<LoginReq>) -> ApiResult<Response> {
+    let ident = req.username.trim().to_string();
+    let phone = auth::normalize_phone(&ident);
+    let conn = db(&state)?;
+    let row: Option<(i64, String, Option<String>, String, String)> = conn
+        .query_row(
+            "SELECT id, name, phone, role, password_hash FROM users WHERE username = ?1 OR phone = ?2",
+            params![ident, phone.unwrap_or_default()],
+            |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)),
+        )
+        .optional()
+        .map_err(ApiError::internal)?;
+    let Some((id, name, phone, role, hash)) = row else {
+        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong username or password".into()));
+    };
+    if !auth::verify_password(&req.password, &hash) {
+        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong username or password".into()));
+    }
+    let token = auth::new_session(&conn, id).map_err(ApiError::internal)?;
+    let user = User { id, name, phone, role };
+    Ok(session_response(&state, token, &user))
+}
+
+#[derive(Deserialize)]
+pub struct RegisterReq {
+    name: String,
+    phone: String,
+    password: String,
+}
+
+pub async fn register(State(state): State<AppState>, Json(req): Json<RegisterReq>) -> ApiResult<Response> {
+    let name = req.name.trim();
+    if name.is_empty() || name.chars().count() > 80 {
+        return Err(ApiError::bad("enter your name"));
+    }
+    let phone = auth::normalize_phone(&req.phone).ok_or_else(|| ApiError::bad("enter a valid 10-digit mobile number"))?;
+    if req.password.chars().count() < 6 {
+        return Err(ApiError::bad("password must be at least 6 characters"));
+    }
+    let conn = db(&state)?;
+    let exists: bool = conn
+        .query_row("SELECT 1 FROM users WHERE phone = ?1", params![phone], |_| Ok(true))
+        .optional()
+        .map_err(ApiError::internal)?
+        .unwrap_or(false);
+    if exists {
+        return Err(ApiError(StatusCode::CONFLICT, "this number already has an account; sign in instead".into()));
+    }
+    conn.execute(
+        "INSERT INTO users (name, phone, password_hash, role, created_at) VALUES (?1, ?2, ?3, 'student', ?4)",
+        params![name, phone, auth::hash_password(&req.password), now()],
+    )
+    .map_err(ApiError::internal)?;
+    let id = conn.last_insert_rowid();
+    let token = auth::new_session(&conn, id).map_err(ApiError::internal)?;
+    let user = User { id, name: name.to_string(), phone: Some(phone), role: "student".into() };
+    Ok(session_response(&state, token, &user))
+}
+
+pub async fn logout(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Response> {
+    if let Some(token) = auth::token_from_headers(&headers) {
+        let conn = db(&state)?;
+        conn.execute("DELETE FROM sessions WHERE token = ?1", params![token]).map_err(ApiError::internal)?;
+    }
+    Ok(([(header::SET_COOKIE, auth::clear_cookie())], Json(json!({ "ok": true }))).into_response())
+}
+
+pub async fn me(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
+    let user = auth::current_user(&state, &headers).ok_or_else(ApiError::unauthorized)?;
+    let conn = db(&state)?;
+    let passes = passes_for(&conn, user.phone.as_deref());
+    Ok(Json(json!({ "role": user.role, "name": user.name, "phone": user.phone, "passes": passes })))
+}
+
+// ------------------------------------------------------------------ leads, attempts
+
+#[derive(Deserialize)]
+pub struct LeadReq {
+    phone: String,
+    name: Option<String>,
+    exam: String,
+    score: Option<i64>,
+    total: Option<i64>,
+    source: String,
+    consent: bool,
+}
+
+pub async fn create_lead(State(state): State<AppState>, Json(req): Json<LeadReq>) -> ApiResult<Json<Value>> {
+    let phone = auth::normalize_phone(&req.phone).ok_or_else(|| ApiError::bad("enter a valid 10-digit mobile number"))?;
+    if !content::valid_exam(&req.exam) {
+        return Err(ApiError::bad("unknown exam"));
+    }
+    if !matches!(req.source.as_str(), "landing" | "ctwa" | "app") {
+        return Err(ApiError::bad("unknown source"));
+    }
+    if !req.consent {
+        return Err(ApiError::bad("please tick the consent box"));
+    }
+    let name = req.name.as_deref().map(str::trim).filter(|n| !n.is_empty()).map(|n| n.chars().take(80).collect::<String>());
+    let conn = db(&state)?;
+    let t = now();
+    conn.execute(
+        "INSERT INTO leads (phone, name, exam, score, total, source, consent, followup_step, next_followup_at, created_at)
+         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 1, 0, ?7, ?7)
+         ON CONFLICT(phone, exam) DO UPDATE SET
+            name = COALESCE(excluded.name, leads.name),
+            score = COALESCE(excluded.score, leads.score),
+            total = COALESCE(excluded.total, leads.total),
+            consent = 1",
+        params![phone, name, req.exam, req.score, req.total, req.source, t],
+    )
+    .map_err(ApiError::internal)?;
+    Ok(Json(json!({ "ok": true })))
+}
+
+#[derive(Deserialize)]
+pub struct AttemptReq {
+    exam: String,
+    paper: String,
+    answers: Vec<Option<i64>>,
+    score: f64,
+    total: i64,
+    topics: Value,
+}
+
+pub async fn create_attempt(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Json(req): Json<AttemptReq>,
+) -> ApiResult<Json<Value>> {
+    if !content::valid_exam(&req.exam) || req.paper.len() > 64 || req.answers.len() > 400 {
+        return Err(ApiError::bad("invalid attempt"));
+    }
+    let user_id = auth::current_user(&state, &headers).map(|u| u.id);
+    let conn = db(&state)?;
+    conn.execute(
+        "INSERT INTO attempts (user_id, exam, paper, score, total, answers, topics, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
+        params![
+            user_id,
+            req.exam,
+            req.paper,
+            req.score,
+            req.total,
+            serde_json::to_string(&req.answers).unwrap_or_default(),
+            req.topics.to_string(),
+            now()
+        ],
+    )
+    .map_err(ApiError::internal)?;
+    Ok(Json(json!({ "ok": true, "id": conn.last_insert_rowid() })))
+}
+
+// ------------------------------------------------------------------ papers
+
+pub async fn list_papers(State(state): State<AppState>, Path(exam): Path<String>) -> ApiResult<Json<Value>> {
+    if !content::valid_exam(&exam) {
+        return Err(ApiError::not_found());
+    }
+    Ok(Json(Value::Array(content::list_papers(&state, &exam))))
+}
+
+pub async fn get_paper(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Path((exam, id)): Path<(String, String)>,
+) -> ApiResult<Response> {
+    let paper = content::find_paper(&state, &exam, &id).ok_or_else(ApiError::not_found)?;
+    let text = std::fs::read_to_string(&paper.path).map_err(ApiError::internal)?;
+    let v: Value = serde_json::from_str(&text).map_err(ApiError::internal)?;
+    let is_free = paper.free && v["free"].as_bool().unwrap_or(true);
+    if !is_free {
+        let user = auth::current_user(&state, &headers).ok_or_else(ApiError::unauthorized)?;
+        if !user.is_admin() {
+            let conn = db(&state)?;
+            if !passes_for(&conn, user.phone.as_deref()).iter().any(|e| e == &exam) {
+                return Err(ApiError(StatusCode::PAYMENT_REQUIRED, "this paper needs a pass for this exam".into()));
+            }
+        }
+    }
+    Ok(([(header::CACHE_CONTROL, "private, no-store")], Json(v)).into_response())
+}
+
+// ------------------------------------------------------------------ chatbot
+
+const PRODUCT_FACTS: &str = r#"PRODUCT FACTS (the only facts you may state about Prashnottar):
+- Prashnottar is an independent exam-practice app and website. It is NOT affiliated with any commission or government body.
+- Exams covered: BPSC TRE 4.0 (Bihar school teacher recruitment; exam expected around July 2027), BPSC CCE Prelims (73rd expected late 2027), MPPSC State Service Prelims (24 Jan 2027 and 2 May 2027), RPSC RAS Prelims (next expected late 2027), Bihar STET (possibly mid-2027), CTET (usually twice a year), CG TET (26 Sep 2027). ALL dates are tentative: always tell the student to confirm with the official notification.
+- What students get: a free 20-question set per exam (no sign-up); practice mode with instant explanations; full mock tests that work like the real exam (timer, sections, question palette, mark for review, negative marking, section- and topic-wise results); an OMR practice mode; a printable sample paper; a most-probable question paper chosen by topic weight from past-paper analysis.
+- Prices per exam: Most-probable set ₹249; 2-month fast-track ₹499; 3-month fast-track / full Pass ₹999. Bundles: TRE + CTET ₹799, TRE + STET ₹799. Payment by UPI on the website.
+- Refund: 7-day refund policy (details on the refund page).
+- Questions are written in the pattern of official past papers and checked before going live. Hindi and English.
+"#;
+
+const RULES: &str = r#"RULES:
+- Reply in the student's language and style: Hindi (Devanagari), English, or Hinglish, matching how they wrote.
+- Keep replies short and clear: 2-5 short sentences or a few bullets.
+- Never promise selection, marks, ranks or that specific questions will appear. Never call anything "guaranteed" or "100%". Never invent urgency or limited seats.
+- Never claim official status. Never state exam dates, vacancies or rules beyond the facts above; for anything else say you aren't sure and point them to the official website/notification.
+- If asked whether you are a bot or AI, say honestly that you are Prashnottar's AI assistant.
+- Do not ask for passwords, OTPs or card details.
+"#;
+
+fn chat_system(exam: Option<&str>) -> String {
+    format!(
+        "You are the guidance assistant on the Prashnottar website/app. You help students pick the right pack, understand exam timing, use the mock tests well, and plan study in simple steps (e.g. daily practice sets, revise weak topics from the result screen, take a full mock every week, practise OMR filling).\n\n{PRODUCT_FACTS}\n{RULES}\nThe student is currently looking at: {}.",
+        exam.unwrap_or("the home page")
+    )
+}
+
+fn wa_system() -> String {
+    format!(
+        "You are Prashnottar's WhatsApp assistant (sales and support for our own products only). Help with: the free set, which pack fits, prices, how to pay, how to log in and use mock tests, and simple support questions. Do not tutor subjects or act as a general assistant: for study questions, briefly point them to the practice sets and mock tests in the app.\n\n{PRODUCT_FACTS}\n{RULES}\n- Write like a helpful person on WhatsApp: short messages, no long paragraphs, at most one emoji.\n- If the student has a payment problem, wants a refund, complains, is upset, asks for a human, or you are unsure, reply politely that a team member will reply soon, and end your message with the exact marker [HANDOFF].\n- If they want to stop messages, tell them to send STOP."
+    )
+}
+
+fn client_ip(headers: &HeaderMap, addr: &SocketAddr) -> String {
+    headers
+        .get("x-forwarded-for")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.split(',').next())
+        .map(|s| s.trim().to_string())
+        .unwrap_or_else(|| addr.ip().to_string())
+}
+
+/// 20 chat messages per IP per 10 minutes.
+fn rate_ok(state: &AppState, ip: &str) -> bool {
+    let mut map = match state.rate.lock() {
+        Ok(m) => m,
+        Err(_) => return true,
+    };
+    let t = now();
+    if map.len() > 10_000 {
+        map.retain(|_, (start, _)| t - *start < 600);
+    }
+    let entry = map.entry(ip.to_string()).or_insert((t, 0));
+    if t - entry.0 >= 600 {
+        *entry = (t, 0);
+    }
+    entry.1 += 1;
+    entry.1 <= 20
+}
+
+fn clean_history(raw: &[Value], limit: usize) -> Vec<Value> {
+    let mut msgs: Vec<Value> = raw
+        .iter()
+        .filter_map(|m| {
+            let role = m["role"].as_str()?;
+            let content = m["content"].as_str()?.trim();
+            if !matches!(role, "user" | "assistant") || content.is_empty() {
+                return None;
+            }
+            Some(json!({ "role": role, "content": content.chars().take(2000).collect::<String>() }))
+        })
+        .collect();
+    if msgs.len() > limit {
+        msgs = msgs.split_off(msgs.len() - limit);
+    }
+    while msgs.first().map(|m| m["role"] != "user").unwrap_or(false) {
+        msgs.remove(0);
+    }
+    msgs
+}
+
+fn fallback_reply(e: &ClaudeError, hindi: bool) -> String {
+    tracing::warn!("chat fallback: {e}");
+    if hindi {
+        "माफ़ कीजिए, सहायक अभी उपलब्ध नहीं है। कृपया थोड़ी देर बाद फिर कोशिश करें, या WhatsApp पर हमसे बात करें।".into()
+    } else {
+        "Sorry, the assistant isn't available right now. Please try again in a little while, or message us on WhatsApp.".into()
+    }
+}
+
+#[derive(Deserialize)]
+pub struct ChatReq {
+    messages: Vec<Value>,
+    exam: Option<String>,
+    lang: Option<String>,
+}
+
+pub async fn chat(
+    State(state): State<AppState>,
+    ConnectInfo(addr): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
+    Json(req): Json<ChatReq>,
+) -> ApiResult<Json<Value>> {
+    if !rate_ok(&state, &client_ip(&headers, &addr)) {
+        return Err(ApiError(StatusCode::TOO_MANY_REQUESTS, "too many messages; please wait a few minutes".into()));
+    }
+    let msgs = clean_history(&req.messages, 12);
+    if msgs.last().map(|m| m["role"] != "user").unwrap_or(true) {
+        return Err(ApiError::bad("send a message"));
+    }
+    let exam = req.exam.as_deref().filter(|e| content::valid_exam(e));
+    let hindi = req.lang.as_deref() != Some("en");
+    let reply = match claude::ask(&state.http, &state.cfg, &chat_system(exam), msgs, true).await {
+        Ok(r) if !r.is_empty() => r,
+        Ok(_) => fallback_reply(&ClaudeError::Permanent("empty reply".into()), hindi),
+        Err(e) => fallback_reply(&e, hindi),
+    };
+    Ok(Json(json!({ "reply": reply })))
+}
+
+// ------------------------------------------------------------------ WhatsApp bot (called by n8n)
+
+#[derive(Deserialize)]
+pub struct WaReq {
+    from: String,
+    name: Option<String>,
+    text: String,
+}
+
+fn is_stop(text: &str) -> bool {
+    let t = text.trim().to_lowercase();
+    matches!(t.as_str(), "stop" | "unsubscribe" | "रोकें" | "बंद करो" | "band karo" | "stop karo")
+}
+
+pub async fn bot_whatsapp(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Json(req): Json<WaReq>,
+) -> ApiResult<Json<Value>> {
+    require_automation(&state, &headers)?;
+    let phone = auth::normalize_phone(&req.from).ok_or_else(|| ApiError::bad("bad phone"))?;
+    let text: String = req.text.trim().chars().take(2000).collect();
+    if text.is_empty() {
+        return Err(ApiError::bad("empty message"));
+    }
+
+    if is_stop(&text) {
+        let conn = db(&state)?;
+        conn.execute("UPDATE leads SET opted_out = 1 WHERE phone = ?1", params![phone]).map_err(ApiError::internal)?;
+        return Ok(Json(json!({
+            "reply": "ठीक है, अब आपको हमारी ओर से संदेश नहीं भेजे जाएंगे। कभी भी फिर से जुड़ने के लिए 'START' लिखें।",
+            "handoff": false
+        })));
+    }
+
+    let history = {
+        let conn = db(&state)?;
+        let t = now();
+        // Someone who messages us first counts as a click-to-WhatsApp lead.
+        conn.execute(
+            "INSERT INTO leads (phone, name, exam, source, consent, followup_step, next_followup_at, created_at)
+             VALUES (?1, ?2, 'bpsc-tre', 'ctwa', 1, 0, ?3, ?3)
+             ON CONFLICT(phone, exam) DO UPDATE SET opted_out = CASE WHEN ?4 THEN 0 ELSE leads.opted_out END",
+            params![phone, req.name, t, text.trim().eq_ignore_ascii_case("start")],
+        )
+        .map_err(ApiError::internal)?;
+        conn.execute(
+            "INSERT INTO wa_messages (phone, role, content, created_at) VALUES (?1, 'user', ?2, ?3)",
+            params![phone, text, t],
+        )
+        .map_err(ApiError::internal)?;
+        let mut stmt = conn
+            .prepare("SELECT role, content FROM wa_messages WHERE phone = ?1 ORDER BY id DESC LIMIT 12")
+            .map_err(ApiError::internal)?;
+        let mut rows: Vec<Value> = stmt
+            .query_map(params![phone], |r| Ok(json!({ "role": r.get::<_, String>(0)?, "content": r.get::<_, String>(1)? })))
+            .map_err(ApiError::internal)?
+            .filter_map(|r| r.ok())
+            .collect();
+        rows.reverse();
+        rows
+    };
+
+    let msgs = clean_history(&history, 12);
+    let (reply, handoff) = match claude::ask(&state.http, &state.cfg, &wa_system(), msgs, true).await {
+        Ok(r) if !r.is_empty() => {
+            let handoff = r.contains("[HANDOFF]");
+            (r.replace("[HANDOFF]", "").trim().to_string(), handoff)
+        }
+        Ok(_) => (fallback_reply(&ClaudeError::Permanent("empty".into()), true), true),
+        Err(e) => (fallback_reply(&e, true), true),
+    };
+
+    let conn = db(&state)?;
+    conn.execute(
+        "INSERT INTO wa_messages (phone, role, content, created_at) VALUES (?1, 'assistant', ?2, ?3)",
+        params![phone, reply, now()],
+    )
+    .map_err(ApiError::internal)?;
+    Ok(Json(json!({ "reply": reply, "handoff": handoff })))
+}
+
+// ------------------------------------------------------------------ follow-ups (pulled by n8n)
+
+/// The 72-hour sequence: step 0 right away, then one message a day.
+fn followup_message(site: &str, exam: &str, name: Option<&str>, step: i64) -> Option<String> {
+    let hi = name.map(|n| format!(" {n}")).unwrap_or_default();
+    let free = format!("{site}/{exam}/");
+    let price = format!("{site}/pricing/");
+    match step {
+        0 => Some(format!(
+            "नमस्ते{hi}! Prashnottar से जुड़ने के लिए धन्यवाद। आपका फ्री प्रैक्टिस सेट और पूरे हल यहाँ हैं: {free}\nसवाल हो तो यहीं पूछें। संदेश बंद करने के लिए STOP लिखें।"
+        )),
+        1 => Some(format!(
+            "आज का अभ्यास: 10 मिनट निकालें और फ्री सेट दोबारा हल करें, इस बार घड़ी लगाकर। रिज़ल्ट में अपने कमज़ोर टॉपिक देखें: {free}"
+        )),
+        2 => Some(format!(
+            "असली परीक्षा जैसा अनुभव चाहिए? हमारे मॉक टेस्ट में टाइमर, सेक्शन और OMR अभ्यास है। सैंपल देखें: {free}"
+        )),
+        3 => Some(format!(
+            "पिछले वर्षों के प्रश्नपत्रों के विश्लेषण से बना Most-probable सेट ₹249 में उपलब्ध है। पूरा पैक और बंडल यहाँ देखें: {price}\nकोई सवाल हो तो जवाब दें।"
+        )),
+        _ => None,
+    }
+}
+
+pub async fn due_followups(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
+    require_automation(&state, &headers)?;
+    let conn = db(&state)?;
+    let mut stmt = conn
+        .prepare(
+            "SELECT l.id, l.phone, l.name, l.exam, l.followup_step, l.source,
+                    EXISTS (SELECT 1 FROM wa_messages w WHERE w.phone = l.phone AND w.role = 'user' AND w.created_at > ?1 - 86000)
+             FROM leads l
+             WHERE l.consent = 1 AND l.opted_out = 0 AND l.followup_step < 4 AND l.next_followup_at <= ?1
+             ORDER BY l.next_followup_at LIMIT 50",
+        )
+        .map_err(ApiError::internal)?;
+    let site = &state.cfg.site_url;
+    let rows: Vec<Value> = stmt
+        .query_map(params![now()], |r| {
+            Ok((
+                r.get::<_, i64>(0)?,
+                r.get::<_, String>(1)?,
+                r.get::<_, Option<String>>(2)?,
+                r.get::<_, String>(3)?,
+                r.get::<_, i64>(4)?,
+                r.get::<_, String>(5)?,
+                r.get::<_, bool>(6)?,
+            ))
+        })
+        .map_err(ApiError::internal)?
+        .filter_map(|r| r.ok())
+        .filter_map(|(id, phone, name, exam, step, source, window_open)| {
+            followup_message(site, &exam, name.as_deref(), step).map(|message| {
+                let link = if step == 3 { format!("{site}/pricing/") } else { format!("{site}/{exam}/") };
+                json!({
+                    "lead_id": id, "phone": format!("91{phone}"), "name": name, "exam": exam, "step": step,
+                    "source": source,
+                    // Free-form text is only allowed within 24 h of the student's last message;
+                    // otherwise WhatsApp requires an approved template.
+                    "window_open": window_open,
+                    "message": message,
+                    "template_name": format!("pr_followup_{step}"),
+                    "template_params": [name.clone().unwrap_or_else(|| "विद्यार्थी".into()), link],
+                })
+            })
+        })
+        .collect();
+    Ok(Json(Value::Array(rows)))
+}
+
+#[derive(Deserialize)]
+pub struct FollowupMark {
+    step: i64,
+    status: String,
+}
+
+pub async fn mark_followup(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Path(lead_id): Path<i64>,
+    Json(req): Json<FollowupMark>,
+) -> ApiResult<Json<Value>> {
+    require_automation(&state, &headers)?;
+    let conn = db(&state)?;
+    let t = now();
+    match req.status.as_str() {
+        "sent" => conn.execute(
+            "UPDATE leads SET followup_step = ?1 + 1, next_followup_at = ?2 WHERE id = ?3 AND followup_step = ?1",
+            params![req.step, t + 86400, lead_id],
+        ),
+        "failed" => conn.execute("UPDATE leads SET next_followup_at = ?1 WHERE id = ?2", params![t + 600, lead_id]),
+        _ => return Err(ApiError::bad("status must be sent or failed")),
+    }
+    .map_err(ApiError::internal)?;
+    Ok(Json(json!({ "ok": true })))
+}
+
+// ------------------------------------------------------------------ admin
+
+pub async fn admin_stats(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    let conn = db(&state)?;
+    let count = |sql: &str| -> i64 { conn.query_row(sql, [], |r| r.get(0)).unwrap_or(0) };
+    let leads = count("SELECT COUNT(*) FROM leads");
+    let students = count("SELECT COUNT(*) FROM users WHERE role = 'student'");
+    let attempts = count("SELECT COUNT(*) FROM attempts");
+    let passes = count("SELECT COUNT(*) FROM passes");
+    let mut stmt = conn
+        .prepare("SELECT exam, status, COUNT(*) FROM questions GROUP BY exam, status")
+        .map_err(ApiError::internal)?;
+    let mut questions = serde_json::Map::new();
+    for row in stmt
+        .query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?, r.get::<_, i64>(2)?)))
+        .map_err(ApiError::internal)?
+        .flatten()
+    {
+        let entry = questions.entry(row.0).or_insert_with(|| json!({}));
+        entry[row.1] = json!(row.2);
+    }
+    Ok(Json(json!({ "leads": leads, "students": students, "attempts": attempts, "passes": passes, "questions": questions })))
+}
+
+#[derive(Deserialize)]
+pub struct ListQuery {
+    exam: Option<String>,
+    status: Option<String>,
+    q: Option<String>,
+    limit: Option<i64>,
+    offset: Option<i64>,
+}
+
+pub async fn admin_leads(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    let conn = db(&state)?;
+    let limit = q.limit.unwrap_or(100).clamp(1, 500);
+    let mut stmt = conn
+        .prepare(
+            "SELECT id, phone, name, exam, score, total, source, opted_out, followup_step, created_at FROM leads
+             WHERE (?1 IS NULL OR exam = ?1) ORDER BY id DESC LIMIT ?2",
+        )
+        .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = stmt
+        .query_map(params![q.exam, limit], |r| {
+            Ok(json!({
+                "id": r.get::<_, i64>(0)?, "phone": r.get::<_, String>(1)?, "name": r.get::<_, Option<String>>(2)?,
+                "exam": r.get::<_, String>(3)?, "score": r.get::<_, Option<i64>>(4)?, "total": r.get::<_, Option<i64>>(5)?,
+                "source": r.get::<_, String>(6)?, "opted_out": r.get::<_, i64>(7)? == 1,
+                "followup_step": r.get::<_, i64>(8)?, "created_at": r.get::<_, i64>(9)?
+            }))
+        })
+        .map_err(ApiError::internal)?
+        .filter_map(|r| r.ok())
+        .collect();
+    Ok(Json(Value::Array(rows)))
+}
+
+pub async fn admin_questions(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    let conn = db(&state)?;
+    let limit = q.limit.unwrap_or(50).clamp(1, 200);
+    let offset = q.offset.unwrap_or(0).max(0);
+    let like = q.q.as_deref().map(|s| format!("%{}%", s.trim()));
+    let mut stmt = conn
+        .prepare(
+            "SELECT body FROM questions
+             WHERE (?1 IS NULL OR exam = ?1) AND (?2 IS NULL OR status = ?2) AND (?3 IS NULL OR body LIKE ?3)
+             ORDER BY id LIMIT ?4 OFFSET ?5",
+        )
+        .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = stmt
+        .query_map(params![q.exam, q.status, like, limit, offset], |r| r.get::<_, String>(0))
+        .map_err(ApiError::internal)?
+        .filter_map(|r| r.ok())
+        .filter_map(|b| serde_json::from_str(&b).ok())
+        .collect();
+    let total: i64 = conn
+        .query_row(
+            "SELECT COUNT(*) FROM questions WHERE (?1 IS NULL OR exam = ?1) AND (?2 IS NULL OR status = ?2) AND (?3 IS NULL OR body LIKE ?3)",
+            params![q.exam, q.status, like],
+            |r| r.get(0),
+        )
+        .unwrap_or(0);
+    Ok(Json(json!({ "total": total, "items": rows })))
+}
+
+#[derive(Deserialize)]
+pub struct StatusReq {
+    status: String,
+}
+
+pub async fn admin_update_question(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Path(id): Path<String>,
+    Json(req): Json<StatusReq>,
+) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    if !matches!(req.status.as_str(), "draft" | "reviewed" | "rejected") {
+        return Err(ApiError::bad("status must be draft, reviewed or rejected"));
+    }
+    content::set_question_status(&state, &id, &req.status).map_err(|e| {
+        if e.contains("not found") {
+            ApiError::not_found()
+        } else {
+            ApiError::internal(e)
+        }
+    })?;
+    Ok(Json(json!({ "ok": true })))
+}
+
+pub async fn admin_attempts(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    let conn = db(&state)?;
+    let limit = q.limit.unwrap_or(100).clamp(1, 500);
+    let mut stmt = conn
+        .prepare(
+            "SELECT a.id, a.exam, a.paper, a.score, a.total, a.created_at, u.name FROM attempts a
+             LEFT JOIN users u ON u.id = a.user_id ORDER BY a.id DESC LIMIT ?1",
+        )
+        .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = stmt
+        .query_map(params![limit], |r| {
+            Ok(json!({
+                "id": r.get::<_, i64>(0)?, "exam": r.get::<_, String>(1)?, "paper": r.get::<_, String>(2)?,
+                "score": r.get::<_, f64>(3)?, "total": r.get::<_, i64>(4)?, "created_at": r.get::<_, i64>(5)?,
+                "student": r.get::<_, Option<String>>(6)?
+            }))
+        })
+        .map_err(ApiError::internal)?
+        .filter_map(|r| r.ok())
+        .collect();
+    Ok(Json(Value::Array(rows)))
+}
+
+pub async fn admin_reload(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
+    require_admin(&state, &headers)?;
+    let n = content::import_bank(&state).map_err(ApiError::internal)?;
+    Ok(Json(json!({ "ok": true, "questions": n })))
+}
+
+// ------------------------------------------------------------------ payments
+
+/// Razorpay webhook. Expects payment notes { phone, exam, tier } set on the
+/// payment link. Inactive until RAZORPAY_WEBHOOK_SECRET is configured.
+pub async fn razorpay_webhook(State(state): State<AppState>, headers: HeaderMap, body: Bytes) -> ApiResult<Json<Value>> {
+    if state.cfg.razorpay_secret.is_empty() {
+        return Err(ApiError(StatusCode::SERVICE_UNAVAILABLE, "payments not configured yet".into()));
+    }
+    let sig = headers.get("x-razorpay-signature").and_then(|v| v.to_str().ok()).unwrap_or("");
+    let mut mac = Hmac::<Sha256>::new_from_slice(state.cfg.razorpay_secret.as_bytes()).map_err(ApiError::internal)?;
+    mac.update(&body);
+    let expected = hex::encode(mac.finalize().into_bytes());
+    if sig.is_empty() || !constant_time_eq(expected.as_bytes(), sig.as_bytes()) {
+        return Err(ApiError::forbidden("bad signature"));
+    }
+    let v: Value = serde_json::from_slice(&body).map_err(|_| ApiError::bad("bad JSON"))?;
+    if v["event"] != "payment.captured" {
+        return Ok(Json(json!({ "ok": true, "ignored": true })));
+    }
+    let entity = &v["payload"]["payment"]["entity"];
+    let notes = &entity["notes"];
+    let phone = notes["phone"].as_str().and_then(auth::normalize_phone).ok_or_else(|| ApiError::bad("missing phone note"))?;
+    let tier = notes["tier"].as_str().unwrap_or("pass").to_string();
+    let exams: Vec<String> = notes["exam"]
+        .as_str()
+        .unwrap_or("")
+        .split(['+', ','])
+        .map(|s| s.trim().to_string())
+        .filter(|e| content::valid_exam(e))
+        .collect();
+    if exams.is_empty() {
+        return Err(ApiError::bad("missing exam note"));
+    }
+    let payment_id = entity["id"].as_str().unwrap_or("").to_string();
+    let conn = db(&state)?;
+    let t = now();
+    for (i, exam) in exams.iter().enumerate() {
+        conn.execute(
+            "INSERT OR IGNORE INTO passes (phone, exam, tier, payment_id, created_at, expires_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
+            params![phone, exam, tier, format!("{payment_id}:{i}"), t, t + state.cfg.pass_days * 86400],
+        )
+        .map_err(ApiError::internal)?;
+    }
+    Ok(Json(json!({ "ok": true })))
+}
+
+fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
+    a.len() == b.len() && a.iter().zip(b).fold(0u8, |acc, (x, y)| acc | (x ^ y)) == 0
+}
+
+// ------------------------------------------------------------------ Meta WhatsApp webhook
+
+#[derive(Deserialize)]
+pub struct VerifyQuery {
+    #[serde(rename = "hub.mode")]
+    mode: Option<String>,
+    #[serde(rename = "hub.verify_token")]
+    token: Option<String>,
+    #[serde(rename = "hub.challenge")]
+    challenge: Option<String>,
+}
+
+/// Meta's one-time webhook verification.
+pub async fn wa_verify(State(state): State<AppState>, Query(q): Query<VerifyQuery>) -> Response {
+    let ok = !state.cfg.wa_verify_token.is_empty()
+        && q.mode.as_deref() == Some("subscribe")
+        && q.token.as_deref() == Some(state.cfg.wa_verify_token.as_str());
+    if ok {
+        (StatusCode::OK, q.challenge.unwrap_or_default()).into_response()
+    } else {
+        StatusCode::FORBIDDEN.into_response()
+    }
+}
+
+/// Incoming WhatsApp events. Checks Meta's signature on the raw body, answers
+/// 200 at once, and forwards the event to n8n (retrying every 10 s for up to
+/// an hour if n8n is down).
+pub async fn wa_webhook(State(state): State<AppState>, headers: HeaderMap, body: Bytes) -> Response {
+    if state.cfg.meta_app_secret.is_empty() {
+        return (StatusCode::SERVICE_UNAVAILABLE, "WhatsApp not configured yet").into_response();
+    }
+    let sig = headers
+        .get("x-hub-signature-256")
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.strip_prefix("sha256="))
+        .unwrap_or("");
+    let Ok(mut mac) = Hmac::<Sha256>::new_from_slice(state.cfg.meta_app_secret.as_bytes()) else {
+        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    };
+    mac.update(&body);
+    let expected = hex::encode(mac.finalize().into_bytes());
+    if sig.is_empty() || !constant_time_eq(expected.as_bytes(), sig.as_bytes()) {
+        tracing::warn!("WhatsApp webhook: bad signature");
+        return StatusCode::FORBIDDEN.into_response();
+    }
+    let http = state.http.clone();
+    let url = state.cfg.n8n_inbound_url.clone();
+    let key = state.cfg.automation_key.clone();
+    tokio::spawn(async move {
+        for attempt in 1..=360u32 {
+            let res = http
+                .post(&url)
+                .header("content-type", "application/json")
+                .header("x-automation-key", &key)
+                .body(body.clone())
+                .send()
+                .await;
+            match res {
+                Ok(r) if r.status().is_success() => return,
+                Ok(r) if r.status().is_client_error() && !matches!(r.status().as_u16(), 404 | 408 | 409 | 429) => {
+                    // 404 is retried too: n8n returns it while the workflow is inactive or restarting.
+                    tracing::error!("n8n rejected WhatsApp event: HTTP {}", r.status());
+                    return;
+                }
+                Ok(r) => tracing::warn!("n8n not ready (HTTP {}), retrying in 10 s (try {attempt})", r.status()),
+                Err(e) => tracing::warn!("n8n unreachable ({e}), retrying in 10 s (try {attempt})"),
+            }
+            tokio::time::sleep(std::time::Duration::from_secs(10)).await;
+        }
+        tracing::error!("gave up forwarding a WhatsApp event to n8n after an hour");
+    });
+    StatusCode::OK.into_response()
+}
