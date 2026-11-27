@@ -1,0 +1,13 @@
+{
+  "name": "prashnottar-app",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Native shell (Tauri 2) for Android, iOS and Windows. Bundles ../web/dist.",
+  "scripts": {
+    "tauri": "tauri",
+    "icons": "tauri icon app-icon.svg"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2"
+  }
+}
