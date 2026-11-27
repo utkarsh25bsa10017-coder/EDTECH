@@ -5,8 +5,13 @@ export interface Bi {
   hi: string;
 }
 
-export const EXAMS = ['bpsc-tre', 'bihar-daroga', 'bpsc-cce', 'up-si'] as const;
+/** Slugs from docs/ARCHITECTURE.md. Order = order on the site. */
+export const EXAMS = ['bpsc-tre', 'bpsc-cce', 'mppsc', 'ras', 'bihar-stet', 'ctet', 'cg-tet'] as const;
 export type Exam = (typeof EXAMS)[number];
+
+export function isExam(s: string | null | undefined): s is Exam {
+  return !!s && (EXAMS as readonly string[]).includes(s);
+}
 
 export interface ExamInfo {
   slug: Exam;
@@ -20,125 +25,205 @@ export interface ExamInfo {
   blurb: Bi;
   /** Subject areas the exam tests, in the order the paper usually runs. */
   subjects: Bi[];
+  /** Expected exam window. Always tentative: confirm with the official notice. */
+  timing: Bi;
+  track: 'core' | 'filler';
 }
+
+const b = (en: string, hi: string): Bi => ({ en, hi });
+
+export const TENTATIVE = b('Tentative: confirm with the official notice.', 'संभावित: आधिकारिक सूचना से पुष्टि करें।');
 
 export const EXAM_INFO: Record<Exam, ExamInfo> = {
   'bpsc-tre': {
     slug: 'bpsc-tre',
-    short: { en: 'BPSC TRE', hi: 'बीपीएससी टीआरई' },
-    name: { en: 'BPSC Teacher Recruitment Exam', hi: 'बीपीएससी शिक्षक भर्ती परीक्षा' },
-    body: { en: 'Bihar Public Service Commission', hi: 'बिहार लोक सेवा आयोग' },
+    short: b('BPSC TRE 4.0', 'बीपीएससी टीआरई 4.0'),
+    name: b('BPSC Teacher Recruitment Exam (TRE 4.0)', 'बीपीएससी शिक्षक भर्ती परीक्षा (टीआरई 4.0)'),
+    body: b('Bihar Public Service Commission (BPSC)', 'बिहार लोक सेवा आयोग (बीपीएससी)'),
     website: 'https://bpsc.bihar.gov.in',
-    state: { en: 'Bihar', hi: 'बिहार' },
-    blurb: {
-      en: 'Government school teacher recruitment in Bihar. Language, general studies and the subject paper, with child development and pedagogy.',
-      hi: 'बिहार के सरकारी विद्यालयों में शिक्षक भर्ती। भाषा, सामान्य अध्ययन और विषय पत्र, साथ में बाल विकास एवं शिक्षाशास्त्र।',
-    },
+    state: b('Bihar', 'बिहार'),
+    blurb: b(
+      'Government school teacher recruitment in Bihar: language, general studies, the subject paper, and child development and pedagogy.',
+      'बिहार के सरकारी विद्यालयों में शिक्षक भर्ती: भाषा, सामान्य अध्ययन, विषय पत्र तथा बाल विकास एवं शिक्षाशास्त्र।',
+    ),
     subjects: [
-      { en: 'General Hindi / English', hi: 'सामान्य हिन्दी / अंग्रेज़ी' },
-      { en: 'General Studies', hi: 'सामान्य अध्ययन' },
-      { en: 'Bihar General Knowledge', hi: 'बिहार सामान्य ज्ञान' },
-      { en: 'Current Affairs', hi: 'समसामयिकी' },
-      { en: 'Mental Ability & Maths', hi: 'मानसिक योग्यता एवं गणित' },
-      { en: 'Child Development & Pedagogy', hi: 'बाल विकास एवं शिक्षाशास्त्र' },
-      { en: 'Subject paper (by class level)', hi: 'विषय पत्र (कक्षा स्तर अनुसार)' },
+      b('General Hindi / English', 'सामान्य हिन्दी / अंग्रेज़ी'),
+      b('General Studies', 'सामान्य अध्ययन'),
+      b('Bihar General Knowledge', 'बिहार सामान्य ज्ञान'),
+      b('Mental Ability & Maths', 'मानसिक योग्यता एवं गणित'),
+      b('Child Development & Pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+      b('Subject paper (by class level)', 'विषय पत्र (कक्षा स्तर अनुसार)'),
     ],
-  },
-  'bihar-daroga': {
-    slug: 'bihar-daroga',
-    short: { en: 'Bihar Daroga', hi: 'बिहार दरोगा' },
-    name: { en: 'Bihar Police Sub-Inspector (Daroga)', hi: 'बिहार पुलिस अवर निरीक्षक (दरोगा)' },
-    body: { en: 'Bihar Police Subordinate Services Commission', hi: 'बिहार पुलिस अवर सेवा आयोग' },
-    state: { en: 'Bihar', hi: 'बिहार' },
-    blurb: {
-      en: 'Sub-Inspector recruitment for Bihar Police. General studies, Bihar GK, reasoning and mathematics.',
-      hi: 'बिहार पुलिस में अवर निरीक्षक भर्ती। सामान्य अध्ययन, बिहार सामान्य ज्ञान, तर्कशक्ति और गणित।',
-    },
-    subjects: [
-      { en: 'General Studies', hi: 'सामान्य अध्ययन' },
-      { en: 'General Science', hi: 'सामान्य विज्ञान' },
-      { en: 'Bihar General Knowledge', hi: 'बिहार सामान्य ज्ञान' },
-      { en: 'Current Affairs', hi: 'समसामयिकी' },
-      { en: 'Reasoning', hi: 'तर्कशक्ति' },
-      { en: 'Mathematics', hi: 'गणित' },
-      { en: 'General Hindi (mains)', hi: 'सामान्य हिन्दी (मुख्य)' },
-    ],
+    timing: b('About July 2027', 'लगभग जुलाई 2027'),
+    track: 'core',
   },
   'bpsc-cce': {
     slug: 'bpsc-cce',
-    short: { en: 'BPSC Prelims', hi: 'बीपीएससी प्रारंभिक' },
-    name: { en: 'BPSC Combined Competitive Exam (Prelims)', hi: 'बीपीएससी संयुक्त प्रतियोगी परीक्षा (प्रारंभिक)' },
-    body: { en: 'Bihar Public Service Commission', hi: 'बिहार लोक सेवा आयोग' },
+    short: b('BPSC CCE', 'बीपीएससी सीसीई'),
+    name: b('BPSC 73rd Combined Competitive Exam (Prelims)', 'बीपीएससी 73वीं संयुक्त प्रतियोगी परीक्षा (प्रारंभिक)'),
+    body: b('Bihar Public Service Commission (BPSC)', 'बिहार लोक सेवा आयोग (बीपीएससी)'),
     website: 'https://bpsc.bihar.gov.in',
-    state: { en: 'Bihar', hi: 'बिहार' },
-    blurb: {
-      en: 'Bihar’s civil services exam. The prelims general studies paper covers history, geography, polity, economy, science, Bihar and mental ability.',
-      hi: 'बिहार की सिविल सेवा परीक्षा। प्रारंभिक सामान्य अध्ययन पत्र में इतिहास, भूगोल, राजव्यवस्था, अर्थव्यवस्था, विज्ञान, बिहार और मानसिक योग्यता।',
-    },
+    state: b('Bihar', 'बिहार'),
+    blurb: b(
+      'Bihar’s civil services exam. The prelims paper covers history, geography, polity, economy, science, Bihar and mental ability.',
+      'बिहार की सिविल सेवा परीक्षा। प्रारंभिक पत्र में इतिहास, भूगोल, राजव्यवस्था, अर्थव्यवस्था, विज्ञान, बिहार और मानसिक योग्यता।',
+    ),
     subjects: [
-      { en: 'History & National Movement', hi: 'इतिहास एवं राष्ट्रीय आंदोलन' },
-      { en: 'Geography', hi: 'भूगोल' },
-      { en: 'Polity & Economy', hi: 'राजव्यवस्था एवं अर्थव्यवस्था' },
-      { en: 'General Science', hi: 'सामान्य विज्ञान' },
-      { en: 'Current Events', hi: 'समसामयिक घटनाएं' },
-      { en: 'Bihar Special', hi: 'बिहार विशेष' },
-      { en: 'Mental Ability', hi: 'मानसिक योग्यता' },
+      b('History & National Movement', 'इतिहास एवं राष्ट्रीय आंदोलन'),
+      b('Geography', 'भूगोल'),
+      b('Polity & Economy', 'राजव्यवस्था एवं अर्थव्यवस्था'),
+      b('General Science', 'सामान्य विज्ञान'),
+      b('Current Events', 'समसामयिक घटनाएं'),
+      b('Bihar Special', 'बिहार विशेष'),
+      b('Mental Ability', 'मानसिक योग्यता'),
     ],
+    timing: b('Late 2027 (73rd CCE)', '2027 के अंत में (73वीं सीसीई)'),
+    track: 'core',
   },
-  'up-si': {
-    slug: 'up-si',
-    short: { en: 'UP SI', hi: 'यूपी एसआई' },
-    name: { en: 'UP Police Sub-Inspector', hi: 'उत्तर प्रदेश पुलिस उप निरीक्षक' },
-    body: { en: 'UP Police Recruitment and Promotion Board', hi: 'उत्तर प्रदेश पुलिस भर्ती एवं प्रोन्नति बोर्ड' },
-    website: 'https://uppbpb.gov.in',
-    state: { en: 'Uttar Pradesh', hi: 'उत्तर प्रदेश' },
-    blurb: {
-      en: 'Sub-Inspector recruitment for UP Police. General Hindi, law and constitution, numerical ability and reasoning.',
-      hi: 'उत्तर प्रदेश पुलिस में उप निरीक्षक भर्ती। सामान्य हिन्दी, विधि एवं संविधान, संख्यात्मक योग्यता और तर्कशक्ति।',
-    },
+  mppsc: {
+    slug: 'mppsc',
+    short: b('MPPSC', 'एमपीपीएससी'),
+    name: b('MPPSC State Service Exam (Prelims)', 'एमपीपीएससी राज्य सेवा परीक्षा (प्रारंभिक)'),
+    body: b('Madhya Pradesh Public Service Commission (MPPSC)', 'मध्यप्रदेश लोक सेवा आयोग (एमपीपीएससी)'),
+    website: 'https://mppsc.mp.gov.in',
+    state: b('Madhya Pradesh', 'मध्यप्रदेश'),
+    blurb: b(
+      'Madhya Pradesh’s state services exam. Prelims: a general studies paper and a qualifying aptitude paper, with a strong MP focus.',
+      'मध्यप्रदेश की राज्य सेवा परीक्षा। प्रारंभिक: सामान्य अध्ययन का पत्र और क्वालिफ़ाइंग अभिरुचि पत्र, मध्यप्रदेश पर विशेष ज़ोर।',
+    ),
     subjects: [
-      { en: 'General Hindi', hi: 'सामान्य हिन्दी' },
-      { en: 'Basic Law, Constitution & GK', hi: 'मूल विधि, संविधान एवं सामान्य ज्ञान' },
-      { en: 'Numerical & Mental Ability', hi: 'संख्यात्मक एवं मानसिक योग्यता' },
-      { en: 'Mental Aptitude & Reasoning', hi: 'मानसिक अभिरुचि एवं तार्किक क्षमता' },
+      b('History of India & MP', 'भारत एवं मध्यप्रदेश का इतिहास'),
+      b('Geography', 'भूगोल'),
+      b('Polity & Economy', 'राजव्यवस्था एवं अर्थव्यवस्था'),
+      b('General Science & Environment', 'सामान्य विज्ञान एवं पर्यावरण'),
+      b('Tribes of MP', 'मध्यप्रदेश की जनजातियां'),
+      b('Current Affairs', 'समसामयिकी'),
+      b('General Aptitude (CSAT)', 'सामान्य अभिरुचि (सीसैट)'),
     ],
+    timing: b('Prelims about 24 January and 2 May 2027', 'प्रारंभिक लगभग 24 जनवरी और 2 मई 2027'),
+    track: 'core',
+  },
+  ras: {
+    slug: 'ras',
+    short: b('RAS', 'आरएएस'),
+    name: b('RPSC RAS/RTS Combined Competitive Exam (Prelims)', 'आरपीएससी आरएएस/आरटीएस संयुक्त प्रतियोगी परीक्षा (प्रारंभिक)'),
+    body: b('Rajasthan Public Service Commission (RPSC)', 'राजस्थान लोक सेवा आयोग (आरपीएससी)'),
+    website: 'https://rpsc.rajasthan.gov.in',
+    state: b('Rajasthan', 'राजस्थान'),
+    blurb: b(
+      'Rajasthan’s administrative services exam. One prelims paper on general knowledge and general science, heavy on Rajasthan.',
+      'राजस्थान की प्रशासनिक सेवा परीक्षा। प्रारंभिक में सामान्य ज्ञान एवं सामान्य विज्ञान का एक पत्र, राजस्थान पर विशेष ज़ोर।',
+    ),
+    subjects: [
+      b('Rajasthan: history, art & culture', 'राजस्थान: इतिहास, कला एवं संस्कृति'),
+      b('Indian History', 'भारत का इतिहास'),
+      b('Geography', 'भूगोल'),
+      b('Polity & Administration', 'राजव्यवस्था एवं प्रशासन'),
+      b('Economy', 'अर्थव्यवस्था'),
+      b('Science & Technology', 'विज्ञान एवं प्रौद्योगिकी'),
+      b('Reasoning & Current Affairs', 'तर्कशक्ति एवं समसामयिकी'),
+    ],
+    timing: b('Late 2027', '2027 के अंत में'),
+    track: 'core',
+  },
+  'bihar-stet': {
+    slug: 'bihar-stet',
+    short: b('Bihar STET', 'बिहार एसटीईटी'),
+    name: b('Bihar Secondary Teacher Eligibility Test (STET)', 'बिहार माध्यमिक शिक्षक पात्रता परीक्षा (एसटीईटी)'),
+    body: b('Bihar School Examination Board (BSEB)', 'बिहार विद्यालय परीक्षा समिति (बीएसईबी)'),
+    state: b('Bihar', 'बिहार'),
+    blurb: b(
+      'Eligibility test for secondary and senior secondary teachers in Bihar: your subject plus teaching aptitude. Pairs well with TRE.',
+      'बिहार में माध्यमिक और उच्च माध्यमिक शिक्षकों की पात्रता परीक्षा: आपका विषय और शिक्षण अभिरुचि। टीआरई के साथ उपयोगी।',
+    ),
+    subjects: [
+      b('Chosen subject', 'चुना गया विषय'),
+      b('Teaching Aptitude', 'शिक्षण अभिरुचि'),
+      b('Pedagogy', 'शिक्षाशास्त्र'),
+    ],
+    timing: b('Possibly mid-2027', 'संभवतः 2027 के मध्य में'),
+    track: 'filler',
+  },
+  ctet: {
+    slug: 'ctet',
+    short: b('CTET', 'सीटीईटी'),
+    name: b('Central Teacher Eligibility Test (CTET)', 'केंद्रीय शिक्षक पात्रता परीक्षा (सीटीईटी)'),
+    body: b('Central Board of Secondary Education (CBSE)', 'केंद्रीय माध्यमिक शिक्षा बोर्ड (सीबीएसई)'),
+    website: 'https://ctet.nic.in',
+    state: b('All India', 'अखिल भारतीय'),
+    blurb: b(
+      'National teacher eligibility test. Paper 1 for classes 1–5, Paper 2 for classes 6–8. Child development carries every paper.',
+      'राष्ट्रीय शिक्षक पात्रता परीक्षा। कक्षा 1–5 के लिए प्रश्नपत्र 1, कक्षा 6–8 के लिए प्रश्नपत्र 2। बाल विकास हर पत्र में।',
+    ),
+    subjects: [
+      b('Child Development & Pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+      b('Language I & II', 'भाषा I एवं II'),
+      b('Mathematics', 'गणित'),
+      b('Environmental Studies', 'पर्यावरण अध्ययन'),
+      b('Science / Social Studies', 'विज्ञान / सामाजिक अध्ययन'),
+    ],
+    timing: b('Usually twice a year', 'आम तौर पर साल में दो बार'),
+    track: 'filler',
+  },
+  'cg-tet': {
+    slug: 'cg-tet',
+    short: b('CG TET', 'सीजी टीईटी'),
+    name: b('Chhattisgarh Teacher Eligibility Test (CG TET)', 'छत्तीसगढ़ शिक्षक पात्रता परीक्षा (सीजी टीईटी)'),
+    body: b('CG Vyapam / Chhattisgarh Staff Selection Board', 'छत्तीसगढ़ व्यापम / छत्तीसगढ़ कर्मचारी चयन मंडल'),
+    state: b('Chhattisgarh', 'छत्तीसगढ़'),
+    blurb: b(
+      'Chhattisgarh’s teacher eligibility test, in the CTET pattern, with questions on Chhattisgarh across sections.',
+      'छत्तीसगढ़ की शिक्षक पात्रता परीक्षा, सीटीईटी के पैटर्न पर, कई खण्डों में छत्तीसगढ़ से जुड़े प्रश्न।',
+    ),
+    subjects: [
+      b('Child Development & Pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+      b('Hindi', 'हिन्दी'),
+      b('English / regional language', 'अंग्रेज़ी / क्षेत्रीय भाषा'),
+      b('Mathematics', 'गणित'),
+      b('EVS / Science / Social Studies', 'पर्यावरण / विज्ञान / सामाजिक अध्ययन'),
+    ],
+    timing: b('About 26 September 2027', 'लगभग 26 सितंबर 2027'),
+    track: 'filler',
   },
 };
 
-/** What an exam's Pass unlocks, listed on every exam page and on the pricing page. */
-export const PASS_FEATURES: Bi[] = [
-  { en: 'Full-length mock tests in the exam pattern', hi: 'परीक्षा पैटर्न पर पूर्ण मॉक टेस्ट' },
-  { en: 'Topic-wise practice with explanations', hi: 'व्याख्या सहित विषयवार अभ्यास' },
-  { en: 'Solved previous year papers', hi: 'हल सहित पिछले वर्षों के प्रश्नपत्र' },
-  { en: 'Weak-topic report after every test', hi: 'हर टेस्ट के बाद कमज़ोर विषयों की रिपोर्ट' },
-  { en: 'Every subject in the syllabus', hi: 'पाठ्यक्रम के सभी विषय' },
-];
-
-/** Price of one exam's Pass, in rupees. Each exam is sold separately. */
-export const PASS_PRICE = 1000;
-
 /* ------------------------------------------------------------------ papers */
+
+export const PAPER_KINDS = ['free', 'mock', 'sample', 'probable', 'pyq'] as const;
+export type PaperKind = (typeof PAPER_KINDS)[number];
+
+export const KIND_LABEL: Record<PaperKind, Bi> = {
+  free: b('Free set', 'मुफ़्त सेट'),
+  mock: b('Full mock', 'फ़ुल मॉक'),
+  sample: b('Sample paper', 'सैंपल पेपर'),
+  probable: b('Most-probable set', 'संभावित प्रश्न सेट'),
+  pyq: b('Past paper', 'पिछला प्रश्नपत्र'),
+};
 
 const bi = z.object({ en: z.string().min(1), hi: z.string().min(1) });
 
-const questionSchema = z.object({
-  id: z.string().min(1),
-  topic: bi,
-  difficulty: z.enum(['easy', 'medium', 'hard']),
-  text: bi,
-  options: z.array(bi).length(4),
-  answer: z.number().int().min(0).max(3),
-  explanation: bi,
-});
+const questionSchema = z
+  .object({
+    id: z.string().min(1),
+    qid: z.string().optional(),
+    topic: bi,
+    difficulty: z.enum(['easy', 'medium', 'hard']).optional(),
+    type: z.string().optional(),
+    text: bi,
+    options: z.array(bi).min(4).max(5),
+    answer: z.number().int().min(0),
+    explanation: bi,
+  })
+  .refine((q) => q.answer < q.options.length, { message: 'answer must index an option' });
 
 const paperSchema = z.object({
   id: z.string().regex(/^[a-z0-9-]+$/),
   exam: z.enum(EXAMS),
   title: bi,
-  kind: z.enum(['mock', 'pyq']),
+  kind: z.enum(PAPER_KINDS),
   free: z.boolean(),
-  status: z.enum(['draft', 'reviewed']),
-  duration_minutes: z.number().int().positive(),
+  status: z.enum(['draft', 'reviewed']).default('draft'),
+  duration_minutes: z.number().positive(),
   marks_per_question: z.number().positive(),
   negative_marking: z.number().min(0),
   sections: z
@@ -168,6 +253,10 @@ function loadPapers(): Paper[] {
     const [, folder, file] = /papers\/([^/]+)\/([^/]+)\.json$/.exec(path) ?? [];
     if (folder !== p.exam || file !== p.id) {
       throw new Error(`Paper ${path} must live at papers/${p.exam}/${p.id}.json`);
+    }
+    // The static build is public. A paid paper here would leak the paid asset.
+    if (!p.free) {
+      throw new Error(`Paper ${path} has free: false. Paid papers belong in content/papers/ and are served by the API only.`);
     }
     const ids = new Set<string>();
     for (const q of p.sections.flatMap((s) => s.questions)) {
@@ -203,27 +292,15 @@ export function topicsOf(p: Paper): Bi[] {
   return [...seen.values()];
 }
 
-export const OPTION_LETTERS = ['A', 'B', 'C', 'D'] as const;
-
 export function durationLabel(minutes: number): Bi {
   const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
+  const m = Math.round(minutes % 60);
   const en = [h ? `${h} hour${h === 1 ? '' : 's'}` : '', m ? `${m} minutes` : ''].filter(Boolean).join(' ');
   const hi = [h ? `${h} घंटे` : '', m ? `${m} मिनट` : ''].filter(Boolean).join(' ');
   return { en, hi };
 }
 
-/** What the practice and test pages embed for their client scripts. */
+/** What the practice, test and booklet pages embed for their client scripts. */
 export function paperJson(p: Paper): string {
-  const data = {
-    id: p.id,
-    exam: p.exam,
-    title: p.title,
-    examName: EXAM_INFO[p.exam].short,
-    duration_minutes: p.duration_minutes,
-    marks_per_question: p.marks_per_question,
-    negative_marking: p.negative_marking,
-    sections: p.sections,
-  };
-  return JSON.stringify(data).replace(/</g, '\\u003c');
+  return JSON.stringify(p).replace(/</g, '\\u003c');
 }

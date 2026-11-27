@@ -1,0 +1,32 @@
+---
+// Practice, mock test, paper + OMR, printable booklet and OMR sheet for one
+// free paper. The paper is embedded; scripts/player.ts renders the view.
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import { allPapers, EXAM_INFO, paperJson, type Paper } from '../../../lib/exams.ts';
+import type { Mode } from '../../../lib/url.ts';
+
+
+export function getStaticPaths() {
+  const modes: Mode[] = ['practice', 'test', 'omr', 'booklet', 'sheet'];
+  return allPapers().flatMap((paper) => modes.map((mode) => ({ params: { exam: paper.exam, paper: paper.id, mode }, props: { paper, mode } })));
+}
+
+const { paper, mode } = Astro.props as { paper: Paper; mode: Mode };
+const info = EXAM_INFO[paper.exam];
+const label: Record<Mode, string> = { practice: 'Practice', test: 'Mock test', omr: 'Paper + OMR', booklet: 'Printable paper', sheet: 'OMR sheet' };
+---
+<Base title={`${info.short.en} ${paper.title.en}: ${label[mode]}`} exam={paper.exam} bare noindex={mode !== 'practice'}>
+  <div id="app" data-mode={mode}>
+    <div class="container narrow page-pad">
+      <p class="muted"><L en="Loading…" hi="लोड हो रहा है…" /></p>
+      <noscript><p>Please turn on JavaScript to use this page. / कृपया इस पेज के लिए जावास्क्रिप्ट चालू करें।</p></noscript>
+    </div>
+  </div>
+  <script type="application/json" id="paper-data" set:html={paperJson(paper)} />
+</Base>
+
+<script>
+  import { startPlayer } from '../../../scripts/player.ts';
+  void startPlayer();
+</script>

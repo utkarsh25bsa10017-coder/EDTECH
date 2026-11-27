@@ -96,50 +96,6 @@ export const SYLLABUS: Record<Exam, { stages: Stage[]; note?: Bi }> = {
       'कक्षा 1–5 के लिए अलग विषय पत्र नहीं है। कक्षा 6–12 के विषय हर अधिसूचना की रिक्ति तालिका के अनुसार होते हैं।',
     ),
   },
-  'bihar-daroga': {
-    stages: [
-      {
-        name: b('Prelims', 'प्रारंभिक परीक्षा'),
-        papers: [
-          {
-            name: b('General Studies & Current Affairs', 'सामान्य अध्ययन एवं समसामयिकी'),
-            note: QUALIFYING,
-            subjects: [
-              b('History', 'इतिहास'),
-              b('Geography', 'भूगोल'),
-              b('Polity', 'राजव्यवस्था'),
-              b('Economy', 'अर्थव्यवस्था'),
-              b('General science', 'सामान्य विज्ञान'),
-              b('Bihar GK', 'बिहार सामान्य ज्ञान'),
-              b('Current affairs', 'समसामयिकी'),
-              b('Maths & mental ability', 'गणित एवं मानसिक योग्यता'),
-            ],
-          },
-        ],
-      },
-      {
-        name: b('Mains', 'मुख्य परीक्षा'),
-        papers: [
-          {
-            name: b('Paper I: General Hindi', 'पत्र I: सामान्य हिन्दी'),
-            note: QUALIFYING,
-            subjects: [b('Grammar', 'व्याकरण'), b('Unseen passage', 'अपठित गद्यांश'), b('Vocabulary & fill in the blanks', 'शब्द ज्ञान एवं रिक्त स्थान')],
-          },
-          {
-            name: b('Paper II: General Studies', 'पत्र II: सामान्य अध्ययन'),
-            note: b('Counts for merit', 'मेधा सूची में गिना जाता है'),
-            subjects: [
-              b('General science', 'सामान्य विज्ञान'),
-              b('Civics', 'नागरिक शास्त्र'),
-              b('Indian history', 'भारतीय इतिहास'),
-              b('Indian geography', 'भारतीय भूगोल'),
-              b('Maths & mental ability', 'गणित एवं मानसिक योग्यता'),
-            ],
-          },
-        ],
-      },
-    ],
-  },
   'bpsc-cce': {
     stages: [
       {
@@ -189,49 +145,145 @@ export const SYLLABUS: Record<Exam, { stages: Stage[]; note?: Bi }> = {
     ],
     note: b('Our practice sets cover the prelims.', 'हमारे अभ्यास सेट प्रारंभिक परीक्षा पर आधारित हैं।'),
   },
-  'up-si': {
+  mppsc: {
     stages: [
       {
-        name: b('Written exam: four sections', 'लिखित परीक्षा: चार खण्ड'),
+        name: b('Prelims: two objective papers', 'प्रारंभिक परीक्षा: दो वस्तुनिष्ठ प्रश्नपत्र'),
         papers: [
           {
-            name: b('1. General Hindi', '1. सामान्य हिन्दी'),
-            subjects: [b('Grammar', 'व्याकरण'), b('Vocabulary', 'शब्द ज्ञान'), b('Idioms & proverbs', 'मुहावरे एवं लोकोक्तियां'), b('Tatsam & tadbhav', 'तत्सम एवं तद्भव'), b('Literature & authors', 'साहित्य एवं रचनाकार')],
-          },
-          {
-            name: b('2. Basic Law, Constitution & GK', '2. मूल विधि, संविधान एवं सामान्य ज्ञान'),
+            name: b('Paper I: General Studies', 'प्रश्नपत्र I: सामान्य अध्ययन'),
+            note: b('Counts for the mains shortlist', 'मुख्य परीक्षा की सूची में गिना जाता है'),
             subjects: [
-              b('BNS, BNSS & BSA (new criminal laws)', 'बीएनएस, बीएनएसएस एवं बीएसए (नए आपराधिक कानून)'),
-              b('Laws protecting women, children & SC/ST', 'महिला, बाल एवं अनुसूचित जाति/जनजाति संरक्षण कानून'),
-              b('Traffic, environment & wildlife laws', 'यातायात, पर्यावरण एवं वन्यजीव कानून'),
-              b('Human rights & RTI', 'मानवाधिकार एवं सूचना का अधिकार'),
-              b('Indian Constitution', 'भारतीय संविधान'),
-              b('General knowledge & current affairs', 'सामान्य ज्ञान एवं समसामयिकी'),
-              b('Uttar Pradesh GK', 'उत्तर प्रदेश सामान्य ज्ञान'),
+              b('History of India & Madhya Pradesh', 'भारत एवं मध्यप्रदेश का इतिहास'),
+              b('Geography of India, the world & MP', 'भारत, विश्व एवं मध्यप्रदेश का भूगोल'),
+              b('Indian polity & MP administration', 'भारतीय राजव्यवस्था एवं मध्यप्रदेश प्रशासन'),
+              b('Economy of India & MP', 'भारत एवं मध्यप्रदेश की अर्थव्यवस्था'),
+              b('General science & environment', 'सामान्य विज्ञान एवं पर्यावरण'),
+              b('Current affairs', 'समसामयिकी'),
+              b('Information & communication technology', 'सूचना एवं संचार प्रौद्योगिकी'),
+              b('Tribes of Madhya Pradesh', 'मध्यप्रदेश की जनजातियां'),
             ],
           },
           {
-            name: b('3. Numerical & Mental Ability', '3. संख्यात्मक एवं मानसिक योग्यता'),
+            name: b('Paper II: General Aptitude (CSAT)', 'प्रश्नपत्र II: सामान्य अभिरुचि (सीसैट)'),
+            note: QUALIFYING,
             subjects: [
-              b('Number system', 'संख्या पद्धति'),
-              b('Percentage, ratio & average', 'प्रतिशत, अनुपात एवं औसत'),
-              b('Interest, profit & loss', 'ब्याज, लाभ एवं हानि'),
-              b('Time, speed & distance', 'समय, चाल एवं दूरी'),
-              b('Time & work', 'समय एवं कार्य'),
+              b('Comprehension', 'बोधगम्यता'),
+              b('Reasoning & analytical ability', 'तार्किक एवं विश्लेषणात्मक क्षमता'),
+              b('Decision making & problem solving', 'निर्णय लेना एवं समस्या समाधान'),
+              b('Basic numeracy & data interpretation', 'आधारभूत संख्यात्मकता एवं आंकड़ों का विश्लेषण'),
+              b('Hindi comprehension', 'हिन्दी भाषा में बोधगम्यता'),
+            ],
+          },
+        ],
+      },
+      { name: b('Mains', 'मुख्य परीक्षा'), papers: [{ name: b('Descriptive papers', 'वर्णनात्मक प्रश्नपत्र'), subjects: [b('GS I–IV, Hindi & essay', 'सामान्य अध्ययन I–IV, हिन्दी एवं निबंध')] }] },
+      { name: b('Interview', 'साक्षात्कार'), papers: [{ name: b('Personality test', 'व्यक्तित्व परीक्षण'), subjects: [b('Interview', 'साक्षात्कार')] }] },
+    ],
+    note: b('Our practice sets cover the prelims.', 'हमारे अभ्यास सेट प्रारंभिक परीक्षा पर आधारित हैं।'),
+  },
+  ras: {
+    stages: [
+      {
+        name: b('Prelims', 'प्रारंभिक परीक्षा'),
+        papers: [
+          {
+            name: b('General Knowledge & General Science', 'सामान्य ज्ञान एवं सामान्य विज्ञान'),
+            note: b('Screening for the mains', 'मुख्य परीक्षा के लिए छंटनी'),
+            subjects: [
+              b('History, art & culture of Rajasthan', 'राजस्थान का इतिहास, कला एवं संस्कृति'),
+              b('Indian history', 'भारत का इतिहास'),
+              b('Geography of Rajasthan, India & the world', 'राजस्थान, भारत एवं विश्व का भूगोल'),
+              b('Indian polity & Rajasthan administration', 'भारतीय राजव्यवस्था एवं राजस्थान प्रशासन'),
+              b('Economy of India & Rajasthan', 'भारत एवं राजस्थान की अर्थव्यवस्था'),
+              b('Science & technology', 'विज्ञान एवं प्रौद्योगिकी'),
+              b('Reasoning & mental ability', 'तार्किक एवं मानसिक योग्यता'),
+              b('Current affairs', 'समसामयिकी'),
+            ],
+          },
+        ],
+      },
+      { name: b('Mains', 'मुख्य परीक्षा'), papers: [{ name: b('Descriptive papers', 'वर्णनात्मक प्रश्नपत्र'), subjects: [b('GS I–III, Hindi & English', 'सामान्य अध्ययन I–III, हिन्दी एवं अंग्रेज़ी')] }] },
+      { name: b('Interview', 'साक्षात्कार'), papers: [{ name: b('Personality test', 'व्यक्तित्व परीक्षण'), subjects: [b('Interview', 'साक्षात्कार')] }] },
+    ],
+    note: b(
+      'RPSC papers have used a fifth option for "not attempted"; our RAS mocks follow the pattern in the latest notice.',
+      'आरपीएससी के प्रश्नपत्रों में "अनुत्तरित" के लिए पांचवां विकल्प रहा है; हमारे आरएएस मॉक नवीनतम सूचना के पैटर्न का पालन करते हैं।',
+    ),
+  },
+  'bihar-stet': {
+    stages: [
+      {
+        name: b('Eligibility test', 'पात्रता परीक्षा'),
+        papers: [
+          {
+            name: b('Paper I: Secondary (classes 9–10)', 'प्रश्नपत्र I: माध्यमिक (कक्षा 9–10)'),
+            subjects: [b('Chosen subject', 'चुना गया विषय'), b('Teaching aptitude & pedagogy', 'शिक्षण अभिरुचि एवं शिक्षाशास्त्र')],
+          },
+          {
+            name: b('Paper II: Senior secondary (classes 11–12)', 'प्रश्नपत्र II: उच्च माध्यमिक (कक्षा 11–12)'),
+            subjects: [b('Chosen subject', 'चुना गया विषय'), b('Teaching aptitude & pedagogy', 'शिक्षण अभिरुचि एवं शिक्षाशास्त्र')],
+          },
+        ],
+      },
+    ],
+    note: b('Subjects and question split follow the BSEB notice.', 'विषय एवं प्रश्नों का विभाजन बीएसईबी की सूचना के अनुसार।'),
+  },
+  ctet: {
+    stages: [
+      {
+        name: b('Two papers (take one or both)', 'दो प्रश्नपत्र (एक या दोनों)'),
+        papers: [
+          {
+            name: b('Paper 1: Classes 1–5', 'प्रश्नपत्र 1: कक्षा 1–5'),
+            subjects: [
+              b('Child development & pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+              b('Language I', 'भाषा I'),
+              b('Language II', 'भाषा II'),
+              b('Mathematics', 'गणित'),
+              b('Environmental studies', 'पर्यावरण अध्ययन'),
             ],
           },
           {
-            name: b('4. Mental Aptitude, IQ & Reasoning', '4. मानसिक अभिरुचि, बुद्धिलब्धि एवं तार्किक क्षमता'),
+            name: b('Paper 2: Classes 6–8', 'प्रश्नपत्र 2: कक्षा 6–8'),
             subjects: [
-              b('Police aptitude: law & order, communal harmony, crime control', 'पुलिस अभिरुचि: कानून व्यवस्था, सांप्रदायिक सद्भाव, अपराध नियंत्रण'),
-              b('Series & analogy', 'श्रृंखला एवं सादृश्यता'),
-              b('Coding & decoding', 'कोडिंग-डिकोडिंग'),
-              b('Directions & blood relations', 'दिशा एवं रक्त संबंध'),
-              b('Logical diagrams', 'तार्किक आरेख'),
+              b('Child development & pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+              b('Language I', 'भाषा I'),
+              b('Language II', 'भाषा II'),
+              b('Maths & science, or social studies', 'गणित एवं विज्ञान, या सामाजिक अध्ययन'),
             ],
           },
         ],
       },
     ],
+  },
+  'cg-tet': {
+    stages: [
+      {
+        name: b('Two papers (take one or both)', 'दो प्रश्नपत्र (एक या दोनों)'),
+        papers: [
+          {
+            name: b('Paper 1: Classes 1–5', 'प्रश्नपत्र 1: कक्षा 1–5'),
+            subjects: [
+              b('Child development & pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+              b('Hindi', 'हिन्दी'),
+              b('English / regional language', 'अंग्रेज़ी / क्षेत्रीय भाषा'),
+              b('Mathematics', 'गणित'),
+              b('Environmental studies', 'पर्यावरण अध्ययन'),
+            ],
+          },
+          {
+            name: b('Paper 2: Classes 6–8', 'प्रश्नपत्र 2: कक्षा 6–8'),
+            subjects: [
+              b('Child development & pedagogy', 'बाल विकास एवं शिक्षाशास्त्र'),
+              b('Hindi', 'हिन्दी'),
+              b('English / regional language', 'अंग्रेज़ी / क्षेत्रीय भाषा'),
+              b('Maths & science, or social studies', 'गणित एवं विज्ञान, या सामाजिक अध्ययन'),
+            ],
+          },
+        ],
+      },
+    ],
+    note: b('Questions on Chhattisgarh appear across sections; follow the latest notice.', 'छत्तीसगढ़ से जुड़े प्रश्न कई खण्डों में आते हैं; नवीनतम सूचना देखें।'),
   },
 };

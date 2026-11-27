@@ -1,0 +1,163 @@
+---
+import L from './L.astro';
+import Icon from './Icon.astro';
+import { whatsappUrl } from '../config.ts';
+const wa = whatsappUrl('Hi Prashnottar, I have a question about my exam.');
+const chips = [
+  { en: 'Which pack should I buy?', hi: 'मुझे कौन सा पैक लेना चाहिए?' },
+  { en: 'When is my exam?', hi: 'मेरी परीक्षा कब है?' },
+  { en: 'How does the mock test work?', hi: 'मॉक टेस्ट कैसे काम करता है?' },
+  { en: 'Give me a simple study plan', hi: 'मुझे एक आसान अध्ययन योजना दें' },
+];
+---
+<div class="chat" data-chat>
+  <div class="chat-panel panel" data-chat-panel hidden role="dialog" aria-labelledby="chat-h">
+    <header class="chat-head">
+      <h2 id="chat-h" class="h-sm"><L en="Ask Prashnottar" hi="प्रश्नोत्तर से पूछें" /></h2>
+      <button class="icon-btn" type="button" data-chat-close aria-label="Close chat" data-label-en="Close chat" data-label-hi="चैट बंद करें"><Icon name="x" size={18} /></button>
+    </header>
+    <div class="chat-log" data-chat-log aria-live="polite">
+      <div class="msg msg-assistant msg-hello">
+        <L en="Hi! Ask me about packs, exam dates, the mock test or a study plan. Dates are tentative; always check the official notice." hi="नमस्ते! पैक, परीक्षा तिथि, मॉक टेस्ट या अध्ययन योजना के बारे में पूछें। तिथियां संभावित हैं; आधिकारिक सूचना ज़रूर देखें।" />
+      </div>
+    </div>
+    <div class="chat-chips" data-chat-chips>
+      {chips.map((c) => (
+        <button type="button" class="chip" data-q-en={c.en} data-q-hi={c.hi}><L t={c} /></button>
+      ))}
+    </div>
+    <form class="chat-form" data-chat-form>
+      <label class="sr-only" for="chat-in"><L en="Your question" hi="आपका प्रश्न" /></label>
+      <textarea id="chat-in" rows="1" maxlength="1000" placeholder="Type your question" data-ph-en="Type your question" data-ph-hi="अपना प्रश्न लिखें"></textarea>
+      <button class="btn btn-primary" type="submit"><L en="Send" hi="भेजें" /></button>
+    </form>
+    {wa && <p class="chat-wa small"><a href={wa} target="_blank" rel="noopener"><L en="Prefer a person? Talk to us on WhatsApp" hi="किसी व्यक्ति से बात करनी है? व्हाट्सऐप पर संपर्क करें" /></a></p>}
+  </div>
+  <button class="chat-fab btn btn-primary" type="button" data-chat-open aria-expanded="false" aria-haspopup="dialog">
+    <Icon name="chat" size={20} /><L en="Ask" hi="पूछें" />
+  </button>
+</div>
+
+<style>
+  .chat {
+    position: fixed;
+    right: 16px;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.6rem;
+  }
+  .chat-fab {
+    border-radius: 999px;
+    min-height: 48px;
+    padding-inline: 1.1rem;
+    box-shadow: var(--shadow);
+  }
+  .chat.is-open .chat-fab {
+    display: none;
+  }
+  .chat-panel {
+    width: min(380px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 120px));
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    background: color-mix(in srgb, var(--panel-solid) 94%, transparent);
+  }
+  .chat-panel[hidden] {
+    display: none;
+  }
+  .chat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.25rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .chat-head h2 {
+    margin: 0;
+  }
+  .chat-log {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0.25rem;
+  }
+  .chat-log :global(.msg) {
+    max-width: 88%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.98rem;
+    overflow-wrap: anywhere;
+  }
+  .chat-log :global(.msg-assistant) {
+    background: var(--panel-solid);
+    border: 1px solid var(--line);
+    align-self: flex-start;
+  }
+  .chat-log :global(.msg-user) {
+    background: var(--accent);
+    color: var(--accent-ink);
+    align-self: flex-end;
+  }
+  .chat-log :global(.msg-note) {
+    align-self: center;
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  .chat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding-bottom: 0.5rem;
+  }
+  .chat-chips[hidden] {
+    display: none;
+  }
+  .chat-chips .chip {
+    font-size: 0.88rem;
+    font-weight: 500;
+    min-height: 40px;
+  }
+  .chat-form {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-end;
+  }
+  .chat-form textarea {
+    flex: 1;
+    min-height: var(--tap);
+    max-height: 120px;
+    resize: none;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--panel-solid);
+    color: var(--ink);
+    font: inherit;
+    padding: 0.55rem 0.7rem;
+  }
+  .chat-wa {
+    margin: 0.4rem 0 0;
+    text-align: center;
+  }
+  @media (max-width: 520px) {
+    .chat {
+      right: 12px;
+      bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+    .chat-panel {
+      width: calc(100vw - 24px);
+      height: calc(100vh - 90px);
+    }
+  }
+  @media print {
+    .chat {
+      display: none;
+    }
+  }
+</style>

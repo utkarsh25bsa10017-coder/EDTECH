@@ -33,6 +33,7 @@ function applyAttributes(ui: Ui) {
 export function setUi(ui: Ui) {
   if (ui === 'hi') root.dataset.ui = 'hi';
   else delete root.dataset.ui;
+  root.lang = ui === 'hi' ? 'hi' : 'en';
   applyAttributes(ui);
   document.dispatchEvent(new CustomEvent<Ui>('pq:ui', { detail: ui }));
 }
@@ -43,10 +44,14 @@ function effectiveTheme(): 'light' | 'dark' {
   return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-export function initPrefs() {
+/** Wires toggles inside `scope` (default: the whole page). Safe to call again for new content. */
+export function initPrefs(scope: ParentNode = document) {
   applyAttributes(currentUi());
+  root.lang = currentUi() === 'hi' ? 'hi' : 'en';
 
-  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-lang-toggle]')) {
+  for (const btn of scope.querySelectorAll<HTMLButtonElement>('[data-lang-toggle]:not([data-wired])')) {
+    btn.dataset.wired = '1';
+    btn.setAttribute('aria-label', 'Switch language / भाषा बदलें');
     btn.addEventListener('click', () => {
       const next: Ui = currentUi() === 'hi' ? 'en' : 'hi';
       save('pq-ui', next);
@@ -54,7 +59,8 @@ export function initPrefs() {
     });
   }
 
-  for (const btn of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+  for (const btn of scope.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]:not([data-wired])')) {
+    btn.dataset.wired = '1';
     btn.addEventListener('click', () => {
       const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
       root.dataset.theme = next;

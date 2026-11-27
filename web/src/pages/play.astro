@@ -1,0 +1,19 @@
+---
+// Paid (and any API-served) paper: /play/?exam=&paper=&mode=
+// Nothing paid is in the static build; the paper is fetched with the user's token.
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+---
+<Base title="Paper" bare noindex>
+  <div id="app">
+    <div class="container narrow page-pad">
+      <p class="muted"><L en="Loading your paper…" hi="आपका प्रश्नपत्र लोड हो रहा है…" /></p>
+      <noscript><p>Please turn on JavaScript to use this page.</p></noscript>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { startPlayer } from '../scripts/player.ts';
+  void startPlayer();
+</script>

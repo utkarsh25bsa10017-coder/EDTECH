@@ -1,297 +1,231 @@
 ---
 import Base from '../layouts/Base.astro';
 import L from '../components/L.astro';
-import Icon from '../components/Icon.astro';
-import { EXAMS, EXAM_INFO, PASS_PRICE, papersFor, questionCount } from '../lib/exams.ts';
-import { examUrl, practiceUrl, pricingUrl, testUrl } from '../lib/url.ts';
-import { SITE_NAME } from '../config.ts';
+import { EXAMS, EXAM_INFO, papersFor, questionCount } from '../lib/exams.ts';
+import { examUrl, href, modeUrl, pricingUrl } from '../lib/url.ts';
+import { BUNDLE_INFO, TIER_INFO, rupees } from '../lib/pricing.ts';
+import { DESCRIPTION, SITE_NAME } from '../config.ts';
 
-const firstFree = (e: (typeof EXAMS)[number]) => papersFor(e).find((p) => p.free);
+const cards = EXAMS.map((e) => {
+  const first = papersFor(e)[0];
+  return { exam: e, info: EXAM_INFO[e], start: first ? modeUrl(e, first.id, 'practice') : examUrl(e), count: first ? questionCount(first) : 0 };
+});
+
+const trust = [
+  { t: { en: 'Built on past papers', hi: 'पिछले प्रश्नपत्रों पर आधारित' }, d: { en: 'Topics and difficulty follow what the commission has actually asked in recent years.', hi: 'विषय और कठिनाई वही, जो आयोग ने हाल के वर्षों में वास्तव में पूछा है।' } },
+  { t: { en: 'Explained in Hindi and English', hi: 'हिन्दी और अंग्रेज़ी में व्याख्या' }, d: { en: 'Every question has a short explanation. Switch language any time.', hi: 'हर प्रश्न की छोटी व्याख्या। कभी भी भाषा बदलें।' } },
+  { t: { en: 'Feels like the real exam', hi: 'असली परीक्षा जैसा अनुभव' }, d: { en: 'Timed mock test with palette and negative marking, or a printed paper with an OMR sheet.', hi: 'पैलेट और ऋणात्मक अंकन वाला समयबद्ध मॉक टेस्ट, या ओएमआर शीट के साथ छपा प्रश्नपत्र।' } },
+  { t: { en: 'Checked by people', hi: 'लोगों द्वारा जांचा गया' }, d: { en: 'Subject reviewers check answers before a paid pack goes live. Spot a mistake? Tell us and we fix it.', hi: 'पेड पैक से पहले विषय समीक्षक उत्तर जांचते हैं। गलती दिखे तो बताइए, हम सुधारेंगे।' } },
+];
+
+const faq = [
+  { q: { en: 'Is Prashnottar official?', hi: 'क्या प्रश्नोत्तर आधिकारिक है?' }, a: { en: 'No. We are an independent practice platform, not connected to any commission or board. Always check dates and patterns in the official notice.', hi: 'नहीं। हम एक स्वतंत्र अभ्यास मंच हैं, किसी आयोग या बोर्ड से जुड़े नहीं। तिथियां और पैटर्न हमेशा आधिकारिक सूचना में देखें।' } },
+  { q: { en: 'Do I need to sign up?', hi: 'क्या साइन-अप ज़रूरी है?' }, a: { en: 'Not for the free questions. You only need an account to open a pack you have bought.', hi: 'मुफ़्त प्रश्नों के लिए नहीं। खरीदा हुआ पैक खोलने के लिए ही खाता चाहिए।' } },
+  { q: { en: 'What if the pack is not for me?', hi: 'अगर पैक मेरे काम का न हो?' }, a: { en: 'Ask for a refund within 7 days of buying. See the refund policy for details.', hi: 'खरीद के 7 दिन के भीतर रिफ़ंड मांगें। विवरण रिफ़ंड नीति में देखें।' } },
+];
 ---
-<Base title={`${SITE_NAME}: BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI practice`}>
-  <section class="hero">
-    <div class="container">
-      <p class="eyebrow">BPSC TRE · Bihar Daroga · BPSC Prelims · UP SI</p>
-      <h1>
-        <L en="Practise like it’s exam day." hi="ऐसे अभ्यास करें, जैसे आज ही परीक्षा हो।" />
-      </h1>
-      <p class="lead">
-        <L
-          en="Exam-style question papers, timed mock tests and topic practice with explanations, in Hindi and English. Start with a free practice set for your exam."
-          hi="परीक्षा जैसे प्रश्नपत्र, समयबद्ध मॉक टेस्ट और व्याख्या सहित विषयवार अभ्यास, हिन्दी और अंग्रेज़ी में। अपनी परीक्षा के निःशुल्क अभ्यास सेट से शुरू करें।"
-        />
-      </p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#exams-h"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /> <Icon name="arrow-right" /></a>
-        <a class="btn btn-quiet" href={pricingUrl()}><L t={{ en: `Full Pass: ₹${PASS_PRICE.toLocaleString('en-IN')} per exam`, hi: `पूरा पास: ₹${PASS_PRICE.toLocaleString('en-IN')} प्रति परीक्षा` }} /></a>
-      </div>
-    </div>
-  </section>
+<Base title={`${SITE_NAME}: free practice questions and mock tests in Hindi and English`} description={DESCRIPTION}>
+  <section class="container hero">
+    <h1>
+      <L en="Practise for your exam. Free, in Hindi and English." hi="अपनी परीक्षा का अभ्यास करें। मुफ़्त, हिन्दी और अंग्रेज़ी में।" />
+    </h1>
+    <p class="sub">
+      <L en="Pick your exam and start answering right away. Each question comes with an explanation. No sign-up." hi="अपनी परीक्षा चुनें और तुरंत शुरू करें। हर प्रश्न के साथ व्याख्या। साइन-अप नहीं।" />
+    </p>
 
-  <section class="container section" aria-labelledby="exams-h">
-    <div class="section-head">
-      <h2 id="exams-h"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /></h2>
-    </div>
-    <div class="exams">
-      {EXAMS.map((e) => {
-        const info = EXAM_INFO[e];
-        const free = firstFree(e);
-        return (
-          <article class="card exam-card" style={`--exam: var(--exam-${e})`}>
-            <div class="exam-top">
-              <span class="state"><L t={info.state} /></span>
-              <h3><a href={examUrl(e)}><L t={info.short} /></a></h3>
-              <p class="exam-name"><L t={info.name} /></p>
-              <p class="exam-blurb"><L t={info.blurb} /></p>
-              <ul class="exam-subjects" aria-label="Subjects">
-                {info.subjects.map((sub) => <li><L t={sub} /></li>)}
-              </ul>
-            </div>
-            <div class="exam-actions">
-              {free ? (
-                <>
-                  <a class="btn btn-primary" href={practiceUrl(e, free.id)}><Icon name="target" /><L en="Free practice" hi="निःशुल्क अभ्यास" /></a>
-                  <a class="btn btn-quiet" href={testUrl(e, free.id)}><Icon name="clock" /><L en="Mock test" hi="मॉक टेस्ट" /></a>
-                </>
+    <h2 class="sr-only"><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /></h2>
+    <ul class="exam-grid">
+      {cards.map((c) => (
+        <li>
+          <a class="panel card-link exam-card" href={c.start}>
+            <span class="exam-top">
+              <span class="exam-name"><L t={c.info.short} /></span>
+              <span class="muted small"><L t={c.info.state} /></span>
+            </span>
+            <span class="muted small exam-when"><L t={c.info.timing} /></span>
+            <span class="exam-go">
+              {c.count ? (
+                <L en={`Start ${c.count} free questions`} hi={`${c.count} मुफ़्त प्रश्न शुरू करें`} />
               ) : (
-                <a class="btn btn-quiet" href={examUrl(e)}><L en="See exam" hi="परीक्षा देखें" /></a>
+                <L en="See syllabus and packs" hi="पाठ्यक्रम और पैक देखें" />
               )}
-            </div>
-            {free && (
-              <p class="exam-meta">
-                <L t={{ en: `Free set: ${questionCount(free)} questions`, hi: `निःशुल्क सेट: ${questionCount(free)} प्रश्न` }} />
-              </p>
-            )}
-          </article>
-        );
-      })}
+              <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="muted small"><L en="Exam dates are tentative. Confirm with the official notice." hi="परीक्षा तिथियां संभावित हैं। आधिकारिक सूचना से पुष्टि करें।" /></p>
+  </section>
+
+  <section class="container block" aria-labelledby="how-h">
+    <h2 id="how-h"><L en="How it works" hi="यह कैसे काम करता है" /></h2>
+    <ol class="steps">
+      <li class="panel"><strong><L en="Answer free questions" hi="मुफ़्त प्रश्न हल करें" /></strong><p class="muted"><L en="See the right answer and why, straight after each one." hi="हर प्रश्न के बाद सही उत्तर और उसका कारण देखें।" /></p></li>
+      <li class="panel"><strong><L en="See your score" hi="अपना स्कोर देखें" /></strong><p class="muted"><L en="Find the topics you are weak in, section by section." hi="खण्डवार देखें कि किन विषयों में आप कमज़ोर हैं।" /></p></li>
+      <li class="panel"><strong><L en="Go deeper when ready" hi="तैयार हों तो आगे बढ़ें" /></strong><p class="muted"><L en="Most-probable sets, full mocks and a study plan, if you want them." hi="संभावित प्रश्न सेट, फ़ुल मॉक और अध्ययन योजना, अगर आप चाहें।" /></p></li>
+    </ol>
+  </section>
+
+  <section class="container block" aria-labelledby="why-h">
+    <h2 id="why-h"><L en="Why students use it" hi="छात्र इसे क्यों चुनते हैं" /></h2>
+    <div class="trust">
+      {trust.map((x) => (
+        <div class="panel"><h3 class="h-sm"><L t={x.t} /></h3><p class="muted small"><L t={x.d} /></p></div>
+      ))}
     </div>
   </section>
 
-  <section class="container section" aria-labelledby="modes-h">
-    <h2 id="modes-h"><L en="Three ways to prepare" hi="तैयारी के तीन तरीके" /></h2>
-    <div class="why">
+  <section class="container block" aria-labelledby="price-h">
+    <div class="panel price-strip">
       <div>
-        <Icon name="target" class="why-icon" />
-        <h3><L en="Practice mode" hi="अभ्यास मोड" /></h3>
-        <p>
-          <L
-            en="One question at a time. See the right answer and why straight away, and track your weak topics."
-            hi="एक बार में एक प्रश्न। सही उत्तर और उसकी व्याख्या तुरंत देखें, और अपने कमज़ोर विषय पहचानें।"
-          />
-        </p>
-      </div>
-      <div>
-        <Icon name="clock" class="why-icon" />
-        <h3><L en="Mock test" hi="मॉक टेस्ट" /></h3>
-        <p>
-          <L
-            en="A timed test with a question palette, mark-for-review and a full score report, like the real computer-based exam."
-            hi="प्रश्न पैलेट, समीक्षा हेतु चिह्नित और पूरी स्कोर रिपोर्ट के साथ समयबद्ध टेस्ट, असली परीक्षा की तरह।"
-          />
-        </p>
-      </div>
-      <div>
-        <Icon name="file" class="why-icon" />
-        <h3><L en="Question paper" hi="प्रश्नपत्र" /></h3>
-        <p>
-          <L
-            en="The full paper laid out like an exam booklet, in Hindi and English. Print it and solve it on paper."
-            hi="पूरा प्रश्नपत्र परीक्षा पुस्तिका की तरह, हिन्दी और अंग्रेज़ी में। प्रिंट करें और कागज़ पर हल करें।"
-          />
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="container section" aria-labelledby="pass-h">
-    <div class="pass card">
-      <div>
-        <h2 id="pass-h"><L en="One Pass for your exam" hi="आपकी परीक्षा के लिए एक पास" /></h2>
+        <h2 id="price-h" class="h-md"><L en="Simple prices" hi="सरल कीमतें" /></h2>
         <p class="muted">
           <L
-            en="Full mock tests, topic-wise practice and solved past papers covering every subject of your exam. Buy the Pass only for the exam you are preparing for."
-            hi="आपकी परीक्षा के हर विषय के पूर्ण मॉक टेस्ट, विषयवार अभ्यास और हल सहित पिछले प्रश्नपत्र। केवल उसी परीक्षा का पास लें जिसकी आप तैयारी कर रहे हैं।"
+            en={`Most-probable set ${rupees(TIER_INFO.probable.price)}, 2-month fast-track ${rupees(TIER_INFO.fast2.price)}, full Pass ${rupees(TIER_INFO.pass.price)}. TRE + CTET or TRE + STET bundle ${rupees(BUNDLE_INFO['tre-ctet'].price)}.`}
+            hi={`संभावित प्रश्न सेट ${rupees(TIER_INFO.probable.price)}, 2 महीने का फ़ास्ट-ट्रैक ${rupees(TIER_INFO.fast2.price)}, पूरा पास ${rupees(TIER_INFO.pass.price)}। टीआरई + सीटीईटी या टीआरई + एसटीईटी बंडल ${rupees(BUNDLE_INFO['tre-ctet'].price)}।`}
           />
         </p>
       </div>
-      <div class="pass-price">
-        <strong>₹{PASS_PRICE.toLocaleString('en-IN')}<small><L en="per exam" hi="प्रति परीक्षा" /></small></strong>
-        <a class="btn btn-primary" href={pricingUrl()}><L en="See what’s included" hi="क्या-क्या मिलेगा" /></a>
-      </div>
+      <a class="btn" href={pricingUrl()}><L en="Compare packs" hi="पैक की तुलना करें" /></a>
+    </div>
+  </section>
+
+  <section class="container block" aria-labelledby="faq-h">
+    <h2 id="faq-h"><L en="Questions" hi="सवाल" /></h2>
+    <div class="panel faq">
+      {faq.map((f) => (
+        <details>
+          <summary><L t={f.q} /></summary>
+          <p class="muted"><L t={f.a} /></p>
+        </details>
+      ))}
+      <p class="small"><a href={href('/refund/')}><L en="Refund policy" hi="रिफ़ंड नीति" /></a> · <a href={href('/contact/')}><L en="Contact" hi="संपर्क" /></a></p>
     </div>
   </section>
 </Base>
 
 <style>
   .hero {
-    padding-block: clamp(2.25rem, 1.5rem + 4vw, 4.5rem) clamp(1.75rem, 1rem + 2vw, 2.75rem);
-    background: radial-gradient(60rem 22rem at 85% -10%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
-    border-bottom: 1px solid var(--line);
+    padding-top: 2rem;
+    padding-bottom: 1rem;
   }
-
   .hero h1 {
-    max-width: 18ch;
-    margin-bottom: 0.75rem;
-  }
-
-  :global(:root[data-ui='hi']) .hero h1 {
     max-width: 22ch;
   }
-
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-top: 1.25rem;
+  .sub {
+    font-size: 1.12rem;
+    color: var(--ink-2);
+    max-width: 52ch;
   }
-
-  .exams {
+  .exam-grid {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0.75rem;
     display: grid;
-    gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15.5rem), 1fr));
   }
-
   .exam-card {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.2rem 1.2rem 1rem;
-    border-top: 4px solid var(--exam);
+    gap: 0.15rem;
+    padding: 1rem 1.1rem;
+    min-height: 120px;
   }
-
+  .exam-card:hover {
+    border-color: var(--accent);
+  }
   .exam-top {
-    flex: 1;
-  }
-
-  .state {
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--exam);
-  }
-
-  .exam-card h3 {
-    margin: 0.15rem 0 0.1rem;
-    font-size: 1.35rem;
-  }
-
-  .exam-card h3 a {
-    color: var(--ink);
-    text-decoration: none;
-  }
-
-  .exam-card h3 a:hover {
-    color: var(--exam);
-    text-decoration: underline;
-  }
-
-  .exam-name {
-    margin: 0 0 0.5rem;
-    color: var(--ink-2);
-    font-weight: 600;
-    font-size: 0.95rem;
-  }
-
-  .exam-blurb {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.925rem;
-  }
-
-  .exam-subjects {
-    list-style: none;
-    margin: 0.75rem 0 0;
-    padding: 0;
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-  }
-
-  .exam-subjects li {
-    padding: 0.1rem 0.55rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--exam) 10%, var(--surface));
-    color: var(--ink-2);
-    font-size: 0.8rem;
-    font-weight: 600;
-  }
-
-  .exam-actions {
-    display: flex;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
     gap: 0.5rem;
   }
-
-  .exam-meta {
-    margin: 0;
-    font-size: 0.825rem;
-    color: var(--muted);
+  .exam-name {
+    font-weight: 700;
+    font-size: 1.15rem;
   }
-
-  .why {
+  .exam-go {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    color: var(--accent);
+    font-weight: 600;
+    display: flex;
+    gap: 0.4rem;
+  }
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
-    padding: 1.75rem;
-    border-radius: var(--radius);
-    background: var(--surface);
-    border: 1px solid var(--line);
+    gap: 0.75rem;
+    counter-reset: s;
   }
-
-  .why h3 {
-    margin: 0.65rem 0 0.3rem;
+  @media (min-width: 760px) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
-
-  .why p {
-    margin: 0;
-    color: var(--ink-2);
-    font-size: 0.975rem;
+  .steps .panel + .panel,
+  .trust .panel + .panel {
+    margin-top: 0;
   }
-
-  .why :global(.why-icon) {
+  .steps li {
+    counter-increment: s;
+  }
+  .steps li::before {
+    content: counter(s);
+    display: inline-grid;
+    place-items: center;
     width: 28px;
     height: 28px;
+    border-radius: 50%;
+    border: 1.5px solid var(--accent);
     color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
   }
-
-  .pass {
+  .steps strong {
+    display: block;
+  }
+  .steps p {
+    margin: 0.2rem 0 0;
+  }
+  .trust {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  }
+  .trust p {
+    margin: 0;
+  }
+  .price-strip {
     display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    gap: 1.25rem;
-    padding: 1.5rem 1.75rem;
-    background: var(--accent-soft);
-    border-color: transparent;
   }
-
-  .pass h2 {
-    margin: 0 0 0.35rem;
-  }
-
-  .pass p {
+  .price-strip p {
     margin: 0;
-    max-width: 40rem;
+    max-width: 60ch;
   }
-
-  .pass-price {
+  .faq details {
+    border-bottom: 1px solid var(--line);
+    padding: 0.25rem 0;
+  }
+  .faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    min-height: var(--tap);
     display: flex;
     align-items: center;
-    gap: 1rem;
   }
-
-  .pass-price strong {
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--ink);
+  .faq p {
+    margin: 0 0 0.75rem;
   }
-
-  .pass-price small {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-left: 0.35rem;
+  .faq > p {
+    margin-top: 1rem;
   }
 </style>

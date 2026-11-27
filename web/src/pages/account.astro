@@ -1,0 +1,80 @@
+---
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import { href, pricingUrl } from '../lib/url.ts';
+---
+<Base title="Your account" page="account" noindex>
+  <section class="container narrow page-pad" data-account>
+    <p class="muted" data-loading><L en="Checking your account…" hi="आपका खाता जांचा जा रहा है…" /></p>
+
+    <div class="panel" data-auth hidden>
+      <h1 class="h-md"><L en="Sign in to open your packs" hi="अपने पैक खोलने के लिए साइन इन करें" /></h1>
+      <p class="muted small"><L en="Free questions never need an account." hi="मुफ़्त प्रश्नों के लिए खाते की ज़रूरत नहीं।" /></p>
+      <div class="seg" role="tablist" aria-label="Sign in or create account">
+        <button type="button" class="seg-b" role="tab" aria-selected="true" data-auth-tab="login"><L en="Sign in" hi="साइन इन" /></button>
+        <button type="button" class="seg-b" role="tab" aria-selected="false" data-auth-tab="register"><L en="Create account" hi="खाता बनाएं" /></button>
+      </div>
+
+      <form class="form auth-form" data-auth-form="login" novalidate>
+        <label class="field"><span><L en="Phone number" hi="फ़ोन नंबर" /></span><input name="username" type="tel" inputmode="numeric" autocomplete="username" required /></label>
+        <label class="field"><span><L en="Password" hi="पासवर्ड" /></span><input name="password" type="password" autocomplete="current-password" required /></label>
+        <p class="form-err" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit"><L en="Sign in" hi="साइन इन करें" /></button>
+      </form>
+
+      <form class="form auth-form" data-auth-form="register" hidden novalidate>
+        <label class="field"><span><L en="Name" hi="नाम" /></span><input name="name" type="text" autocomplete="name" maxlength="60" required /></label>
+        <label class="field"><span><L en="Phone number (10 digits)" hi="फ़ोन नंबर (10 अंक)" /></span>
+          <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required /></span></label>
+        <label class="field"><span><L en="Password (at least 8 characters)" hi="पासवर्ड (कम से कम 8 अक्षर)" /></span><input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
+        <p class="form-err" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit"><L en="Create account" hi="खाता बनाएं" /></button>
+        <p class="muted small"><L en="By creating an account you accept the" hi="खाता बनाकर आप स्वीकार करते हैं:" /> <a href={href('/terms/')}><L en="terms" hi="नियम व शर्तें" /></a> · <a href={href('/privacy/')}><L en="privacy policy" hi="गोपनीयता नीति" /></a></p>
+      </form>
+    </div>
+
+    <div class="panel" data-me hidden>
+      <p class="eyebrow"><L en="Signed in" hi="साइन इन" /></p>
+      <h1 class="h-md" data-me-name></h1>
+      <p class="muted" data-me-phone></p>
+      <h2 class="h-sm"><L en="Your packs" hi="आपके पैक" /></h2>
+      <ul class="pass-list" data-me-passes></ul>
+      <div class="row-actions">
+        <a class="btn" href={pricingUrl()}><L en="See packs" hi="पैक देखें" /></a>
+        <a class="btn btn-quiet" href={href('/admin/')} data-me-admin hidden>Admin</a>
+        <button class="btn btn-quiet" type="button" data-logout><L en="Sign out" hi="साइन आउट" /></button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initAccount } from '../scripts/account.ts';
+  void initAccount();
+</script>
+
+<style>
+  .auth-form {
+    margin-top: 1rem;
+  }
+  .pass-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .pass-list :global(.pass-item) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0.5rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--panel-2);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>

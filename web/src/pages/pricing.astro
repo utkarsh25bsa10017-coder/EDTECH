@@ -1,208 +1,94 @@
 ---
 import Base from '../layouts/Base.astro';
 import L from '../components/L.astro';
-import Icon from '../components/Icon.astro';
-import { EXAMS, EXAM_INFO, PASS_FEATURES, PASS_PRICE } from '../lib/exams.ts';
-import { examUrl } from '../lib/url.ts';
-import { checkoutUrl } from '../config.ts';
-
-const price = PASS_PRICE.toLocaleString('en-IN');
-const faqs = [
-  {
-    q: { en: 'Are the questions copied from coaching books?', hi: 'क्या प्रश्न कोचिंग की किताबों से लिए गए हैं?' },
-    a: {
-      en: 'No. Mock questions are written new, in the pattern of past papers and the official syllabus, and every question is checked by a subject reviewer before it goes live.',
-      hi: 'नहीं। मॉक प्रश्न पिछले प्रश्नपत्रों के पैटर्न और आधिकारिक पाठ्यक्रम के आधार पर नए लिखे जाते हैं, और हर प्रश्न लाइव होने से पहले विषय समीक्षक द्वारा जांचा जाता है।',
-    },
-  },
-  {
-    q: { en: 'How long does the Pass last?', hi: 'पास कितने समय तक चलेगा?' },
-    a: {
-      en: 'One exam cycle: until the next written exam for the exam you bought it for.',
-      hi: 'एक परीक्षा चक्र: जिस परीक्षा का पास लिया है, उसकी अगली लिखित परीक्षा तक।',
-    },
-  },
-  {
-    q: { en: 'I am preparing for two exams. What do I buy?', hi: 'मैं दो परीक्षाओं की तैयारी कर रहा हूं। क्या लूं?' },
-    a: {
-      en: 'Each exam has its own Pass at ₹1,000, so buy one for each exam you are preparing for.',
-      hi: 'हर परीक्षा का अपना पास ₹1,000 का है, इसलिए जिन परीक्षाओं की तैयारी कर रहे हैं, हर एक का पास लें।',
-    },
-  },
-  {
-    q: { en: 'Can I try before paying?', hi: 'क्या भुगतान से पहले आज़मा सकते हैं?' },
-    a: {
-      en: 'Yes. Every exam has a free practice set with practice mode, a timed mock test and the full question paper.',
-      hi: 'हां। हर परीक्षा का एक निःशुल्क अभ्यास सेट है, जिसमें अभ्यास मोड, समयबद्ध मॉक टेस्ट और पूरा प्रश्नपत्र है।',
-    },
-  },
-  {
-    q: { en: 'What if I am not happy?', hi: 'अगर मैं संतुष्ट न हूं तो?' },
-    a: {
-      en: 'Ask for a refund within 7 days of buying and you get your money back.',
-      hi: 'खरीदने के 7 दिनों के भीतर रिफ़ंड मांगें, आपका पैसा वापस मिल जाएगा।',
-    },
-  },
-];
+import PricingLadder from '../components/PricingLadder.astro';
+import { EXAMS, EXAM_INFO, type Exam } from '../lib/exams.ts';
+import { BUNDLES, BUNDLE_INFO, bundleLink, rupees } from '../lib/pricing.ts';
+import { href } from '../lib/url.ts';
 ---
-<Base title="Pricing: ₹1,000 per exam" page="pricing">
-  <div class="container narrow">
-    <header class="page-head">
-      <p class="eyebrow"><L en="Pricing" hi="मूल्य" /></p>
-      <h1><L t={{ en: `₹${price} per exam, one-time`, hi: `₹${price} प्रति परीक्षा, एक बार` }} /></h1>
-      <p class="lead">
-        <L
-          en="Pick the exam you are preparing for. Its Pass unlocks every mock test, practice set and solved paper for that exam."
-          hi="जिस परीक्षा की तैयारी कर रहे हैं, उसे चुनें। उसका पास उस परीक्षा के सभी मॉक टेस्ट, अभ्यास सेट और हल प्रश्नपत्र अनलॉक करता है।"
-        />
-      </p>
-    </header>
+<Base title="Pricing: most-probable sets, fast-track plans and bundles" page="pricing" description="Per exam: most-probable set ₹249, 2-month fast-track ₹499, 3-month fast-track (full Pass) ₹999. TRE + CTET and TRE + STET bundles ₹799.">
+  <section class="container block">
+    <h1><L en="Pricing" hi="कीमत" /></h1>
+    <p class="muted lead"><L en="The same simple ladder for every exam. Pay once; no subscription. The free questions stay free." hi="हर परीक्षा के लिए एक जैसी सरल कीमतें। एक बार भुगतान; कोई सब्सक्रिप्शन नहीं। मुफ़्त प्रश्न हमेशा मुफ़्त।" /></p>
 
-    <div class="plans">
-      <article class="card plan">
-        <h2><L en="Free" hi="निःशुल्क" /></h2>
-        <p class="price">₹0</p>
-        <ul class="features">
-          <li><Icon name="check" /><L en="One practice set per exam" hi="हर परीक्षा का एक अभ्यास सेट" /></li>
-          <li><Icon name="check" /><L en="Practice mode and timed mock test" hi="अभ्यास मोड और समयबद्ध मॉक टेस्ट" /></li>
-          <li><Icon name="check" /><L en="Printable question paper with answer key" hi="उत्तर कुंजी सहित प्रिंट योग्य प्रश्नपत्र" /></li>
-        </ul>
-        <a class="btn btn-quiet" href={examUrl(EXAMS[0])}><L en="Start free" hi="निःशुल्क शुरू करें" /></a>
-      </article>
+    <div class="panel picker">
+      <label class="field" for="exam-pick"><span><L en="Choose your exam" hi="अपनी परीक्षा चुनें" /></span>
+        <select id="exam-pick" data-exam-pick>
+          {EXAMS.map((e) => <option value={e}>{EXAM_INFO[e].short.en} · {EXAM_INFO[e].short.hi}</option>)}
+        </select>
+      </label>
+    </div>
 
-      {EXAMS.map((e) => {
-        const info = EXAM_INFO[e];
-        const buy = checkoutUrl(e);
+    {EXAMS.map((e, i) => (
+      <div class="exam-ladder" data-ladder={e} hidden={i !== 0}>
+        <PricingLadder exam={e as Exam} bundles={false} />
+      </div>
+    ))}
+  </section>
+
+  <section class="container block" aria-labelledby="bundles-h">
+    <h2 id="bundles-h"><L en="Bundles for teacher exams" hi="शिक्षक परीक्षाओं के बंडल" /></h2>
+    <div class="bundles">
+      {BUNDLES.map((b) => {
+        const info = BUNDLE_INFO[b];
+        const link = bundleLink(b);
         return (
-          <article class="card plan featured" style={`--exam: var(--exam-${e})`}>
-            <h2><L t={{ en: `${info.short.en} Pass`, hi: `${info.short.hi} पास` }} /></h2>
-            <p class="price">₹{price}<span><L en="one-time" hi="एक बार" /></span></p>
-            <ul class="features">
-              {PASS_FEATURES.map((f) => <li><Icon name="check" /><L t={f} /></li>)}
-            </ul>
-            <p class="covers">
-              {info.subjects.map((sub, i) => <>{i > 0 && ' · '}<L t={sub} /></>)}
-            </p>
-            {buy ? (
-              <a class="btn btn-primary" href={buy} rel="noopener"><L t={{ en: `Get ${info.short.en} Pass`, hi: `${info.short.hi} पास लें` }} /></a>
-            ) : (
-              <button class="btn btn-primary" type="button" disabled><L en="Payments open soon" hi="भुगतान जल्द शुरू होगा" /></button>
-            )}
-            <a class="see-exam" href={examUrl(e)}><L en="See syllabus and free set" hi="पाठ्यक्रम और निःशुल्क सेट देखें" /></a>
+          <article class="panel">
+            <h3 class="h-sm"><L t={info.name} /> <span class="price">{rupees(info.price)}</span></h3>
+            <p class="muted"><L t={info.summary} /></p>
+            <a class="btn btn-primary" href={link.href} data-buy={`bundle-${b}`} data-exam={info.exams.join('+')} data-price={info.price}><L en="Buy bundle" hi="बंडल खरीदें" /></a>
           </article>
         );
       })}
     </div>
+  </section>
 
-    <section class="section" aria-labelledby="faq-h">
-      <h2 id="faq-h"><L en="Questions" hi="सवाल-जवाब" /></h2>
-      <div class="faqs">
-        {faqs.map((f) => (
-          <details class="card faq">
-            <summary><L t={f.q} /></summary>
-            <p><L t={f.a} /></p>
-          </details>
-        ))}
-      </div>
-    </section>
-  </div>
+  <section class="container block">
+    <div class="panel small">
+      <ul class="facts">
+        <li><L en="Access is for the current exam cycle and is linked to your phone number." hi="एक्सेस मौजूदा परीक्षा चक्र के लिए है और आपके फ़ोन नंबर से जुड़ा है।" /></li>
+        <li><L en="7-day refund policy." hi="7 दिन की रिफ़ंड नीति।" /> <a href={href('/refund/')}><L en="Read it" hi="पढ़ें" /></a></li>
+        <li><L en="We never promise selection. Our job is good practice; the hard work is yours." hi="हम चयन का वादा नहीं करते। हमारा काम अच्छा अभ्यास देना है; मेहनत आपकी।" /></li>
+      </ul>
+    </div>
+  </section>
 </Base>
 
-<style>
-  .narrow {
-    max-width: 72rem;
+<script>
+  const pick = document.querySelector<HTMLSelectElement>('[data-exam-pick]');
+  const show = (e: string) => {
+    for (const el of document.querySelectorAll<HTMLElement>('[data-ladder]')) el.hidden = el.dataset.ladder !== e;
+  };
+  const fromUrl = new URLSearchParams(location.search).get('exam');
+  if (pick) {
+    if (fromUrl && [...pick.options].some((o) => o.value === fromUrl)) pick.value = fromUrl;
+    show(pick.value);
+    pick.addEventListener('change', () => show(pick.value));
   }
+</script>
 
-  .plans {
+<style>
+  .lead {
+    max-width: 60ch;
+  }
+  .picker {
+    max-width: 420px;
+    margin-bottom: 1rem;
+  }
+  .bundles {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16.5rem), 1fr));
-    align-items: start;
   }
-
-  .plan {
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-    padding: 1.5rem;
+  @media (min-width: 760px) {
+    .bundles {
+      grid-template-columns: 1fr 1fr;
+    }
   }
-
-  .plan h2 {
-    margin: 0;
-    font-size: 1.2rem;
+  .bundles .panel + .panel {
+    margin-top: 0;
   }
-
-  .featured {
-    border-top: 4px solid var(--exam);
-  }
-
-  .see-exam {
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-
-  .price {
-    margin: 0;
-    font-size: 2.5rem;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .price span {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--muted);
-    margin-left: 0.4rem;
-  }
-
-  .features {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.4rem;
-  }
-
-  .features li {
-    display: flex;
-    gap: 0.5rem;
-    align-items: flex-start;
-  }
-
-  .features :global(svg) {
-    width: 18px;
-    flex: none;
-    margin-top: 0.2rem;
-    color: var(--good);
-  }
-
-  .covers {
-    margin: 0;
-    font-size: 0.875rem;
-    color: var(--muted);
-  }
-
-  .plan .btn {
-    justify-content: center;
-  }
-
-  .faqs {
-    display: grid;
-    gap: 0.6rem;
-  }
-
-  .faq {
-    padding: 0.9rem 1.1rem;
-  }
-
-  .faq summary {
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .faq p {
-    margin: 0.5rem 0 0;
-    color: var(--ink-2);
+  .bundles .price {
+    color: var(--accent);
+    margin-left: 0.3rem;
   }
 </style>

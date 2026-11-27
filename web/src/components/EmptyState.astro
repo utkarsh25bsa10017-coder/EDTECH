@@ -3,7 +3,11 @@ interface Props { title: { en: string; hi: string } }
 import L from './L.astro';
 const { title } = Astro.props;
 ---
-<div class="empty">
-  <h2><L t={title} /></h2>
+<div class="panel empty">
+  <h3 class="h-sm"><L t={title} /></h3>
   <slot />
 </div>
+<style>
+  .empty { text-align: left; }
+  .empty :global(p:last-child) { margin-bottom: 0; }
+</style>

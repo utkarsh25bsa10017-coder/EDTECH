@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import { href } from '../lib/url.ts';
+---
+<Base title="Page not found" noindex>
+  <section class="container narrow page-pad">
+    <div class="panel">
+      <h1><L en="Page not found" hi="पेज नहीं मिला" /></h1>
+      <p><L en="The link may be old. Pick your exam from the home page." hi="लिंक पुराना हो सकता है। होम पेज से अपनी परीक्षा चुनें।" /></p>
+      <a class="btn btn-primary" href={href('/')}><L en="Go home" hi="होम पर जाएं" /></a>
+    </div>
+  </section>
+</Base>

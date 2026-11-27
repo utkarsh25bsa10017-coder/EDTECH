@@ -1,0 +1,74 @@
+---
+// Admin console. Static shell only; every action calls the API, which checks
+// the session. No credentials or data are in this page.
+import Base from '../../layouts/Base.astro';
+import { EXAMS } from '../../lib/exams.ts';
+---
+<Base title="Admin" noindex chat={false} page="admin">
+  <section class="container page-pad" data-admin data-exams={EXAMS.join(',')}>
+    <p class="muted" data-admin-status>Checking…</p>
+
+    <div class="panel login" data-admin-login hidden>
+      <h1 class="h-md">Admin sign in</h1>
+      <form class="form" novalidate>
+        <label class="field"><span>Username</span><input name="username" type="text" autocomplete="username" required /></label>
+        <label class="field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label>
+        <p class="form-err" role="alert" hidden></p>
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+    </div>
+
+    <div data-admin-app hidden>
+      <div class="admin-head">
+        <h1 class="h-md">Admin</h1>
+        <span class="muted small">Signed in as <strong data-admin-who></strong></span>
+        <button class="btn btn-quiet" type="button" data-admin-logout>Sign out</button>
+      </div>
+      <div class="seg" role="tablist" aria-label="Admin sections">
+        <button type="button" class="seg-b" role="tab" data-tab="stats" aria-selected="true">Stats</button>
+        <button type="button" class="seg-b" role="tab" data-tab="leads" aria-selected="false">Leads</button>
+        <button type="button" class="seg-b" role="tab" data-tab="questions" aria-selected="false">Question review</button>
+        <button type="button" class="seg-b" role="tab" data-tab="attempts" aria-selected="false">Attempts</button>
+      </div>
+      <div class="panel pane" data-pane="stats" role="tabpanel"></div>
+      <div class="pane" data-pane="leads" role="tabpanel" hidden></div>
+      <div class="pane" data-pane="questions" role="tabpanel" hidden></div>
+      <div class="pane" data-pane="attempts" role="tabpanel" hidden></div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initAdmin } from '../../scripts/admin.ts';
+  void initAdmin();
+</script>
+
+<style>
+  .login {
+    max-width: 420px;
+    margin-inline: auto;
+  }
+  .admin-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .admin-head h1 {
+    margin: 0;
+  }
+  .admin-head button {
+    margin-left: auto;
+  }
+  .pane {
+    margin-top: 1rem;
+  }
+  .pane[data-pane='leads'],
+  .pane[data-pane='attempts'] {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+</style>

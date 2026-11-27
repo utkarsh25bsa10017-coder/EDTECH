@@ -1,26 +1,19 @@
 export const SITE_NAME = 'Prashnottar';
 export const SITE_NAME_HI = 'प्रश्नोत्तर';
 export const TAGLINE = {
-  en: 'Practice papers for BPSC TRE, Bihar Daroga, BPSC Prelims and UP SI',
-  hi: 'बीपीएससी टीआरई, बिहार दरोगा, बीपीएससी प्रारंभिक और यूपी एसआई के अभ्यास प्रश्नपत्र',
+  en: 'Practice papers and mock tests for teacher and state service exams',
+  hi: 'शिक्षक एवं राज्य सेवा परीक्षाओं के अभ्यास प्रश्नपत्र और मॉक टेस्ट',
 };
 export const DESCRIPTION =
-  'Practice mode, timed mock tests and exam-style question papers in Hindi and English for BPSC TRE, Bihar Daroga (BPSSC SI), BPSC Prelims and UP SI.';
+  'Free practice questions, timed mock tests and printable papers in Hindi and English for BPSC TRE, BPSC CCE, MPPSC, RAS, Bihar STET, CTET and CG TET. Independent; not affiliated with any commission or board.';
 
-import type { Exam } from './lib/exams.ts';
+/** API origin. Empty = same origin (the Rust server serves this build). The native app sets a full URL. */
+export const API_BASE: string = (import.meta.env.PUBLIC_API_BASE ?? '').replace(/\/+$/, '');
+/** WhatsApp number in international format without +, e.g. 919876543210. Empty = link hidden. */
+export const WHATSAPP_NUMBER: string = (import.meta.env.PUBLIC_WHATSAPP_NUMBER ?? '').replace(/\D/g, '');
+export const META_PIXEL_ID: string = (import.meta.env.PUBLIC_META_PIXEL_ID ?? '').trim();
 
-/**
- * Where each exam's "Get the Pass" button sends buyers: a payment page
- * (Razorpay, Cosmofeed…) or a WhatsApp chat. Set one variable per exam, or
- * PUBLIC_CHECKOUT_URL for all of them. Unset = the button says payments open soon.
- */
-const CHECKOUT: Record<Exam, string | undefined> = {
-  'bpsc-tre': import.meta.env.PUBLIC_CHECKOUT_URL_BPSC_TRE,
-  'bihar-daroga': import.meta.env.PUBLIC_CHECKOUT_URL_BIHAR_DAROGA,
-  'bpsc-cce': import.meta.env.PUBLIC_CHECKOUT_URL_BPSC_CCE,
-  'up-si': import.meta.env.PUBLIC_CHECKOUT_URL_UP_SI,
-};
-
-export function checkoutUrl(exam: Exam): string | undefined {
-  return CHECKOUT[exam] || import.meta.env.PUBLIC_CHECKOUT_URL || undefined;
+export function whatsappUrl(text?: string): string | undefined {
+  if (!WHATSAPP_NUMBER) return undefined;
+  return `https://wa.me/${WHATSAPP_NUMBER}${text ? `?text=${encodeURIComponent(text)}` : ''}`;
 }

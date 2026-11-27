@@ -2,9 +2,12 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { DESCRIPTION, SITE_NAME } from '../config.ts';
+import Chat from '../components/Chat.astro';
+import Pixel from '../components/Pixel.astro';
+import { DESCRIPTION, SITE_NAME, WHATSAPP_NUMBER } from '../config.ts';
 import { href } from '../lib/url.ts';
-import type { Exam } from '../lib/exams.ts';
+import { EXAMS, EXAM_INFO, type Exam } from '../lib/exams.ts';
+import { BUNDLES, BUNDLE_INFO, TIERS, TIER_INFO, bundleLink, tierLink } from '../lib/pricing.ts';
 
 interface Props {
   /** Page title; the site name is appended unless it is already present. */
@@ -13,43 +16,54 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   noindex?: boolean;
   exam?: Exam;
-  page?: 'pricing';
-  /** Full-screen test pages hide the site header and footer. */
+  page?: string;
+  /** Full-screen practice/test/print pages hide the site header, footer and chat. */
   bare?: boolean;
+  /** Show the chat button (default: on unless bare). */
+  chat?: boolean;
+  /** Fire the Meta Pixel ViewContent event (exam pages). */
+  viewContent?: boolean;
   ogType?: 'website' | 'article';
 }
 
-const { title, description = DESCRIPTION, jsonLd, noindex, exam, page, bare, ogType = 'website' } = Astro.props;
+const { title, description = DESCRIPTION, jsonLd, noindex, exam, page, bare, chat = !bare, viewContent, ogType = 'website' } = Astro.props;
 const fullTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
 const site = Astro.site;
 const canonical = site && !noindex ? new URL(Astro.url.pathname, site).href : undefined;
-const ogImage = site ? new URL(href('/og.png'), site).href : href('/og.png');
-const ld = (jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []).map((d) =>
-  JSON.stringify(d).replace(/</g, '\\u003c'),
-);
+const ld = (jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []).map((d) => JSON.stringify(d).replace(/</g, '\\u003c'));
+
+const buy: Record<string, { href: string; live: boolean }> = {};
+for (const e of EXAMS) for (const t of TIERS) buy[`${e}:${t}`] = tierLink(e, t);
+for (const b of BUNDLES) buy[`bundle:${b}`] = bundleLink(b);
+const prices: Record<string, number> = {};
+for (const t of TIERS) prices[t] = TIER_INFO[t].price;
+for (const b of BUNDLES) prices[`bundle:${b}`] = BUNDLE_INFO[b].price;
+const exams = Object.fromEntries(EXAMS.map((e) => [e, EXAM_INFO[e].short]));
+const clientConfig = JSON.stringify({
+  base: import.meta.env.BASE_URL.replace(/\/+$/, ''),
+  whatsapp: WHATSAPP_NUMBER,
+  buy,
+  prices,
+  exams,
+}).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href={href('/favicon.svg')} type="image/svg+xml" />
-    <link rel="apple-touch-icon" href={href('/apple-touch-icon.png')} />
-    <meta name="theme-color" content="#f7f5f0" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0e1015" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#eceef1" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121418" media="(prefers-color-scheme: dark)" />
     <meta property="og:site_name" content={SITE_NAME} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     {canonical && <meta property="og:url" content={canonical} />}
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
     {site && <link rel="sitemap" href={href('/sitemap-index.xml')} />}
     <script is:inline>
       (function () {
@@ -59,22 +73,33 @@ const ld = (jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []).map((d) =
           if (t === 'light' || t === 'dark') d.dataset.theme = t;
           var u = localStorage.getItem('pq-ui');
           if (!u) u = (navigator.language || '').toLowerCase().indexOf('hi') === 0 ? 'hi' : 'en';
-          if (u === 'hi') d.dataset.ui = 'hi';
+          if (u === 'hi') { d.dataset.ui = 'hi'; d.lang = 'hi'; }
         } catch (e) {}
       })();
     </script>
+    <script type="application/json" id="pq-config" set:html={clientConfig} />
+    <Pixel />
     {ld.map((json) => <script type="application/ld+json" set:html={json} />)}
   </head>
-  <body>
+  <body data-exam={exam} data-view-content={viewContent ? exam ?? 'page' : undefined}>
     <a class="skip-link" href="#main"><span class="l-en">Skip to content</span><span class="l-hi" lang="hi">सामग्री पर जाएं</span></a>
     {!bare && <Header exam={exam} page={page} />}
     <main id="main">
       <slot />
     </main>
     {!bare && <Footer />}
+    {chat && <Chat />}
     <script>
       import { initPrefs } from '../scripts/prefs.ts';
+      import { initChat } from '../scripts/chat.ts';
+      import { track, wireBuyButtons } from '../scripts/track.ts';
+      import { flushAttempts } from '../scripts/api.ts';
       initPrefs();
+      initChat();
+      wireBuyButtons();
+      const vc = document.body.dataset.viewContent;
+      if (vc) track('ViewContent', { content_category: vc, content_type: 'exam' });
+      if (navigator.onLine !== false) setTimeout(() => void flushAttempts(), 2500);
     </script>
   </body>
 </html>

@@ -1,0 +1,63 @@
+---
+// Where buy buttons go while no checkout link is configured.
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import { whatsappUrl } from '../config.ts';
+import { href } from '../lib/url.ts';
+const wa = whatsappUrl('Hi, I want to buy a Prashnottar pack. Please tell me when payments open.');
+---
+<Base title="Payments opening soon" noindex>
+  <section class="container narrow page-pad">
+    <div class="panel">
+      <p class="eyebrow" data-plan-exam></p>
+      <h1 class="h-md"><span data-plan-name><L en="Your pack" hi="आपका पैक" /></span> <span class="price" data-plan-price></span></h1>
+      <p><L en="Online payments are opening soon. Leave your WhatsApp number and we will message you as soon as you can buy, with no obligation." hi="ऑनलाइन भुगतान जल्द शुरू होगा। अपना व्हाट्सऐप नंबर दें, खरीद शुरू होते ही हम आपको संदेश भेजेंगे। कोई बाध्यता नहीं।" /></p>
+      <div data-notify>
+        <form class="form" data-lead novalidate>
+          <label class="field"><span><L en="WhatsApp number" hi="व्हाट्सऐप नंबर" /></span>
+            <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required placeholder="98765 43210" /></span>
+          </label>
+          <label class="field"><span><L en="Name (optional)" hi="नाम (वैकल्पिक)" /></span><input name="name" type="text" autocomplete="name" maxlength="60" /></label>
+          <label class="check"><input type="checkbox" name="consent" required /> <span><L en="I agree to receive messages from Prashnottar on WhatsApp about my exam. I can opt out any time." hi="मैं अपनी परीक्षा के बारे में प्रश्नोत्तर से व्हाट्सऐप पर संदेश पाने के लिए सहमत हूं। मैं कभी भी बंद कर सकता/सकती हूं।" /></span></label>
+          <p class="form-err" role="alert" hidden></p>
+          <button class="btn btn-primary btn-block" type="submit"><L en="Tell me when it opens" hi="शुरू होने पर बताएं" /></button>
+        </form>
+        <div class="lead-done" data-lead-done hidden role="status"><p><strong><L en="Thanks. We will message you on WhatsApp." hi="धन्यवाद। हम आपको व्हाट्सऐप पर संदेश भेजेंगे।" /></strong></p></div>
+      </div>
+      <div class="row-actions">
+        {wa && <a class="btn" href={wa} target="_blank" rel="noopener"><L en="Talk to us on WhatsApp" hi="व्हाट्सऐप पर बात करें" /></a>}
+        <a class="btn btn-quiet" href={href('/')}><L en="Back to free questions" hi="मुफ़्त प्रश्नों पर लौटें" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { config } from '../scripts/config.ts';
+  import { wireLead } from '../scripts/lead.ts';
+
+  const qs = new URLSearchParams(location.search);
+  const c = config();
+  const NAMES: Record<string, [string, string]> = {
+    probable: ['Most-probable set', 'संभावित प्रश्न सेट'],
+    fast2: ['2-month fast-track', '2 महीने का फ़ास्ट-ट्रैक'],
+    pass: ['3-month fast-track (full Pass)', '3 महीने का फ़ास्ट-ट्रैक (पूरा पास)'],
+    'bundle:tre-ctet': ['TRE + CTET bundle', 'टीआरई + सीटीईटी बंडल'],
+    'bundle:tre-stet': ['TRE + STET bundle', 'टीआरई + एसटीईटी बंडल'],
+  };
+  const bundle = qs.get('bundle');
+  const tier = qs.get('tier') ?? '';
+  const exam = qs.get('exam') ?? '';
+  const key = bundle ? `bundle:${bundle}` : tier;
+  const name = NAMES[key];
+  const bi = (en: string, hi: string) => `<span class="l-en" lang="en">${en}</span><span class="l-hi" lang="hi">${hi}</span>`;
+  if (name) {
+    document.querySelector('[data-plan-name]')!.innerHTML = bi(name[0], name[1]);
+    const price = c.prices[key];
+    if (price) document.querySelector('[data-plan-price]')!.textContent = `₹${price}`;
+  }
+  const ex = c.exams[exam];
+  if (ex) document.querySelector('[data-plan-exam]')!.innerHTML = bi(ex.en, ex.hi);
+  const leadExam = ex ? exam : bundle ? 'bpsc-tre' : 'bpsc-tre';
+  wireLead(document.querySelector<HTMLElement>('[data-notify]')!, { exam: leadExam });
+</script>

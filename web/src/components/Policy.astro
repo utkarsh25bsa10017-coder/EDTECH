@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import L from './L.astro';
+interface Props {
+  title: string;
+  titleHi: string;
+  summaryHi: string;
+}
+const { title, titleHi, summaryHi } = Astro.props;
+---
+<Base title={title}>
+  <article class="container narrow page-pad">
+    <div class="panel prose">
+      <h1><L en={title} hi={titleHi} /></h1>
+      <p class="note small">Placeholders in square brackets, such as [BUSINESS NAME], are filled in by the owner before launch.</p>
+      <p class="hi-summary" lang="hi"><strong>सारांश:</strong> {summaryHi}</p>
+      <slot />
+    </div>
+  </article>
+</Base>
+<style>
+  .prose :global(h2) {
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+  }
+  .prose :global(li) {
+    margin-bottom: 0.35rem;
+  }
+  .hi-summary {
+    border-left: 3px solid var(--accent);
+    padding-left: 0.8rem;
+  }
+</style>

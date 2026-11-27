@@ -1,0 +1,121 @@
+---
+import L from './L.astro';
+import { EXAM_INFO, type Exam } from '../lib/exams.ts';
+import { BUNDLES, BUNDLE_INFO, TIERS, TIER_INFO, bundleLink, rupees, tierLink } from '../lib/pricing.ts';
+
+interface Props {
+  exam: Exam;
+  /** Show the bundles that include this exam. */
+  bundles?: boolean;
+}
+const { exam, bundles = true } = Astro.props;
+const related = BUNDLES.filter((b) => BUNDLE_INFO[b].exams.includes(exam));
+const anyLive = TIERS.some((t) => tierLink(exam, t).live);
+---
+<div class="ladder">
+  {TIERS.map((t) => {
+    const info = TIER_INFO[t];
+    const link = tierLink(exam, t);
+    return (
+      <article class:list={['panel', 'tier', { featured: t === 'probable' }]}>
+        <p class="eyebrow"><L t={EXAM_INFO[exam].short} /></p>
+        <h3 class="tier-name"><L t={info.name} /></h3>
+        <p class="tier-price"><span class="price">{rupees(info.price)}</span> <span class="muted small"><L en="one-time" hi="एक बार" /></span></p>
+        <p class="muted"><L t={info.summary} /></p>
+        <ul class="list-check">
+          {info.includes.map((i) => <li><L t={i} /></li>)}
+        </ul>
+        <a class:list={['btn', 'btn-block', { 'btn-primary': t === 'probable' }]} href={link.href} data-buy={t} data-exam={exam} data-price={info.price} rel={link.live ? 'noopener' : undefined}>
+          <L en={`Buy for ${rupees(info.price)}`} hi={`${rupees(info.price)} में खरीदें`} />
+        </a>
+      </article>
+    );
+  })}
+</div>
+{bundles && related.length > 0 && (
+  <div class="bundles">
+    {related.map((b) => {
+      const info = BUNDLE_INFO[b];
+      const link = bundleLink(b);
+      return (
+        <article class="panel bundle">
+          <div>
+            <h3 class="h-sm"><L t={info.name} /> <span class="price">{rupees(info.price)}</span></h3>
+            <p class="muted small"><L t={info.summary} /></p>
+          </div>
+          <a class="btn" href={link.href} data-buy={`bundle-${b}`} data-exam={exam} data-price={info.price}>
+            <L en="Buy bundle" hi="बंडल खरीदें" />
+          </a>
+        </article>
+      );
+    })}
+  </div>
+)}
+<p class="muted small ladder-note">
+  {anyLive ? (
+    <L en="Secure payment. Access is linked to your phone number. 7-day refund policy." hi="सुरक्षित भुगतान। एक्सेस आपके फ़ोन नंबर से जुड़ा रहेगा। 7 दिन की रिफ़ंड नीति।" />
+  ) : (
+    <L en="Online payments are opening soon. Tap a plan to leave your number and we will tell you first." hi="ऑनलाइन भुगतान जल्द शुरू होगा। प्लान पर टैप करके अपना नंबर दें, हम सबसे पहले बताएंगे।" />
+  )}
+</p>
+
+<style>
+  .ladder {
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 820px) {
+    .ladder {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .ladder .panel + .panel,
+  .bundles .panel + .panel {
+    margin-top: 0;
+  }
+  .tier {
+    display: flex;
+    flex-direction: column;
+  }
+  .tier .btn {
+    margin-top: auto;
+  }
+  .tier.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), var(--shadow);
+  }
+  .tier-name {
+    margin-bottom: 0.2rem;
+  }
+  .tier-price {
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .bundles {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  @media (min-width: 820px) {
+    .bundles {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .bundle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .bundle p {
+    margin: 0;
+  }
+  .bundle .price {
+    color: var(--accent);
+    margin-left: 0.3rem;
+  }
+  .ladder-note {
+    margin-top: 0.75rem;
+  }
+</style>

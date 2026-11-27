@@ -1,121 +1,98 @@
 ---
 import { EXAMS, EXAM_INFO } from '../lib/exams.ts';
-import { examUrl, href, pricingUrl } from '../lib/url.ts';
-import { SITE_NAME, SITE_NAME_HI, TAGLINE } from '../config.ts';
+import { accountUrl, examUrl, href, pricingUrl } from '../lib/url.ts';
+import { SITE_NAME, whatsappUrl } from '../config.ts';
 import L from './L.astro';
-import Logo from './Logo.astro';
+
+const wa = whatsappUrl('Hi Prashnottar, I have a question.');
+const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
-  <div class="container cols">
-    <div class="about">
-      <a class="brand" href={href('/')}>
-        <Logo size={28} />
-        <span><strong>{SITE_NAME}</strong> <span class="muted" lang="hi">{SITE_NAME_HI}</span></span>
-      </a>
-      <p class="muted"><L t={TAGLINE} /></p>
+  <div class="container foot-grid">
+    <div>
+      <p class="foot-brand">{SITE_NAME}</p>
+      <p class="muted small">
+        <L
+          en="Prashnottar is an independent practice platform. We are not affiliated with, endorsed by or connected to BPSC, MPPSC, RPSC, BSEB, CBSE, CG Vyapam or any government body. Always check dates and patterns in the official notice."
+          hi="प्रश्नोत्तर एक स्वतंत्र अभ्यास मंच है। हमारा बीपीएससी, एमपीपीएससी, आरपीएससी, बीएसईबी, सीबीएसई, सीजी व्यापम या किसी सरकारी संस्था से कोई संबंध नहीं है। तिथियां और पैटर्न हमेशा आधिकारिक सूचना में जांचें।"
+        />
+      </p>
     </div>
     <nav aria-label="Exams">
-      <h2><L en="Exams" hi="परीक्षाएं" /></h2>
+      <p class="foot-h"><L en="Exams" hi="परीक्षाएं" /></p>
       <ul>
         {EXAMS.map((e) => <li><a href={examUrl(e)}><L t={EXAM_INFO[e].short} /></a></li>)}
       </ul>
     </nav>
-    <nav aria-label="Site">
-      <h2><L en="Site" hi="साइट" /></h2>
+    <nav aria-label="Help">
+      <p class="foot-h"><L en="Help" hi="सहायता" /></p>
       <ul>
-        <li><a href={href('/')}><L en="Home" hi="होम" /></a></li>
-        <li><a href={pricingUrl()}><L en="Pricing" hi="मूल्य" /></a></li>
+        <li><a href={pricingUrl()}><L en="Pricing" hi="कीमत" /></a></li>
+        <li><a href={accountUrl()}><L en="Your account" hi="आपका खाता" /></a></li>
+        <li><a href={href('/contact/')}><L en="Contact" hi="संपर्क" /></a></li>
+        {wa && <li><a href={wa} target="_blank" rel="noopener"><L en="WhatsApp us" hi="व्हाट्सऐप करें" /></a></li>}
+      </ul>
+    </nav>
+    <nav aria-label="Policies">
+      <p class="foot-h"><L en="Policies" hi="नीतियां" /></p>
+      <ul>
+        <li><a href={href('/terms/')}><L en="Terms" hi="नियम व शर्तें" /></a></li>
+        <li><a href={href('/privacy/')}><L en="Privacy" hi="गोपनीयता" /></a></li>
+        <li><a href={href('/refund/')}><L en="Refunds" hi="रिफ़ंड" /></a></li>
       </ul>
     </nav>
   </div>
-  <div class="container legal">
-    <p>
-      <L
-        en="Prashnottar is an independent practice platform, not affiliated with BPSC, BPSSC, UPPRPB or any government body. Practice papers are our own questions written in the exam pattern; always check the official notification for the exact syllabus and pattern."
-        hi="प्रश्नोत्तर एक स्वतंत्र अभ्यास मंच है, बीपीएससी, बीपीएसएससी, यूपीपीआरपीबी या किसी सरकारी संस्था से संबद्ध नहीं। अभ्यास प्रश्नपत्र परीक्षा पैटर्न पर लिखे हमारे अपने प्रश्न हैं; सटीक पाठ्यक्रम और पैटर्न के लिए हमेशा आधिकारिक अधिसूचना देखें।"
-      />
-    </p>
-  </div>
+  <div class="container"><p class="muted small copy">© {year} [BUSINESS NAME]</p></div>
 </footer>
 
 <style>
   .site-footer {
     margin-top: 3rem;
+    padding: 2rem 0 calc(1.5rem + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line);
-    background: var(--surface);
-    font-size: 0.95rem;
   }
-
-  .cols {
+  .foot-grid {
     display: grid;
-    gap: 1.75rem;
-    padding-block: 2.25rem 1.25rem;
+    gap: 1.5rem;
     grid-template-columns: 1fr 1fr;
   }
-
-  .about {
+  .foot-grid > div:first-child {
     grid-column: 1 / -1;
   }
-
-  @media (min-width: 720px) {
-    .cols {
-      grid-template-columns: 2fr 1fr 1fr;
+  @media (min-width: 860px) {
+    .foot-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
     }
-
-    .about {
+    .foot-grid > div:first-child {
       grid-column: auto;
     }
   }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    color: var(--ink);
-    text-decoration: none;
-    margin-bottom: 0.6rem;
+  .foot-brand {
+    font-weight: 700;
+    margin-bottom: 0.3rem;
   }
-
-  .about p {
-    max-width: 24rem;
-    margin: 0;
+  .foot-h {
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
   }
-
-  h2 {
-    font-size: 0.8125rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-bottom: 0.6rem;
-  }
-
   ul {
     list-style: none;
-    margin: 0;
     padding: 0;
-    display: grid;
-    gap: 0.3rem;
+    margin: 0;
   }
-
-  ul a {
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 36px;
     color: var(--ink-2);
     text-decoration: none;
   }
-
-  ul a:hover {
+  li a:hover {
     color: var(--accent);
     text-decoration: underline;
   }
-
-  .legal {
-    border-top: 1px solid var(--line);
-    padding-block: 1rem 1.5rem;
-    color: var(--muted);
-    font-size: 0.85rem;
-  }
-
-  .legal p {
-    margin: 0;
-    max-width: 52rem;
+  .copy {
+    margin-top: 1.5rem;
   }
 </style>

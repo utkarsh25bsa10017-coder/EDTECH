@@ -12,8 +12,15 @@ export function href(path = '/'): string {
   return BASE + (isPage ? `${pathname}/` : pathname) + rest;
 }
 
+export type Mode = 'practice' | 'test' | 'omr' | 'booklet' | 'sheet';
+
 export const examUrl = (exam: Exam) => href(`/${exam}/`);
 export const paperUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/`);
-export const practiceUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/practice/`);
-export const testUrl = (exam: Exam, paper: string) => href(`/${exam}/${paper}/test/`);
+/** Free papers have static pages per mode. */
+export const modeUrl = (exam: Exam, paper: string, mode: Mode) => href(`/${exam}/${paper}/${mode}/`);
+export const practiceUrl = (exam: Exam, paper: string) => modeUrl(exam, paper, 'practice');
+export const testUrl = (exam: Exam, paper: string) => modeUrl(exam, paper, 'test');
+/** Paid papers load from the API in one client-side page. */
+export const playUrl = (exam: string, paper: string, mode: Mode) => href(`/play/?exam=${exam}&paper=${encodeURIComponent(paper)}&mode=${mode}`);
 export const pricingUrl = () => href('/pricing/');
+export const accountUrl = () => href('/account/');

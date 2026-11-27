@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import { whatsappUrl } from '../config.ts';
+const wa = whatsappUrl('Hi Prashnottar, I have a question.');
+---
+<Base title="Contact">
+  <section class="container narrow page-pad">
+    <div class="panel">
+      <h1><L en="Contact us" hi="संपर्क करें" /></h1>
+      <p><L en="Questions about a pack, a payment, or a mistake in a question? We usually reply within one working day." hi="पैक, भुगतान या किसी प्रश्न में गलती के बारे में पूछना है? हम आम तौर पर एक कार्य दिवस में जवाब देते हैं।" /></p>
+      <dl class="contact">
+        <dt><L en="Business" hi="व्यवसाय" /></dt><dd>[BUSINESS NAME]</dd>
+        <dt><L en="Address" hi="पता" /></dt><dd>[ADDRESS]</dd>
+        <dt><L en="Email" hi="ईमेल" /></dt><dd>[SUPPORT EMAIL]</dd>
+        <dt><L en="Phone / WhatsApp" hi="फ़ोन / व्हाट्सऐप" /></dt><dd>[SUPPORT PHONE]</dd>
+        <dt><L en="Hours" hi="समय" /></dt><dd>[SUPPORT HOURS]</dd>
+      </dl>
+      {wa && <a class="btn btn-primary" href={wa} target="_blank" rel="noopener"><L en="Message us on WhatsApp" hi="व्हाट्सऐप पर संदेश भेजें" /></a>}
+      <p class="muted small"><L en="Prashnottar is independent and cannot answer questions about official forms, admit cards or results. Please contact the commission or board for those." hi="प्रश्नोत्तर स्वतंत्र है और आधिकारिक फ़ॉर्म, प्रवेश पत्र या परिणाम से जुड़े प्रश्नों का उत्तर नहीं दे सकता। उनके लिए आयोग या बोर्ड से संपर्क करें।" /></p>
+    </div>
+  </section>
+</Base>
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.4rem 1rem;
+    margin: 1rem 0 1.25rem;
+  }
+  .contact dt {
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .contact dd {
+    margin: 0;
+  }
+</style>
