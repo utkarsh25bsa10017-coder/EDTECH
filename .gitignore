@@ -23,3 +23,14 @@ web/dist/
 .DS_Store
 .vscode/
 .idea/
+
+# Paid content and server data (repo is public)
+content/bank/
+content/papers/
+server/data/
+output/
+
+# Rust / Tauri build output
+server/target/
+app/src-tauri/target/
+app/src-tauri/gen/
