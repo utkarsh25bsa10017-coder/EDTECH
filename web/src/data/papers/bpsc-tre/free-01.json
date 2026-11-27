@@ -1,0 +1,894 @@
+{
+ "id": "free-01",
+ "exam": "bpsc-tre",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 22,
+ "marks_per_question": 1,
+ "negative_marking": 0,
+ "options": 4,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "English Language",
+    "hi": "अंग्रेज़ी भाषा"
+   },
+   "subject": "english",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "bpsc-tre-english-0023",
+     "topic": {
+      "en": "One-word Substitution",
+      "hi": "One-word Substitution"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "One word for 'a person who cannot read or write':",
+      "hi": "One word for 'a person who cannot read or write':"
+     },
+     "options": [
+      {
+       "en": "Illiterate",
+       "hi": "Illiterate"
+      },
+      {
+       "en": "Invalid",
+       "hi": "Invalid"
+      },
+      {
+       "en": "Innocent",
+       "hi": "Innocent"
+      },
+      {
+       "en": "Ignorant",
+       "hi": "Ignorant"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "An illiterate person is one who is unable to read or write.",
+      "hi": "An illiterate person is one who is unable to read or write."
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "bpsc-tre-english-0011",
+     "topic": {
+      "en": "Error Spotting",
+      "hi": "Error Spotting"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Find the part of the sentence that has an error. If there is no error, choose 'No error'. She gave me (A) / a valuable advice (B) / before the exam. (C) / No error (D)",
+      "hi": "Find the part of the sentence that has an error. If there is no error, choose 'No error'. She gave me (A) / a valuable advice (B) / before the exam. (C) / No error (D)"
+     },
+     "options": [
+      {
+       "en": "A",
+       "hi": "A"
+      },
+      {
+       "en": "B",
+       "hi": "B"
+      },
+      {
+       "en": "C",
+       "hi": "C"
+      },
+      {
+       "en": "No error",
+       "hi": "No error"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "'Advice' is uncountable and cannot take 'a'; say 'valuable advice' or 'a piece of valuable advice'.",
+      "hi": "'Advice' is uncountable and cannot take 'a'; say 'valuable advice' or 'a piece of valuable advice'."
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Hindi Language",
+    "hi": "हिन्दी भाषा"
+   },
+   "subject": "hindi",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "bpsc-tre-hindi-0001",
+     "topic": {
+      "en": "संधि",
+      "hi": "संधि"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "'विद्यालय' का सही संधि-विच्छेद है—",
+      "hi": "'विद्यालय' का सही संधि-विच्छेद है—"
+     },
+     "options": [
+      {
+       "en": "विद्या + आलय",
+       "hi": "विद्या + आलय"
+      },
+      {
+       "en": "विद्य + अलय",
+       "hi": "विद्य + अलय"
+      },
+      {
+       "en": "विद्या + लय",
+       "hi": "विद्या + लय"
+      },
+      {
+       "en": "विद्य + आलय",
+       "hi": "विद्य + आलय"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "विद्या + आलय में आ + आ = आ होकर 'विद्यालय' बनता है; यह दीर्घ स्वर संधि है।",
+      "hi": "विद्या + आलय में आ + आ = आ होकर 'विद्यालय' बनता है; यह दीर्घ स्वर संधि है।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "bpsc-tre-hindi-0043",
+     "topic": {
+      "en": "पर्यायवाची शब्द",
+      "hi": "पर्यायवाची शब्द"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "'पृथ्वी' का पर्यायवाची शब्द कौन-सा है?",
+      "hi": "'पृथ्वी' का पर्यायवाची शब्द कौन-सा है?"
+     },
+     "options": [
+      {
+       "en": "व्योम",
+       "hi": "व्योम"
+      },
+      {
+       "en": "अंबर",
+       "hi": "अंबर"
+      },
+      {
+       "en": "सरिता",
+       "hi": "सरिता"
+      },
+      {
+       "en": "वसुधा",
+       "hi": "वसुधा"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "वसुधा पृथ्वी का पर्यायवाची है; व्योम और अंबर आकाश के तथा सरिता नदी का पर्यायवाची है।",
+      "hi": "वसुधा पृथ्वी का पर्यायवाची है; व्योम और अंबर आकाश के तथा सरिता नदी का पर्यायवाची है।"
+     }
+    },
+    {
+     "id": "B3",
+     "qid": "bpsc-tre-hindi-0047",
+     "topic": {
+      "en": "विलोम शब्द",
+      "hi": "विलोम शब्द"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "'आस्तिक' का विलोम शब्द है—",
+      "hi": "'आस्तिक' का विलोम शब्द है—"
+     },
+     "options": [
+      {
+       "en": "आस्था",
+       "hi": "आस्था"
+      },
+      {
+       "en": "अनास्तिक",
+       "hi": "अनास्तिक"
+      },
+      {
+       "en": "धार्मिक",
+       "hi": "धार्मिक"
+      },
+      {
+       "en": "नास्तिक",
+       "hi": "नास्तिक"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "ईश्वर में विश्वास रखने वाला आस्तिक और विश्वास न रखने वाला नास्तिक कहलाता है।",
+      "hi": "ईश्वर में विश्वास रखने वाला आस्तिक और विश्वास न रखने वाला नास्तिक कहलाता है।"
+     }
+    },
+    {
+     "id": "B4",
+     "qid": "bpsc-tre-hindi-0010",
+     "topic": {
+      "en": "समास",
+      "hi": "समास"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'नीलकंठ' (शिव के अर्थ में) में कौन-सा समास है?",
+      "hi": "'नीलकंठ' (शिव के अर्थ में) में कौन-सा समास है?"
+     },
+     "options": [
+      {
+       "en": "द्वंद्व",
+       "hi": "द्वंद्व"
+      },
+      {
+       "en": "बहुव्रीहि",
+       "hi": "बहुव्रीहि"
+      },
+      {
+       "en": "कर्मधारय",
+       "hi": "कर्मधारय"
+      },
+      {
+       "en": "द्विगु",
+       "hi": "द्विगु"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "'नीला है कंठ जिसका, अर्थात् शिव'— यहाँ दोनों पद मिलकर किसी अन्य (शिव) की ओर संकेत करते हैं, इसलिए बहुव्रीहि समास है।",
+      "hi": "'नीला है कंठ जिसका, अर्थात् शिव'— यहाँ दोनों पद मिलकर किसी अन्य (शिव) की ओर संकेत करते हैं, इसलिए बहुव्रीहि समास है।"
+     }
+    },
+    {
+     "id": "B5",
+     "qid": "bpsc-tre-hindi-0015",
+     "topic": {
+      "en": "समास",
+      "hi": "समास"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'नीलकमल' का सही समास है—",
+      "hi": "'नीलकमल' का सही समास है—"
+     },
+     "options": [
+      {
+       "en": "बहुव्रीहि",
+       "hi": "बहुव्रीहि"
+      },
+      {
+       "en": "द्वंद्व",
+       "hi": "द्वंद्व"
+      },
+      {
+       "en": "अव्ययीभाव",
+       "hi": "अव्ययीभाव"
+      },
+      {
+       "en": "कर्मधारय",
+       "hi": "कर्मधारय"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "'नीला है जो कमल'— इसमें विशेषण-विशेष्य संबंध है, इसलिए कर्मधारय समास है।",
+      "hi": "'नीला है जो कमल'— इसमें विशेषण-विशेष्य संबंध है, इसलिए कर्मधारय समास है।"
+     }
+    },
+    {
+     "id": "B6",
+     "qid": "bpsc-tre-hindi-0036",
+     "topic": {
+      "en": "मुहावरे",
+      "hi": "मुहावरे"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'अक्ल पर पत्थर पड़ना' का अर्थ है—",
+      "hi": "'अक्ल पर पत्थर पड़ना' का अर्थ है—"
+     },
+     "options": [
+      {
+       "en": "बहुत परिश्रम करना",
+       "hi": "बहुत परिश्रम करना"
+      },
+      {
+       "en": "सिर में चोट लगना",
+       "hi": "सिर में चोट लगना"
+      },
+      {
+       "en": "बहुत बुद्धिमान होना",
+       "hi": "बहुत बुद्धिमान होना"
+      },
+      {
+       "en": "बुद्धि भ्रष्ट हो जाना",
+       "hi": "बुद्धि भ्रष्ट हो जाना"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "जब कोई व्यक्ति सोच-समझ खोकर गलत निर्णय करे, तो कहा जाता है कि उसकी अक्ल पर पत्थर पड़ गए हैं।",
+      "hi": "जब कोई व्यक्ति सोच-समझ खोकर गलत निर्णय करे, तो कहा जाता है कि उसकी अक्ल पर पत्थर पड़ गए हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "Mental Ability & Elementary Maths",
+    "hi": "मानसिक क्षमता एवं प्रारंभिक गणित"
+   },
+   "subject": "maths",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "bpsc-tre-maths-0002",
+     "topic": {
+      "en": "Percentage",
+      "hi": "प्रतिशत"
+     },
+     "difficulty": "easy",
+     "type": "numeric",
+     "text": {
+      "en": "What is 35% of 260?",
+      "hi": "260 का 35% कितना है?"
+     },
+     "options": [
+      {
+       "en": "96",
+       "hi": "96"
+      },
+      {
+       "en": "81",
+       "hi": "81"
+      },
+      {
+       "en": "91",
+       "hi": "91"
+      },
+      {
+       "en": "78",
+       "hi": "78"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "260 × 35/100 = 91.",
+      "hi": "260 × 35/100 = 91।"
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "bpsc-tre-maths-0012",
+     "topic": {
+      "en": "Time & Work",
+      "hi": "समय और कार्य"
+     },
+     "difficulty": "medium",
+     "type": "numeric",
+     "text": {
+      "en": "A can finish a work in 12 days and B in 24 days. In how many days can they finish it working together?",
+      "hi": "A किसी कार्य को 12 दिन में और B 24 दिन में पूरा कर सकता है। दोनों मिलकर उसे कितने दिन में पूरा करेंगे?"
+     },
+     "options": [
+      {
+       "en": "18 days",
+       "hi": "18 दिन"
+      },
+      {
+       "en": "6 days",
+       "hi": "6 दिन"
+      },
+      {
+       "en": "8 days",
+       "hi": "8 दिन"
+      },
+      {
+       "en": "9 days",
+       "hi": "9 दिन"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "One day's work = 1/12 + 1/24 = 3/24 = 1/8, so together they take 8 days.",
+      "hi": "एक दिन का कार्य = 1/12 + 1/24 = 3/24 = 1/8, अतः मिलकर 8 दिन लगेंगे।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Child Development & Pedagogy",
+    "hi": "बाल विकास एवं शिक्षाशास्त्र"
+   },
+   "subject": "cdp",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "bpsc-tre-cdp-0032",
+     "topic": {
+      "en": "Assessment & Evaluation",
+      "hi": "आकलन एवं मूल्यांकन"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "An end-of-term examination used to certify what students have learnt is an example of",
+      "hi": "छात्रों ने क्या सीखा, इसे प्रमाणित करने के लिए ली जाने वाली सत्रांत परीक्षा किसका उदाहरण है?"
+     },
+     "options": [
+      {
+       "en": "Summative assessment",
+       "hi": "योगात्मक आकलन"
+      },
+      {
+       "en": "Diagnostic assessment",
+       "hi": "निदानात्मक आकलन"
+      },
+      {
+       "en": "Peer assessment",
+       "hi": "सहपाठी आकलन"
+      },
+      {
+       "en": "Formative assessment",
+       "hi": "रचनात्मक आकलन"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Summative assessment comes at the end of a unit or term and sums up achievement, usually for grading.",
+      "hi": "योगात्मक आकलन इकाई या सत्र के अंत में होता है और उपलब्धि का सार प्रस्तुत करता है, प्रायः ग्रेड देने के लिए।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "bpsc-tre-cdp-0043",
+     "topic": {
+      "en": "NEP 2020",
+      "hi": "राष्ट्रीय शिक्षा नीति 2020"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Under the 5+3+3+4 structure of NEP 2020, the Foundational Stage covers children of which age group?",
+      "hi": "राष्ट्रीय शिक्षा नीति 2020 की 5+3+3+4 संरचना में आधारभूत चरण किस आयु वर्ग के बच्चों को समाहित करता है?"
+     },
+     "options": [
+      {
+       "en": "3 to 6 years",
+       "hi": "3 से 6 वर्ष"
+      },
+      {
+       "en": "6 to 10 years",
+       "hi": "6 से 10 वर्ष"
+      },
+      {
+       "en": "5 to 11 years",
+       "hi": "5 से 11 वर्ष"
+      },
+      {
+       "en": "3 to 8 years",
+       "hi": "3 से 8 वर्ष"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The Foundational Stage has three years of pre-school/Anganwadi/Balvatika plus Classes 1 and 2, i.e. ages 3–8.",
+      "hi": "आधारभूत चरण में तीन वर्ष की पूर्व-प्राथमिक/आंगनवाड़ी/बालवाटिका और कक्षा 1 व 2 शामिल हैं, अर्थात् 3–8 वर्ष।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "Bihar GK",
+    "hi": "बिहार सामान्य ज्ञान"
+   },
+   "subject": "bihar",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "bpsc-tre-bihar-0006",
+     "topic": {
+      "en": "Bihar History",
+      "hi": "बिहार का इतिहास"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The First Buddhist Council was held at Rajagriha during the reign of",
+      "hi": "प्रथम बौद्ध संगीति राजगृह में किसके शासनकाल में आयोजित हुई थी?"
+     },
+     "options": [
+      {
+       "en": "Ashoka",
+       "hi": "अशोक"
+      },
+      {
+       "en": "Kalashoka",
+       "hi": "कालाशोक"
+      },
+      {
+       "en": "Ajatashatru",
+       "hi": "अजातशत्रु"
+      },
+      {
+       "en": "Kanishka",
+       "hi": "कनिष्क"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "The First Buddhist Council was held at the Saptaparni cave in Rajagriha soon after the Buddha's death, under Ajatashatru.",
+      "hi": "बुद्ध के महापरिनिर्वाण के शीघ्र बाद अजातशत्रु के शासनकाल में राजगृह की सप्तपर्णी गुफा में प्रथम बौद्ध संगीति हुई।"
+     }
+    },
+    {
+     "id": "E2",
+     "qid": "bpsc-tre-bihar-0037",
+     "topic": {
+      "en": "Bihar Economy",
+      "hi": "बिहार की अर्थव्यवस्था"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'Mithila Makhana', which received a GI tag, is the seed of which plant?",
+      "hi": "जीआई टैग प्राप्त 'मिथिला मखाना' किस पौधे का बीज है?"
+     },
+     "options": [
+      {
+       "en": "Fox nut (Euryale ferox)",
+       "hi": "मखाना (यूरीएल फ़ेरॉक्स)"
+      },
+      {
+       "en": "Lotus (Nelumbo nucifera)",
+       "hi": "कमल (नेलुम्बो न्यूसिफ़ेरा)"
+      },
+      {
+       "en": "Water chestnut (Trapa)",
+       "hi": "सिंघाड़ा (ट्रापा)"
+      },
+      {
+       "en": "Foxtail millet",
+       "hi": "कंगनी"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Makhana is the seed of the aquatic plant Euryale ferox, grown in ponds of the Mithila region; Bihar is its leading producer.",
+      "hi": "मखाना जलीय पौधे यूरीएल फ़ेरॉक्स का बीज है, जो मिथिला के तालाबों में उगाया जाता है; बिहार इसका सबसे बड़ा उत्पादक है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "name": {
+    "en": "General Science",
+    "hi": "सामान्य विज्ञान"
+   },
+   "subject": "sci",
+   "questions": [
+    {
+     "id": "F1",
+     "qid": "bpsc-tre-sci-0004",
+     "topic": {
+      "en": "Physics",
+      "hi": "भौतिकी"
+     },
+     "difficulty": "easy",
+     "type": "numeric",
+     "text": {
+      "en": "A current of 2 A flows through a resistor of 5 Ω. What is the potential difference across it?",
+      "hi": "5 Ω के प्रतिरोधक से 2 A की धारा प्रवाहित हो रही है। उसके सिरों के बीच विभवांतर कितना है?"
+     },
+     "options": [
+      {
+       "en": "0.4 V",
+       "hi": "0.4 V"
+      },
+      {
+       "en": "10 V",
+       "hi": "10 V"
+      },
+      {
+       "en": "7 V",
+       "hi": "7 V"
+      },
+      {
+       "en": "2.5 V",
+       "hi": "2.5 V"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "By Ohm's law, V = IR = 2 × 5 = 10 V.",
+      "hi": "ओम के नियम से V = IR = 2 × 5 = 10 V।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "G",
+   "name": {
+    "en": "Indian History",
+    "hi": "भारतीय इतिहास"
+   },
+   "subject": "history",
+   "questions": [
+    {
+     "id": "G1",
+     "qid": "bpsc-tre-history-0002",
+     "topic": {
+      "en": "Ancient India",
+      "hi": "प्राचीन भारत"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The 'Great Bath' of the Indus Valley Civilisation was found at",
+      "hi": "सिंधु घाटी सभ्यता का 'विशाल स्नानागार' कहाँ मिला था?"
+     },
+     "options": [
+      {
+       "en": "Dholavira",
+       "hi": "धौलावीरा"
+      },
+      {
+       "en": "Kalibangan",
+       "hi": "कालीबंगा"
+      },
+      {
+       "en": "Harappa",
+       "hi": "हड़प्पा"
+      },
+      {
+       "en": "Mohenjo-daro",
+       "hi": "मोहनजोदड़ो"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The Great Bath, a large brick tank, was discovered at Mohenjo-daro in Sindh.",
+      "hi": "ईंटों से बना विशाल स्नानागार सिंध के मोहनजोदड़ो में मिला था।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "H",
+   "name": {
+    "en": "Geography",
+    "hi": "भूगोल"
+   },
+   "subject": "geo",
+   "questions": [
+    {
+     "id": "H1",
+     "qid": "bpsc-tre-geo-0010",
+     "topic": {
+      "en": "Physical Geography",
+      "hi": "भौतिक भूगोल"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Almost all weather phenomena such as clouds, rain and storms occur in the",
+      "hi": "बादल, वर्षा और तूफ़ान जैसी लगभग सभी मौसमी घटनाएँ किस परत में होती हैं?"
+     },
+     "options": [
+      {
+       "en": "Troposphere",
+       "hi": "क्षोभ मंडल"
+      },
+      {
+       "en": "Stratosphere",
+       "hi": "समताप मंडल"
+      },
+      {
+       "en": "Ionosphere",
+       "hi": "आयन मंडल"
+      },
+      {
+       "en": "Mesosphere",
+       "hi": "मध्य मंडल"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The troposphere, the lowest layer, contains most water vapour and dust, so weather occurs there.",
+      "hi": "सबसे निचली परत क्षोभ मंडल में अधिकांश जलवाष्प और धूलकण होते हैं, इसलिए मौसमी घटनाएँ वहीं होती हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "I",
+   "name": {
+    "en": "Indian Polity",
+    "hi": "भारतीय राजव्यवस्था"
+   },
+   "subject": "polity",
+   "questions": [
+    {
+     "id": "I1",
+     "qid": "bpsc-tre-polity-0017",
+     "topic": {
+      "en": "Fundamental Rights & Duties",
+      "hi": "मौलिक अधिकार एवं कर्तव्य"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which Article of the Constitution abolishes untouchability?",
+      "hi": "संविधान का कौन-सा अनुच्छेद अस्पृश्यता का अंत करता है?"
+     },
+     "options": [
+      {
+       "en": "Article 23",
+       "hi": "अनुच्छेद 23"
+      },
+      {
+       "en": "Article 15",
+       "hi": "अनुच्छेद 15"
+      },
+      {
+       "en": "Article 25",
+       "hi": "अनुच्छेद 25"
+      },
+      {
+       "en": "Article 17",
+       "hi": "अनुच्छेद 17"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Article 17 abolishes untouchability and forbids its practice in any form.",
+      "hi": "अनुच्छेद 17 अस्पृश्यता का अंत करता है और किसी भी रूप में इसके आचरण को निषिद्ध करता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "J",
+   "name": {
+    "en": "Current Affairs",
+    "hi": "समसामयिकी"
+   },
+   "subject": "ca",
+   "questions": [
+    {
+     "id": "J1",
+     "qid": "bpsc-tre-ca-0017",
+     "topic": {
+      "en": "Bihar Current Affairs",
+      "hi": "बिहार समसामयिकी"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The Khelo India Youth Games 2025 (seventh edition) were hosted by",
+      "hi": "खेलो इंडिया यूथ गेम्स 2025 (सातवाँ संस्करण) की मेज़बानी किस राज्य ने की?"
+     },
+     "options": [
+      {
+       "en": "Madhya Pradesh",
+       "hi": "मध्य प्रदेश"
+      },
+      {
+       "en": "Assam",
+       "hi": "असम"
+      },
+      {
+       "en": "Bihar",
+       "hi": "बिहार"
+      },
+      {
+       "en": "Tamil Nadu",
+       "hi": "तमिलनाडु"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Bihar hosted the Khelo India Youth Games in May 2025, with Patna and Rajgir among the main venues; the sixth edition (2024) was in Tamil Nadu.",
+      "hi": "बिहार ने मई 2025 में खेलो इंडिया यूथ गेम्स की मेज़बानी की, जिसमें पटना और राजगीर प्रमुख स्थल थे; छठा संस्करण (2024) तमिलनाडु में हुआ था।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "K",
+   "name": {
+    "en": "Economy",
+    "hi": "अर्थव्यवस्था"
+   },
+   "subject": "eco",
+   "questions": [
+    {
+     "id": "K1",
+     "qid": "bpsc-tre-eco-0012",
+     "topic": {
+      "en": "Public Finance & Taxation",
+      "hi": "लोक वित्त एवं कराधान"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which of the following is a direct tax?",
+      "hi": "निम्नलिखित में से कौन-सा प्रत्यक्ष कर है?"
+     },
+     "options": [
+      {
+       "en": "Income tax",
+       "hi": "आयकर"
+      },
+      {
+       "en": "Customs duty",
+       "hi": "सीमा शुल्क"
+      },
+      {
+       "en": "Excise duty",
+       "hi": "उत्पाद शुल्क"
+      },
+      {
+       "en": "GST",
+       "hi": "वस्तु एवं सेवा कर (GST)"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "A direct tax is paid by the person on whom it is levied, like income tax; GST, customs and excise are indirect taxes passed on to consumers.",
+      "hi": "प्रत्यक्ष कर उसी व्यक्ति द्वारा चुकाया जाता है जिस पर लगाया जाता है, जैसे आयकर; GST, सीमा शुल्क और उत्पाद शुल्क अप्रत्यक्ष कर हैं।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:40+00:00",
+  "pattern_source": {
+   "questions": "defaults (pipeline/patterns.py)",
+   "duration_minutes": "defaults (pipeline/patterns.py)",
+   "negative_marking": "content/bank/bpsc-tre/_pattern.md",
+   "options": "content/bank/bpsc-tre/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "Modelled on TRE 3.0 (classes 1-5): Language paper (qualifying) Part I English 30 + Part II Hindi 70, then General Studies 150 (GS, mental ability/maths, child development and pedagogy). Assumed 2 h + 2.5 h, 1 mark each, no negative marking. Not confirmed for TRE 4.0.",
+  "subject_counts": {
+   "english": 2,
+   "hindi": 6,
+   "maths": 2,
+   "cdp": 2,
+   "bihar": 2,
+   "sci": 1,
+   "history": 1,
+   "geo": 1,
+   "polity": 1,
+   "ca": 1,
+   "eco": 1
+  }
+ }
+}

@@ -1,0 +1,872 @@
+{
+ "id": "free-01",
+ "exam": "ras",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 24,
+ "marks_per_question": 1.3333,
+ "negative_marking": 0.3333,
+ "options": 4,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "Rajasthan: History, Art and Culture",
+    "hi": "राजस्थान: इतिहास, कला एवं संस्कृति"
+   },
+   "subject": "rj-hist",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "ras-rj-hist-0074",
+     "topic": {
+      "en": "Folk dance and music",
+      "hi": "लोक नृत्य एवं संगीत"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which folk dance of Rajasthan is on UNESCO's list of the Intangible Cultural Heritage of Humanity?",
+      "hi": "राजस्थान का कौन-सा लोक नृत्य यूनेस्को की मानवता की अमूर्त सांस्कृतिक विरासत सूची में शामिल है?"
+     },
+     "options": [
+      {
+       "en": "Gair",
+       "hi": "गैर"
+      },
+      {
+       "en": "Ghoomar",
+       "hi": "घूमर"
+      },
+      {
+       "en": "Chari",
+       "hi": "चरी"
+      },
+      {
+       "en": "Kalbeliya",
+       "hi": "कालबेलिया"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Kalbeliya songs and dances were inscribed in 2010. Ghoomar is the state dance of Rajasthan.",
+      "hi": "कालबेलिया गीत एवं नृत्य 2010 में शामिल किए गए। घूमर राजस्थान का राज्य नृत्य है।"
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "ras-rj-hist-0003",
+     "topic": {
+      "en": "Prehistoric and ancient sites",
+      "hi": "प्रागैतिहासिक एवं प्राचीन स्थल"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Ganeshwar, called the 'mother of copper-age cultures' of India, developed on the bank of which river?",
+      "hi": "भारत की ‘ताम्रयुगीन संस्कृतियों की जननी’ कहे जाने वाले गणेश्वर का विकास किस नदी के किनारे हुआ?"
+     },
+     "options": [
+      {
+       "en": "Kantli",
+       "hi": "कांतली"
+      },
+      {
+       "en": "Luni",
+       "hi": "लूणी"
+      },
+      {
+       "en": "Ghaggar",
+       "hi": "घग्घर"
+      },
+      {
+       "en": "Banas",
+       "hi": "बनास"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Ganeshwar in the Neem ka Thana area of Sikar lies on the Kantli river. Copper tools found here are thought to have been supplied to Harappan settlements.",
+      "hi": "सीकर के नीम का थाना क्षेत्र में स्थित गणेश्वर कांतली नदी के किनारे है। यहाँ से मिले ताम्र उपकरण हड़प्पाई बस्तियों को भेजे जाने के प्रमाण माने जाते हैं।"
+     }
+    },
+    {
+     "id": "A3",
+     "qid": "ras-rj-hist-0020",
+     "topic": {
+      "en": "Mewar: Guhils and Sisodias",
+      "hi": "मेवाड़: गुहिल एवं सिसोदिया"
+     },
+     "difficulty": "medium",
+     "type": "sequence",
+     "text": {
+      "en": "Arrange the three sakas of Chittorgarh in chronological order:\n1. During Akbar's siege\n2. During Alauddin Khalji's siege\n3. During Bahadur Shah of Gujarat's siege",
+      "hi": "चित्तौड़गढ़ के तीन साकों को कालक्रम में व्यवस्थित कीजिए:\n1. अकबर के आक्रमण के समय\n2. अलाउद्दीन खिलजी के आक्रमण के समय\n3. गुजरात के बहादुरशाह के आक्रमण के समय"
+     },
+     "options": [
+      {
+       "en": "3, 2, 1",
+       "hi": "3, 2, 1"
+      },
+      {
+       "en": "2, 1, 3",
+       "hi": "2, 1, 3"
+      },
+      {
+       "en": "2, 3, 1",
+       "hi": "2, 3, 1"
+      },
+      {
+       "en": "1, 3, 2",
+       "hi": "1, 3, 2"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Alauddin Khalji (1303, Ratan Singh and Padmini), Bahadur Shah (1534–35, Rani Karnavati) and Akbar (1567–68, Jaimal and Patta).",
+      "hi": "अलाउद्दीन खिलजी (1303, रतनसिंह व पद्मिनी), बहादुरशाह (1534–35, रानी कर्णावती) तथा अकबर (1567–68, जयमल व पत्ता)।"
+     }
+    },
+    {
+     "id": "A4",
+     "qid": "ras-rj-hist-0043",
+     "topic": {
+      "en": "1857, peasant and tribal movements",
+      "hi": "1857, किसान एवं जनजातीय आंदोलन"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "What was the original name of Vijay Singh Pathik, leader of the Bijolia peasant movement?",
+      "hi": "बिजोलिया किसान आंदोलन के नेता विजयसिंह पथिक का मूल नाम क्या था?"
+     },
+     "options": [
+      {
+       "en": "Haribhau Upadhyay",
+       "hi": "हरिभाऊ उपाध्याय"
+      },
+      {
+       "en": "Bhoop Singh",
+       "hi": "भूपसिंह"
+      },
+      {
+       "en": "Sitaram Das",
+       "hi": "सीताराम दास"
+      },
+      {
+       "en": "Ram Narayan Choudhary",
+       "hi": "रामनारायण चौधरी"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Bhoop Singh, a revolutionary from Bulandshahr, took the name Vijay Singh Pathik and led Bijolia from 1916; he founded the Rajasthan Seva Sangh in 1919.",
+      "hi": "बुलंदशहर के क्रांतिकारी भूपसिंह ने विजयसिंह पथिक नाम अपनाया और 1916 से बिजोलिया आंदोलन का नेतृत्व किया; 1919 में उन्होंने राजस्थान सेवा संघ बनाया।"
+     }
+    },
+    {
+     "id": "A5",
+     "qid": "ras-rj-hist-0047",
+     "topic": {
+      "en": "1857, peasant and tribal movements",
+      "hi": "1857, किसान एवं जनजातीय आंदोलन"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Who wrote 'Chetavani ra Chungatya' to dissuade Maharana Fateh Singh from attending the Delhi Durbar of 1903?",
+      "hi": "महाराणा फतहसिंह को 1903 के दिल्ली दरबार में जाने से रोकने के लिए ‘चेतावणी रा चूंगट्या’ किसने लिखे?"
+     },
+     "options": [
+      {
+       "en": "Suryamal Mishran",
+       "hi": "सूर्यमल्ल मिश्रण"
+      },
+      {
+       "en": "Kesari Singh Barhath",
+       "hi": "केसरीसिंह बारहठ"
+      },
+      {
+       "en": "Kanhaiyalal Sethia",
+       "hi": "कन्हैयालाल सेठिया"
+      },
+      {
+       "en": "Arjunlal Sethi",
+       "hi": "अर्जुनलाल सेठी"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Kesari Singh Barhath's Dingal couplets moved the Maharana, who went to Delhi but did not attend Curzon's Durbar.",
+      "hi": "केसरीसिंह बारहठ के डिंगल सोरठों से प्रभावित होकर महाराणा दिल्ली तो गए, परंतु कर्ज़न के दरबार में शामिल नहीं हुए।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Rajasthan Geography",
+    "hi": "राजस्थान का भूगोल"
+   },
+   "subject": "rj-geo",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "ras-rj-geo-0007",
+     "topic": {
+      "en": "Physiography and climate",
+      "hi": "भौतिक स्वरूप एवं जलवायु"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In which general direction does the Aravalli range run across Rajasthan?",
+      "hi": "अरावली पर्वतमाला राजस्थान में सामान्यतः किस दिशा में फैली है?"
+     },
+     "options": [
+      {
+       "en": "North to south",
+       "hi": "उत्तर से दक्षिण"
+      },
+      {
+       "en": "East to west",
+       "hi": "पूर्व से पश्चिम"
+      },
+      {
+       "en": "South-west to north-east",
+       "hi": "दक्षिण-पश्चिम से उत्तर-पूर्व"
+      },
+      {
+       "en": "North-west to south-east",
+       "hi": "उत्तर-पश्चिम से दक्षिण-पूर्व"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "The Aravallis extend from near Palanpur in Gujarat in the south-west to Delhi in the north-east, dividing Rajasthan into western and eastern parts.",
+      "hi": "अरावली दक्षिण-पश्चिम में गुजरात के पालनपुर के पास से उत्तर-पूर्व में दिल्ली तक फैली है और राजस्थान को पश्चिमी व पूर्वी भागों में बाँटती है।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "ras-rj-geo-0029",
+     "topic": {
+      "en": "Soil, vegetation and wildlife",
+      "hi": "मृदा, वनस्पति एवं वन्यजीव"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Khichan, a village famous for thousands of wintering Demoiselle cranes (kurja), is near which town?",
+      "hi": "हज़ारों प्रवासी कुरजां (डेमोइसेल क्रेन) के लिए प्रसिद्ध खीचन गाँव किस नगर के निकट है?"
+     },
+     "options": [
+      {
+       "en": "Udaipur",
+       "hi": "उदयपुर"
+      },
+      {
+       "en": "Kota",
+       "hi": "कोटा"
+      },
+      {
+       "en": "Phalodi",
+       "hi": "फलोदी"
+      },
+      {
+       "en": "Bharatpur",
+       "hi": "भरतपुर"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Villagers of Khichan near Phalodi have fed the cranes for decades, making it a well-known bird site.",
+      "hi": "फलोदी के निकट खीचन के ग्रामीण दशकों से इन पक्षियों को दाना देते आए हैं, जिससे यह प्रसिद्ध पक्षी स्थल बना।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "Rajasthan: Polity and Economy",
+    "hi": "राजस्थान: राजव्यवस्था एवं अर्थव्यवस्था"
+   },
+   "subject": "rj-polity",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "ras-rj-polity-0040",
+     "topic": {
+      "en": "Panchayati Raj and administration",
+      "hi": "पंचायती राज एवं प्रशासन"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "What is the middle tier of the Panchayati Raj system in Rajasthan called?",
+      "hi": "राजस्थान में पंचायती राज व्यवस्था का मध्य स्तर क्या कहलाता है?"
+     },
+     "options": [
+      {
+       "en": "Panchayat Samiti",
+       "hi": "पंचायत समिति"
+      },
+      {
+       "en": "Gram Sabha",
+       "hi": "ग्राम सभा"
+      },
+      {
+       "en": "Zila Parishad",
+       "hi": "जिला परिषद"
+      },
+      {
+       "en": "Nagar Parishad",
+       "hi": "नगर परिषद"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The three tiers are the Gram Panchayat (village), Panchayat Samiti (block) and Zila Parishad (district).",
+      "hi": "तीन स्तर हैं: ग्राम पंचायत (गाँव), पंचायत समिति (खंड) और जिला परिषद (जिला)।"
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "ras-rj-polity-0032",
+     "topic": {
+      "en": "Economy and industry",
+      "hi": "अर्थव्यवस्था एवं उद्योग"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "In Rajasthan, RIICO stands for:",
+      "hi": "राजस्थान में आरआईआईसीओ (रीको) का पूरा नाम क्या है?"
+     },
+     "options": [
+      {
+       "en": "Rural Industries and Investment Corporation",
+       "hi": "ग्रामीण उद्योग एवं विनियोजन निगम"
+      },
+      {
+       "en": "Rajasthan Investment and Industrial Commerce Office",
+       "hi": "राजस्थान विनियोजन एवं औद्योगिक वाणिज्य कार्यालय"
+      },
+      {
+       "en": "Rajasthan Industrial Infrastructure Cooperative Organisation",
+       "hi": "राजस्थान औद्योगिक अवसंरचना सहकारी संगठन"
+      },
+      {
+       "en": "Rajasthan State Industrial Development and Investment Corporation",
+       "hi": "राजस्थान राज्य औद्योगिक विकास एवं विनियोजन निगम"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "RIICO develops industrial areas and provides finance to industries in the state.",
+      "hi": "रीको राज्य में औद्योगिक क्षेत्र विकसित करता है और उद्योगों को वित्त उपलब्ध कराता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Indian History",
+    "hi": "भारत का इतिहास"
+   },
+   "subject": "hist",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "ras-hist-0008",
+     "topic": {
+      "en": "Medieval India",
+      "hi": "मध्यकालीन भारत"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Who completed the construction of the Qutub Minar?",
+      "hi": "कुतुब मीनार का निर्माण किसने पूरा करवाया?"
+     },
+     "options": [
+      {
+       "en": "Balban",
+       "hi": "बलबन"
+      },
+      {
+       "en": "Qutbuddin Aibak",
+       "hi": "कुतुबुद्दीन ऐबक"
+      },
+      {
+       "en": "Iltutmish",
+       "hi": "इल्तुतमिश"
+      },
+      {
+       "en": "Alauddin Khalji",
+       "hi": "अलाउद्दीन खिलजी"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Qutbuddin Aibak began the minar and his successor Iltutmish completed it; Firoz Shah Tughlaq later repaired its upper storeys.",
+      "hi": "कुतुबुद्दीन ऐबक ने मीनार का निर्माण शुरू किया और उसके उत्तराधिकारी इल्तुतमिश ने पूरा किया; बाद में फिरोज शाह तुगलक ने ऊपरी मंजिलों की मरम्मत कराई।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "ras-hist-0012",
+     "topic": {
+      "en": "Medieval India",
+      "hi": "मध्यकालीन भारत"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Akbar's 'Ibadat Khana', where religious debates were held, was built at:",
+      "hi": "अकबर का ‘इबादतखाना’, जहाँ धार्मिक चर्चाएँ होती थीं, कहाँ बनवाया गया?"
+     },
+     "options": [
+      {
+       "en": "Fatehpur Sikri",
+       "hi": "फतेहपुर सीकरी"
+      },
+      {
+       "en": "Delhi",
+       "hi": "दिल्ली"
+      },
+      {
+       "en": "Agra Fort",
+       "hi": "आगरा किला"
+      },
+      {
+       "en": "Lahore",
+       "hi": "लाहौर"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Akbar built the Ibadat Khana at Fatehpur Sikri in 1575, first for Muslim scholars and later for followers of all faiths.",
+      "hi": "अकबर ने 1575 में फतेहपुर सीकरी में इबादतखाना बनवाया, पहले मुस्लिम विद्वानों के लिए और बाद में सभी धर्मों के अनुयायियों के लिए।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "Indian and World Geography",
+    "hi": "भारत एवं विश्व का भूगोल"
+   },
+   "subject": "geo",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "ras-geo-0028",
+     "topic": {
+      "en": "Physical geography: earth and atmosphere",
+      "hi": "भौतिक भूगोल: पृथ्वी एवं वायुमंडल"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Isobars on a weather map join places having equal:",
+      "hi": "मौसम मानचित्र पर समदाब रेखाएँ समान किस वाले स्थानों को मिलाती हैं?"
+     },
+     "options": [
+      {
+       "en": "Rainfall",
+       "hi": "वर्षा"
+      },
+      {
+       "en": "Atmospheric pressure",
+       "hi": "वायुमंडलीय दाब"
+      },
+      {
+       "en": "Height above sea level",
+       "hi": "समुद्र तल से ऊँचाई"
+      },
+      {
+       "en": "Temperature",
+       "hi": "तापमान"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Isobars connect points of equal pressure. Isotherms join equal temperature and isohyets equal rainfall.",
+      "hi": "समदाब रेखाएँ समान दाब वाले बिंदुओं को मिलाती हैं। समताप रेखाएँ समान तापमान और समवर्षा रेखाएँ समान वर्षा वाले स्थानों को मिलाती हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "name": {
+    "en": "Indian Polity",
+    "hi": "भारतीय राजव्यवस्था"
+   },
+   "subject": "polity",
+   "questions": [
+    {
+     "id": "F1",
+     "qid": "ras-polity-0033",
+     "topic": {
+      "en": "Fundamental rights, duties and DPSP",
+      "hi": "मौलिक अधिकार, कर्तव्य एवं नीति निदेशक तत्व"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Article 21 of the Constitution guarantees:",
+      "hi": "संविधान का अनुच्छेद 21 किसकी गारंटी देता है?"
+     },
+     "options": [
+      {
+       "en": "Protection of minorities' culture",
+       "hi": "अल्पसंख्यकों की संस्कृति का संरक्षण"
+      },
+      {
+       "en": "Freedom of religion",
+       "hi": "धर्म की स्वतंत्रता"
+      },
+      {
+       "en": "Protection of life and personal liberty",
+       "hi": "प्राण और दैहिक स्वतंत्रता का संरक्षण"
+      },
+      {
+       "en": "Equality before law",
+       "hi": "विधि के समक्ष समता"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Article 21 says no person shall be deprived of life or personal liberty except according to procedure established by law. Equality before law is in Article 14.",
+      "hi": "अनुच्छेद 21 कहता है कि किसी व्यक्ति को विधि द्वारा स्थापित प्रक्रिया के बिना प्राण या दैहिक स्वतंत्रता से वंचित नहीं किया जाएगा। विधि के समक्ष समता अनुच्छेद 14 में है।"
+     }
+    },
+    {
+     "id": "F2",
+     "qid": "ras-polity-0017",
+     "topic": {
+      "en": "Parliament",
+      "hi": "संसद"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Who presides over a joint sitting of both Houses of Parliament?",
+      "hi": "संसद के दोनों सदनों की संयुक्त बैठक की अध्यक्षता कौन करता है?"
+     },
+     "options": [
+      {
+       "en": "President",
+       "hi": "राष्ट्रपति"
+      },
+      {
+       "en": "Vice-President",
+       "hi": "उपराष्ट्रपति"
+      },
+      {
+       "en": "Speaker of the Lok Sabha",
+       "hi": "लोकसभा अध्यक्ष"
+      },
+      {
+       "en": "Prime Minister",
+       "hi": "प्रधानमंत्री"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "The President summons a joint sitting under Article 108, but the Speaker presides over it.",
+      "hi": "अनुच्छेद 108 के अंतर्गत राष्ट्रपति संयुक्त बैठक बुलाते हैं, परंतु उसकी अध्यक्षता अध्यक्ष करते हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "G",
+   "name": {
+    "en": "Indian Economy",
+    "hi": "भारतीय अर्थव्यवस्था"
+   },
+   "subject": "eco",
+   "questions": [
+    {
+     "id": "G1",
+     "qid": "ras-eco-0013",
+     "topic": {
+      "en": "Development, poverty and schemes",
+      "hi": "विकास, गरीबी एवं योजनाएँ"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "How many days of wage employment in a financial year does MGNREGA guarantee to every rural household?",
+      "hi": "मनरेगा प्रत्येक ग्रामीण परिवार को एक वित्तीय वर्ष में कितने दिन के मज़दूरी रोज़गार की गारंटी देता है?"
+     },
+     "options": [
+      {
+       "en": "150 days / 150 दिन",
+       "hi": "150 days / 150 दिन"
+      },
+      {
+       "en": "50 days / 50 दिन",
+       "hi": "50 days / 50 दिन"
+      },
+      {
+       "en": "100 days / 100 दिन",
+       "hi": "100 days / 100 दिन"
+      },
+      {
+       "en": "200 days / 200 दिन",
+       "hi": "200 days / 200 दिन"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "The Act guarantees at least 100 days of unskilled manual work to adult members of every rural household that asks for it.",
+      "hi": "यह अधिनियम माँगने वाले प्रत्येक ग्रामीण परिवार के वयस्क सदस्यों को कम से कम 100 दिन के अकुशल शारीरिक कार्य की गारंटी देता है।"
+     }
+    },
+    {
+     "id": "G2",
+     "qid": "ras-eco-0009",
+     "topic": {
+      "en": "Public finance and taxation",
+      "hi": "लोक वित्त एवं कराधान"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The fiscal deficit of the government indicates:",
+      "hi": "सरकार का राजकोषीय घाटा क्या दर्शाता है?"
+     },
+     "options": [
+      {
+       "en": "The excess of imports over exports",
+       "hi": "निर्यात पर आयात का आधिक्य"
+      },
+      {
+       "en": "Revenue expenditure minus capital expenditure",
+       "hi": "राजस्व व्यय घटा पूँजीगत व्यय"
+      },
+      {
+       "en": "The total borrowing requirement of the government",
+       "hi": "सरकार की कुल उधारी आवश्यकता"
+      },
+      {
+       "en": "Interest paid on past loans",
+       "hi": "पिछले ऋणों पर दिया गया ब्याज"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Fiscal deficit is total expenditure minus revenue receipts and non-debt capital receipts, which equals what the government must borrow.",
+      "hi": "राजकोषीय घाटा कुल व्यय में से राजस्व प्राप्तियाँ और गैर-ऋण पूँजीगत प्राप्तियाँ घटाने पर आता है, जो सरकार की उधारी के बराबर है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "H",
+   "name": {
+    "en": "Science and Technology",
+    "hi": "विज्ञान एवं प्रौद्योगिकी"
+   },
+   "subject": "sci",
+   "questions": [
+    {
+     "id": "H1",
+     "qid": "ras-sci-0018",
+     "topic": {
+      "en": "Biology and health",
+      "hi": "जीव विज्ञान एवं स्वास्थ्य"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Deficiency of which vitamin causes scurvy?",
+      "hi": "किस विटामिन की कमी से स्कर्वी रोग होता है?"
+     },
+     "options": [
+      {
+       "en": "Vitamin C",
+       "hi": "विटामिन C"
+      },
+      {
+       "en": "Vitamin K",
+       "hi": "विटामिन K"
+      },
+      {
+       "en": "Vitamin D",
+       "hi": "विटामिन D"
+      },
+      {
+       "en": "Vitamin A",
+       "hi": "विटामिन A"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Vitamin C (ascorbic acid) is needed for collagen; its lack causes bleeding gums and poor wound healing.",
+      "hi": "विटामिन C (एस्कॉर्बिक अम्ल) कोलेजन के लिए आवश्यक है; इसकी कमी से मसूड़ों से खून आता है और घाव देर से भरते हैं।"
+     }
+    },
+    {
+     "id": "H2",
+     "qid": "ras-sci-0012",
+     "topic": {
+      "en": "Chemistry",
+      "hi": "रसायन विज्ञान"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which group of compounds is chiefly responsible for depletion of the ozone layer?",
+      "hi": "ओज़ोन परत के क्षरण के लिए मुख्यतः कौन-सा यौगिक समूह उत्तरदायी है?"
+     },
+     "options": [
+      {
+       "en": "Sulphur dioxide",
+       "hi": "सल्फर डाइऑक्साइड"
+      },
+      {
+       "en": "Chlorofluorocarbons (CFCs)",
+       "hi": "क्लोरोफ्लोरोकार्बन (सीएफसी)"
+      },
+      {
+       "en": "Methane",
+       "hi": "मेथेन"
+      },
+      {
+       "en": "Carbon monoxide",
+       "hi": "कार्बन मोनोऑक्साइड"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "CFCs release chlorine in the stratosphere, which breaks down ozone; the Montreal Protocol (1987) phased them out.",
+      "hi": "सीएफसी समताप मंडल में क्लोरीन मुक्त करते हैं, जो ओज़ोन को तोड़ती है; मॉन्ट्रियल प्रोटोकॉल (1987) से इन्हें चरणबद्ध रूप से बंद किया गया।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "I",
+   "name": {
+    "en": "Reasoning and Mental Ability",
+    "hi": "तर्कशक्ति एवं मानसिक योग्यता"
+   },
+   "subject": "mental",
+   "questions": [
+    {
+     "id": "I1",
+     "qid": "ras-mental-0022",
+     "topic": {
+      "en": "Arithmetic",
+      "hi": "अंकगणित"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "What is the simple interest on ₹5,000 at 8% per annum for 3 years?",
+      "hi": "₹5,000 पर 8% वार्षिक दर से 3 वर्ष का साधारण ब्याज कितना होगा?"
+     },
+     "options": [
+      {
+       "en": "₹1,200",
+       "hi": "₹1,200"
+      },
+      {
+       "en": "₹1,500",
+       "hi": "₹1,500"
+      },
+      {
+       "en": "₹400",
+       "hi": "₹400"
+      },
+      {
+       "en": "₹1,000",
+       "hi": "₹1,000"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "SI = P × R × T / 100 = 5000 × 8 × 3 / 100 = ₹1,200.",
+      "hi": "साधारण ब्याज = P × R × T / 100 = 5000 × 8 × 3 / 100 = ₹1,200।"
+     }
+    },
+    {
+     "id": "I2",
+     "qid": "ras-mental-0005",
+     "topic": {
+      "en": "Coding-decoding",
+      "hi": "कूट-लेखन एवं कूट-वाचन"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "In a certain code, MANGO is written as OCPIQ. How is APPLE written in that code?",
+      "hi": "किसी कूट में MANGO को OCPIQ लिखा जाता है। उसी कूट में APPLE को कैसे लिखा जाएगा?"
+     },
+     "options": [
+      {
+       "en": "BRRMG",
+       "hi": "BRRMG"
+      },
+      {
+       "en": "CQQNG",
+       "hi": "CQQNG"
+      },
+      {
+       "en": "CRRNG",
+       "hi": "CRRNG"
+      },
+      {
+       "en": "CRRMF",
+       "hi": "CRRMF"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Each letter moves two places forward: A→C, P→R, P→R, L→N, E→G.",
+      "hi": "प्रत्येक अक्षर दो स्थान आगे बढ़ता है: A→C, P→R, P→R, L→N, E→G।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:41+00:00",
+  "pattern_source": {
+   "questions": "content/bank/ras/_pattern.md",
+   "duration_minutes": "content/bank/ras/_pattern.md",
+   "negative_marking": "defaults (pipeline/patterns.py)",
+   "options": "content/bank/ras/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "General Knowledge and General Science: 150 questions, 200 marks, 3 hours, 1/3 negative marking. RPSC prints a fifth bubble 'E' (question not attempted); it is not an answer option.",
+  "subject_counts": {
+   "rj-hist": 5,
+   "rj-geo": 2,
+   "rj-polity": 2,
+   "hist": 2,
+   "geo": 1,
+   "polity": 2,
+   "eco": 2,
+   "sci": 2,
+   "mental": 2
+  }
+ }
+}

@@ -1,0 +1,872 @@
+{
+ "id": "free-01",
+ "exam": "mppsc",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 24,
+ "marks_per_question": 2,
+ "negative_marking": 0,
+ "options": 4,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "Indian History",
+    "hi": "भारतीय इतिहास"
+   },
+   "subject": "hist",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "mppsc-hist-0043",
+     "topic": {
+      "en": "Modern India and National Movement",
+      "hi": "आधुनिक भारत एवं राष्ट्रीय आंदोलन"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "At which session did the Indian National Congress adopt 'Purna Swaraj' (complete independence) as its goal?",
+      "hi": "भारतीय राष्ट्रीय कांग्रेस ने किस अधिवेशन में 'पूर्ण स्वराज' को अपना लक्ष्य घोषित किया?"
+     },
+     "options": [
+      {
+       "en": "Haripura, 1938",
+       "hi": "हरिपुरा, 1938"
+      },
+      {
+       "en": "Karachi, 1931",
+       "hi": "कराची, 1931"
+      },
+      {
+       "en": "Calcutta, 1928",
+       "hi": "कलकत्ता, 1928"
+      },
+      {
+       "en": "Lahore, 1929",
+       "hi": "लाहौर, 1929"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The Lahore session under Jawaharlal Nehru passed the Purna Swaraj resolution, and 26 January 1930 was observed as Independence Day.",
+      "hi": "जवाहरलाल नेहरू की अध्यक्षता में लाहौर अधिवेशन में पूर्ण स्वराज प्रस्ताव पारित हुआ और 26 जनवरी 1930 को स्वतंत्रता दिवस मनाया गया।"
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "mppsc-hist-0007",
+     "topic": {
+      "en": "Ancient India",
+      "hi": "प्राचीन भारत"
+     },
+     "difficulty": "medium",
+     "type": "match",
+     "text": {
+      "en": "Match the authors with their works:\nList-I\nA. Kalhana\nB. Banabhatta\nC. Vishakhadatta\nD. Kautilya\nList-II\n1. Arthashastra\n2. Mudrarakshasa\n3. Rajatarangini\n4. Harshacharita\nChoose the correct code:",
+      "hi": "लेखकों को उनकी कृतियों से सुमेलित कीजिए:\nसूची-I\nA. कल्हण\nB. बाणभट्ट\nC. विशाखदत्त\nD. कौटिल्य\nसूची-II\n1. अर्थशास्त्र\n2. मुद्राराक्षस\n3. राजतरंगिणी\n4. हर्षचरित\nसही कूट चुनिए:"
+     },
+     "options": [
+      {
+       "en": "A-3, B-2, C-4, D-1",
+       "hi": "A-3, B-2, C-4, D-1"
+      },
+      {
+       "en": "A-3, B-4, C-2, D-1",
+       "hi": "A-3, B-4, C-2, D-1"
+      },
+      {
+       "en": "A-3, B-4, C-1, D-2",
+       "hi": "A-3, B-4, C-1, D-2"
+      },
+      {
+       "en": "A-4, B-3, C-2, D-1",
+       "hi": "A-4, B-3, C-2, D-1"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Kalhana wrote the Rajatarangini (history of Kashmir), Banabhatta the Harshacharita, Vishakhadatta the play Mudrarakshasa, and Kautilya the Arthashastra.",
+      "hi": "कल्हण ने राजतरंगिणी (कश्मीर का इतिहास), बाणभट्ट ने हर्षचरित, विशाखदत्त ने नाटक मुद्राराक्षस और कौटिल्य ने अर्थशास्त्र लिखा।"
+     }
+    },
+    {
+     "id": "A3",
+     "qid": "mppsc-hist-0011",
+     "topic": {
+      "en": "Ancient India",
+      "hi": "प्राचीन भारत"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which Chola ruler took the title 'Gangaikondachola' after his campaign to the Ganga?",
+      "hi": "गंगा तक अभियान के बाद किस चोल शासक ने 'गंगैकोंडचोल' की उपाधि धारण की?"
+     },
+     "options": [
+      {
+       "en": "Rajendra I",
+       "hi": "राजेंद्र प्रथम"
+      },
+      {
+       "en": "Rajaraja I",
+       "hi": "राजराज प्रथम"
+      },
+      {
+       "en": "Parantaka I",
+       "hi": "परांतक प्रथम"
+      },
+      {
+       "en": "Kulottunga I",
+       "hi": "कुलोत्तुंग प्रथम"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Rajendra I marched to the Ganga and founded a new capital, Gangaikondacholapuram. His father Rajaraja I built the Brihadeshwara temple at Thanjavur.",
+      "hi": "राजेंद्र प्रथम ने गंगा तक अभियान किया और नई राजधानी गंगैकोंडचोलपुरम बसाई। उनके पिता राजराज प्रथम ने तंजावुर का बृहदेश्वर मंदिर बनवाया।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Geography",
+    "hi": "भूगोल"
+   },
+   "subject": "geo",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "mppsc-geo-0020",
+     "topic": {
+      "en": "Indian Geography",
+      "hi": "भारत का भूगोल"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The islands of Lakshadweep are mainly of which origin?",
+      "hi": "लक्षद्वीप के द्वीप मुख्यतः किस उत्पत्ति के हैं?"
+     },
+     "options": [
+      {
+       "en": "Coral",
+       "hi": "प्रवाल (कोरल)"
+      },
+      {
+       "en": "Glacial",
+       "hi": "हिमनदीय"
+      },
+      {
+       "en": "Volcanic",
+       "hi": "ज्वालामुखीय"
+      },
+      {
+       "en": "Continental",
+       "hi": "महाद्वीपीय"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Lakshadweep consists of coral atolls and reefs in the Arabian Sea, unlike the Andaman Islands, which are an extension of the Arakan Yoma ranges.",
+      "hi": "लक्षद्वीप अरब सागर में प्रवाल एटॉल और भित्तियों से बना है, जबकि अंडमान द्वीप अराकान योमा पर्वत श्रेणी का विस्तार हैं।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "mppsc-geo-0010",
+     "topic": {
+      "en": "Indian Geography",
+      "hi": "भारत का भूगोल"
+     },
+     "difficulty": "medium",
+     "type": "match",
+     "text": {
+      "en": "Match the dams with their rivers:\nList-I\nA. Bhakra\nB. Hirakud\nC. Nagarjuna Sagar\nD. Tehri\nList-II\n1. Krishna\n2. Bhagirathi\n3. Sutlej\n4. Mahanadi\nChoose the correct code:",
+      "hi": "बाँधों को उनकी नदियों से सुमेलित कीजिए:\nसूची-I\nA. भाखड़ा\nB. हीराकुड\nC. नागार्जुन सागर\nD. टिहरी\nसूची-II\n1. कृष्णा\n2. भागीरथी\n3. सतलुज\n4. महानदी\nसही कूट चुनिए:"
+     },
+     "options": [
+      {
+       "en": "A-3, B-4, C-1, D-2",
+       "hi": "A-3, B-4, C-1, D-2"
+      },
+      {
+       "en": "A-4, B-3, C-1, D-2",
+       "hi": "A-4, B-3, C-1, D-2"
+      },
+      {
+       "en": "A-3, B-4, C-2, D-1",
+       "hi": "A-3, B-4, C-2, D-1"
+      },
+      {
+       "en": "A-3, B-1, C-4, D-2",
+       "hi": "A-3, B-1, C-4, D-2"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Bhakra is on the Sutlej, Hirakud on the Mahanadi, Nagarjuna Sagar on the Krishna, and Tehri on the Bhagirathi.",
+      "hi": "भाखड़ा सतलुज पर, हीराकुड महानदी पर, नागार्जुन सागर कृष्णा पर और टिहरी भागीरथी पर है।"
+     }
+    },
+    {
+     "id": "B3",
+     "qid": "mppsc-geo-0035",
+     "topic": {
+      "en": "World Geography",
+      "hi": "विश्व भूगोल"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The Strait of Malacca lies between:",
+      "hi": "मलक्का जलडमरूमध्य किनके बीच स्थित है?"
+     },
+     "options": [
+      {
+       "en": "Malay Peninsula and Sumatra",
+       "hi": "मलय प्रायद्वीप और सुमात्रा"
+      },
+      {
+       "en": "Sri Lanka and India",
+       "hi": "श्रीलंका और भारत"
+      },
+      {
+       "en": "Sumatra and Java",
+       "hi": "सुमात्रा और जावा"
+      },
+      {
+       "en": "Borneo and Sulawesi",
+       "hi": "बोर्नियो और सुलावेसी"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "This narrow strait links the Andaman Sea (Indian Ocean) with the South China Sea and is one of the world's busiest shipping lanes. The Sunda Strait lies between Sumatra and Java.",
+      "hi": "यह संकरा जलडमरूमध्य अंडमान सागर (हिंद महासागर) को दक्षिण चीन सागर से जोड़ता है और विश्व के सबसे व्यस्त जलमार्गों में है। सुमात्रा और जावा के बीच सुंडा जलडमरूमध्य है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "Indian Polity",
+    "hi": "भारतीय राजव्यवस्था"
+   },
+   "subject": "polity",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "mppsc-polity-0039",
+     "topic": {
+      "en": "Local Government and Laws",
+      "hi": "स्थानीय शासन एवं कानून"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which law replaced the Code of Criminal Procedure, 1973?",
+      "hi": "दंड प्रक्रिया संहिता, 1973 का स्थान किस कानून ने लिया?"
+     },
+     "options": [
+      {
+       "en": "Bharatiya Sakshya Adhiniyam, 2023",
+       "hi": "भारतीय साक्ष्य अधिनियम, 2023"
+      },
+      {
+       "en": "Digital Personal Data Protection Act, 2023",
+       "hi": "डिजिटल व्यक्तिगत डेटा संरक्षण अधिनियम, 2023"
+      },
+      {
+       "en": "Bharatiya Nyaya Sanhita, 2023",
+       "hi": "भारतीय न्याय संहिता, 2023"
+      },
+      {
+       "en": "Bharatiya Nagarik Suraksha Sanhita, 2023",
+       "hi": "भारतीय नागरिक सुरक्षा संहिता, 2023"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The BNSS governs procedure such as arrest, investigation and trial; it allows electronic FIRs and fixes timelines for steps in investigation.",
+      "hi": "BNSS गिरफ्तारी, अन्वेषण और विचारण जैसी प्रक्रियाओं को नियंत्रित करती है; इसमें इलेक्ट्रॉनिक FIR और अन्वेषण के चरणों की समय-सीमा का प्रावधान है।"
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "mppsc-polity-0033",
+     "topic": {
+      "en": "Constitutional and Statutory Bodies",
+      "hi": "संवैधानिक एवं वैधानिक निकाय"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The anti-defection provisions in the Tenth Schedule were added by which amendment?",
+      "hi": "दसवीं अनुसूची के दल-बदल विरोधी प्रावधान किस संशोधन से जोड़े गए?"
+     },
+     "options": [
+      {
+       "en": "52nd Amendment, 1985",
+       "hi": "52वाँ संशोधन, 1985"
+      },
+      {
+       "en": "61st Amendment, 1989",
+       "hi": "61वाँ संशोधन, 1989"
+      },
+      {
+       "en": "42nd Amendment, 1976",
+       "hi": "42वाँ संशोधन, 1976"
+      },
+      {
+       "en": "91st Amendment, 2003",
+       "hi": "91वाँ संशोधन, 2003"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The 52nd Amendment introduced the Tenth Schedule. The 91st Amendment (2003) removed the 'split' exception and capped the size of ministries.",
+      "hi": "52वें संशोधन ने दसवीं अनुसूची जोड़ी। 91वें संशोधन (2003) ने 'विभाजन' की छूट हटाई और मंत्रिपरिषद का आकार सीमित किया।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Economy",
+    "hi": "अर्थव्यवस्था"
+   },
+   "subject": "eco",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "mppsc-eco-0001",
+     "topic": {
+      "en": "Money and Banking",
+      "hi": "मुद्रा एवं बैंकिंग"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In which year was the Reserve Bank of India established?",
+      "hi": "भारतीय रिज़र्व बैंक की स्थापना किस वर्ष हुई?"
+     },
+     "options": [
+      {
+       "en": "1921",
+       "hi": "1921"
+      },
+      {
+       "en": "1935",
+       "hi": "1935"
+      },
+      {
+       "en": "1947",
+       "hi": "1947"
+      },
+      {
+       "en": "1949",
+       "hi": "1949"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "The RBI began operations on 1 April 1935 under the RBI Act, 1934, and was nationalised in 1949. The Imperial Bank was formed in 1921.",
+      "hi": "RBI ने RBI अधिनियम, 1934 के तहत 1 अप्रैल 1935 से कार्य आरंभ किया और 1949 में इसका राष्ट्रीयकरण हुआ। इंपीरियल बैंक 1921 में बना था।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "mppsc-eco-0013",
+     "topic": {
+      "en": "Indian Economy: Planning and Development",
+      "hi": "भारतीय अर्थव्यवस्था: नियोजन एवं विकास"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The Second Five-Year Plan, based on the Mahalanobis model, gave top priority to:",
+      "hi": "महालनोबिस मॉडल पर आधारित दूसरी पंचवर्षीय योजना ने सर्वोच्च प्राथमिकता किसे दी?"
+     },
+     "options": [
+      {
+       "en": "Rapid industrialisation, especially heavy industries",
+       "hi": "तीव्र औद्योगीकरण, विशेषकर भारी उद्योग"
+      },
+      {
+       "en": "Export promotion",
+       "hi": "निर्यात संवर्धन"
+      },
+      {
+       "en": "Agriculture and irrigation",
+       "hi": "कृषि और सिंचाई"
+      },
+      {
+       "en": "Poverty removal (Garibi Hatao)",
+       "hi": "गरीबी हटाओ"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The Second Plan (1956-61) stressed basic and heavy industries; steel plants at Bhilai, Rourkela and Durgapur were set up in this period.",
+      "hi": "दूसरी योजना (1956-61) ने आधारभूत और भारी उद्योगों पर बल दिया; इसी काल में भिलाई, राउरकेला और दुर्गापुर इस्पात संयंत्र स्थापित हुए।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "Science and Technology",
+    "hi": "विज्ञान एवं प्रौद्योगिकी"
+   },
+   "subject": "sci",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "mppsc-sci-0021",
+     "topic": {
+      "en": "Chemistry",
+      "hi": "रसायन विज्ञान"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which gas makes up the largest share of the Earth's atmosphere by volume?",
+      "hi": "आयतन के अनुसार पृथ्वी के वायुमंडल में सबसे अधिक कौन-सी गैस है?"
+     },
+     "options": [
+      {
+       "en": "Argon",
+       "hi": "आर्गन"
+      },
+      {
+       "en": "Nitrogen",
+       "hi": "नाइट्रोजन"
+      },
+      {
+       "en": "Oxygen",
+       "hi": "ऑक्सीजन"
+      },
+      {
+       "en": "Carbon dioxide",
+       "hi": "कार्बन डाइऑक्साइड"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Dry air is about 78% nitrogen, 21% oxygen and nearly 1% argon; carbon dioxide is only about 0.04%.",
+      "hi": "शुष्क वायु में लगभग 78% नाइट्रोजन, 21% ऑक्सीजन और लगभग 1% आर्गन है; कार्बन डाइऑक्साइड केवल लगभग 0.04% है।"
+     }
+    },
+    {
+     "id": "E2",
+     "qid": "mppsc-sci-0025",
+     "topic": {
+      "en": "Biology",
+      "hi": "जीव विज्ञान"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Insulin is secreted by:",
+      "hi": "इंसुलिन का स्राव कौन करता है?"
+     },
+     "options": [
+      {
+       "en": "The thyroid gland",
+       "hi": "थायरॉइड ग्रंथि"
+      },
+      {
+       "en": "The liver",
+       "hi": "यकृत"
+      },
+      {
+       "en": "The adrenal cortex",
+       "hi": "अधिवृक्क वल्कुट"
+      },
+      {
+       "en": "Beta cells of the islets of Langerhans in the pancreas",
+       "hi": "अग्न्याशय की लैंगरहैंस द्वीपिकाओं की बीटा कोशिकाएँ"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Insulin lowers blood glucose; its deficiency or ineffectiveness causes diabetes mellitus. Alpha cells of the same islets secrete glucagon.",
+      "hi": "इंसुलिन रक्त शर्करा घटाता है; इसकी कमी या अप्रभाविता से मधुमेह होता है। इन्हीं द्वीपिकाओं की अल्फा कोशिकाएँ ग्लूकागॉन स्रावित करती हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "name": {
+    "en": "Environment",
+    "hi": "पर्यावरण"
+   },
+   "subject": "env",
+   "questions": [
+    {
+     "id": "F1",
+     "qid": "mppsc-env-0001",
+     "topic": {
+      "en": "Climate Change and Conventions",
+      "hi": "जलवायु परिवर्तन एवं अभिसमय"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The Montreal Protocol (1987) is an international agreement to:",
+      "hi": "मॉन्ट्रियल प्रोटोकॉल (1987) किस उद्देश्य का अंतरराष्ट्रीय समझौता है?"
+     },
+     "options": [
+      {
+       "en": "Ban nuclear tests",
+       "hi": "परमाणु परीक्षण पर प्रतिबंध लगाना"
+      },
+      {
+       "en": "Control trade in endangered species",
+       "hi": "संकटग्रस्त प्रजातियों के व्यापार को नियंत्रित करना"
+      },
+      {
+       "en": "Protect wetlands",
+       "hi": "आर्द्रभूमियों की रक्षा करना"
+      },
+      {
+       "en": "Phase out ozone-depleting substances",
+       "hi": "ओजोन क्षयकारी पदार्थों को चरणबद्ध रूप से समाप्त करना"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The protocol phases out chlorofluorocarbons (CFCs), halons and other chemicals that destroy stratospheric ozone; it is considered one of the most successful environmental treaties.",
+      "hi": "यह प्रोटोकॉल क्लोरोफ्लोरोकार्बन (CFC), हैलोन आदि रसायनों को चरणबद्ध रूप से समाप्त करता है जो समतापमंडलीय ओजोन नष्ट करते हैं; इसे सबसे सफल पर्यावरण संधियों में गिना जाता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "G",
+   "name": {
+    "en": "Current Affairs",
+    "hi": "समसामयिकी"
+   },
+   "subject": "ca",
+   "questions": [
+    {
+     "id": "G1",
+     "qid": "mppsc-ca-0019",
+     "topic": {
+      "en": "Current Affairs: National",
+      "hi": "समसामयिकी: राष्ट्रीय"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The 'Pran Pratishtha' of Ram Lalla at the Ram temple in Ayodhya took place on:",
+      "hi": "अयोध्या के राम मंदिर में रामलला की 'प्राण प्रतिष्ठा' कब हुई?"
+     },
+     "options": [
+      {
+       "en": "22 January 2024",
+       "hi": "22 जनवरी 2024"
+      },
+      {
+       "en": "5 August 2020",
+       "hi": "5 अगस्त 2020"
+      },
+      {
+       "en": "26 January 2024",
+       "hi": "26 जनवरी 2024"
+      },
+      {
+       "en": "9 November 2019",
+       "hi": "9 नवंबर 2019"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The consecration took place on 22 January 2024. The bhoomi pujan was on 5 August 2020, and the Supreme Court verdict on 9 November 2019.",
+      "hi": "प्राण प्रतिष्ठा 22 जनवरी 2024 को हुई। भूमि पूजन 5 अगस्त 2020 को और सर्वोच्च न्यायालय का निर्णय 9 नवंबर 2019 को आया था।"
+     }
+    },
+    {
+     "id": "G2",
+     "qid": "mppsc-ca-0006",
+     "topic": {
+      "en": "Current Affairs: National",
+      "hi": "समसामयिकी: राष्ट्रीय"
+     },
+     "difficulty": "medium",
+     "type": "statement",
+     "text": {
+      "en": "Consider the following statements about the Nari Shakti Vandan Adhiniyam, 2023:\n1. It is the 106th Constitutional Amendment Act.\n2. It reserves one-third of seats for women in the Lok Sabha and State Legislative Assemblies.\n3. It also reserves one-third of seats for women in the Rajya Sabha.\nWhich of the statements given above is/are correct?",
+      "hi": "नारी शक्ति वंदन अधिनियम, 2023 के संबंध में निम्नलिखित कथनों पर विचार कीजिए:\n1. यह 106वाँ संविधान संशोधन अधिनियम है।\n2. यह लोकसभा और राज्य विधानसभाओं में महिलाओं के लिए एक-तिहाई सीटें आरक्षित करता है।\n3. यह राज्यसभा में भी महिलाओं के लिए एक-तिहाई सीटें आरक्षित करता है।\nउपर्युक्त कथनों में से कौन-सा/से सही है/हैं?"
+     },
+     "options": [
+      {
+       "en": "1 only",
+       "hi": "केवल 1"
+      },
+      {
+       "en": "1 and 2 only",
+       "hi": "केवल 1 और 2"
+      },
+      {
+       "en": "2 and 3 only",
+       "hi": "केवल 2 और 3"
+      },
+      {
+       "en": "1, 2 and 3",
+       "hi": "1, 2 और 3"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "1 and 2 are correct. The Act does not cover the Rajya Sabha or Legislative Councils, and the reservation takes effect after delimitation based on the next census.",
+      "hi": "1 और 2 सही हैं। अधिनियम राज्यसभा या विधान परिषदों पर लागू नहीं होता, और आरक्षण अगली जनगणना पर आधारित परिसीमन के बाद प्रभावी होगा।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "H",
+   "name": {
+    "en": "Madhya Pradesh GK",
+    "hi": "मध्य प्रदेश सामान्य ज्ञान"
+   },
+   "subject": "mp",
+   "questions": [
+    {
+     "id": "H1",
+     "qid": "mppsc-mp-0038",
+     "topic": {
+      "en": "Madhya Pradesh: Physical Geography",
+      "hi": "मध्य प्रदेश: भौतिक भूगोल"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In terms of area, what is Madhya Pradesh's rank among Indian states?",
+      "hi": "क्षेत्रफल की दृष्टि से भारतीय राज्यों में मध्य प्रदेश का स्थान क्या है?"
+     },
+     "options": [
+      {
+       "en": "Second",
+       "hi": "दूसरा"
+      },
+      {
+       "en": "First",
+       "hi": "पहला"
+      },
+      {
+       "en": "Third",
+       "hi": "तीसरा"
+      },
+      {
+       "en": "Fourth",
+       "hi": "चौथा"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "With about 3.08 lakh sq km, Madhya Pradesh is second after Rajasthan. It was the largest state until Chhattisgarh was separated in 2000.",
+      "hi": "लगभग 3.08 लाख वर्ग किमी क्षेत्रफल के साथ मध्य प्रदेश राजस्थान के बाद दूसरे स्थान पर है। 2000 में छत्तीसगढ़ के अलग होने तक यह सबसे बड़ा राज्य था।"
+     }
+    },
+    {
+     "id": "H2",
+     "qid": "mppsc-mp-0065",
+     "topic": {
+      "en": "Madhya Pradesh: Forests and Wildlife",
+      "hi": "मध्य प्रदेश: वन एवं वन्यजीव"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Bandhavgarh National Park is located in which district?",
+      "hi": "बांधवगढ़ राष्ट्रीय उद्यान किस जिले में स्थित है?"
+     },
+     "options": [
+      {
+       "en": "Umaria",
+       "hi": "उमरिया"
+      },
+      {
+       "en": "Katni",
+       "hi": "कटनी"
+      },
+      {
+       "en": "Sidhi",
+       "hi": "सीधी"
+      },
+      {
+       "en": "Shahdol",
+       "hi": "शहडोल"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Bandhavgarh is in Umaria district and has one of the highest densities of tigers in India.",
+      "hi": "बांधवगढ़ उमरिया जिले में है और यहाँ बाघों का घनत्व देश में सर्वाधिक में से एक है।"
+     }
+    },
+    {
+     "id": "H3",
+     "qid": "mppsc-mp-0025",
+     "topic": {
+      "en": "Madhya Pradesh: Freedom Struggle and Formation",
+      "hi": "मध्य प्रदेश: स्वतंत्रता संग्राम एवं गठन"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Before 1956, which city was the capital of Vindhya Pradesh?",
+      "hi": "1956 से पहले विंध्य प्रदेश की राजधानी कौन-सा नगर था?"
+     },
+     "options": [
+      {
+       "en": "Rewa",
+       "hi": "रीवा"
+      },
+      {
+       "en": "Panna",
+       "hi": "पन्ना"
+      },
+      {
+       "en": "Chhatarpur",
+       "hi": "छतरपुर"
+      },
+      {
+       "en": "Satna",
+       "hi": "सतना"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Vindhya Pradesh, formed from the Bundelkhand and Baghelkhand princely states, had Rewa as its capital.",
+      "hi": "बुंदेलखंड और बघेलखंड की रियासतों से बने विंध्य प्रदेश की राजधानी रीवा थी।"
+     }
+    },
+    {
+     "id": "H4",
+     "qid": "mppsc-mp-0087",
+     "topic": {
+      "en": "Madhya Pradesh: Literature and Music",
+      "hi": "मध्य प्रदेश: साहित्य एवं संगीत"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "In Kalidasa's 'Meghadutam', the yaksha asks the cloud to make a detour to see which city?",
+      "hi": "कालिदास के 'मेघदूतम्' में यक्ष मेघ से मार्ग बदलकर किस नगर को देखने का आग्रह करता है?"
+     },
+     "options": [
+      {
+       "en": "Ujjayini",
+       "hi": "उज्जयिनी"
+      },
+      {
+       "en": "Pataliputra",
+       "hi": "पाटलिपुत्र"
+      },
+      {
+       "en": "Mathura",
+       "hi": "मथुरा"
+      },
+      {
+       "en": "Kashi",
+       "hi": "काशी"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "The Purvamegha describes Ujjayini and the Mahakala temple in detail. Ujjain hosts the annual Akhil Bharatiya Kalidas Samaroh.",
+      "hi": "पूर्वमेघ में उज्जयिनी और महाकाल मंदिर का विस्तृत वर्णन है। उज्जैन में प्रतिवर्ष अखिल भारतीय कालिदास समारोह होता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "I",
+   "name": {
+    "en": "Computer and ICT",
+    "hi": "कंप्यूटर एवं सूचना प्रौद्योगिकी"
+   },
+   "subject": "ict",
+   "questions": [
+    {
+     "id": "I1",
+     "qid": "mppsc-ict-0011",
+     "topic": {
+      "en": "Internet and Networking",
+      "hi": "इंटरनेट एवं नेटवर्किंग"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which type of network covers the largest geographical area?",
+      "hi": "कौन-सा नेटवर्क सबसे बड़े भौगोलिक क्षेत्र को कवर करता है?"
+     },
+     "options": [
+      {
+       "en": "PAN",
+       "hi": "PAN"
+      },
+      {
+       "en": "WAN",
+       "hi": "WAN"
+      },
+      {
+       "en": "MAN",
+       "hi": "MAN"
+      },
+      {
+       "en": "LAN",
+       "hi": "LAN"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "A Wide Area Network spans countries or continents; the internet is the largest WAN. LAN covers a building, MAN a city and PAN a person's devices.",
+      "hi": "वाइड एरिया नेटवर्क देशों या महाद्वीपों तक फैला होता है; इंटरनेट सबसे बड़ा WAN है। LAN एक भवन, MAN एक शहर और PAN एक व्यक्ति के उपकरणों तक सीमित होता है।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:40+00:00",
+  "pattern_source": {
+   "questions": "content/bank/mppsc/_pattern.md",
+   "duration_minutes": "content/bank/mppsc/_pattern.md",
+   "negative_marking": "content/bank/mppsc/_pattern.md",
+   "options": "content/bank/mppsc/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "General Studies Paper I: 100 questions x 2 marks, 2 hours; no negative marking assumed. Paper II (CSAT) is qualifying and not assembled here.",
+  "subject_counts": {
+   "hist": 3,
+   "geo": 3,
+   "polity": 2,
+   "eco": 2,
+   "sci": 2,
+   "env": 1,
+   "ca": 2,
+   "mp": 4,
+   "ict": 1
+  }
+ }
+}

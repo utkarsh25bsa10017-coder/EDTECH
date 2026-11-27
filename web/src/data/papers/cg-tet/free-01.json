@@ -1,0 +1,828 @@
+{
+ "id": "free-01",
+ "exam": "cg-tet",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 20,
+ "marks_per_question": 1,
+ "negative_marking": 0,
+ "options": 4,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "Child Development and Pedagogy",
+    "hi": "बाल विकास एवं शिक्षाशास्त्र"
+   },
+   "subject": "cdp",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "cg-tet-cdp-0002",
+     "topic": {
+      "en": "Principles of development",
+      "hi": "विकास के सिद्धांत"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "A child can swing the whole arm well but still finds it hard to hold a pencil with the fingers. This is best explained by the",
+      "hi": "एक बच्चा पूरी बाँह अच्छी तरह घुमा लेता है, पर उँगलियों से पेंसिल पकड़ने में उसे अभी कठिनाई होती है। इसकी सबसे अच्छी व्याख्या करता है—"
+     },
+     "options": [
+      {
+       "en": "proximodistal principle",
+       "hi": "समीप-दूराभिमुख सिद्धांत"
+      },
+      {
+       "en": "cephalocaudal principle",
+       "hi": "शिरःपादाभिमुख सिद्धांत"
+      },
+      {
+       "en": "principle of equal rate of development",
+       "hi": "विकास की समान दर का सिद्धांत"
+      },
+      {
+       "en": "principle that development is reversible",
+       "hi": "विकास के उत्क्रमणीय होने का सिद्धांत"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Proximodistal development moves from the centre of the body outward, so the arm is controlled before the fingers.",
+      "hi": "समीप-दूराभिमुख विकास शरीर के केंद्र से बाहर की ओर होता है, इसलिए बाँह पर नियंत्रण उँगलियों से पहले आता है।"
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "cg-tet-cdp-0033",
+     "topic": {
+      "en": "Inclusive education",
+      "hi": "समावेशी शिक्षा"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "A Class 3 child of normal intelligence often reverses letters, reads very slowly and confuses similar-looking words. The child may have",
+      "hi": "सामान्य बुद्धि वाला कक्षा 3 का एक बच्चा अक्सर अक्षर उलट देता है, बहुत धीरे पढ़ता है और एक जैसे दिखने वाले शब्दों में भ्रमित होता है। बच्चे को हो सकता है—"
+     },
+     "options": [
+      {
+       "en": "dyspraxia",
+       "hi": "डिस्प्रैक्सिया"
+      },
+      {
+       "en": "aphasia caused by injury",
+       "hi": "चोट से उत्पन्न वाचाघात"
+      },
+      {
+       "en": "dyscalculia",
+       "hi": "डिस्कैलकुलिया"
+      },
+      {
+       "en": "dyslexia",
+       "hi": "डिस्लेक्सिया"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Dyslexia is a specific learning disability related to reading and decoding words.",
+      "hi": "डिस्लेक्सिया पढ़ने और शब्दों को पहचानने से जुड़ी एक विशिष्ट अधिगम अक्षमता है।"
+     }
+    },
+    {
+     "id": "A3",
+     "qid": "cg-tet-cdp-0047",
+     "topic": {
+      "en": "Thinking and creativity",
+      "hi": "चिंतन और सृजनात्मकता"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which activity best develops critical thinking in Class 5?",
+      "hi": "कक्षा 5 में आलोचनात्मक चिंतन को कौन-सी गतिविधि सबसे अच्छी तरह विकसित करती है?"
+     },
+     "options": [
+      {
+       "en": "Writing spellings of difficult words five times",
+       "hi": "कठिन शब्दों की वर्तनी पाँच बार लिखना"
+      },
+      {
+       "en": "Reciting a poem from memory",
+       "hi": "कविता को कंठस्थ सुनाना"
+      },
+      {
+       "en": "Copying the summary of a lesson from a guidebook",
+       "hi": "गाइड से पाठ का सारांश उतारना"
+      },
+      {
+       "en": "Comparing two advertisements for the same product and judging which claims can be trusted",
+       "hi": "एक ही उत्पाद के दो विज्ञापनों की तुलना करके परखना कि कौन-से दावे भरोसेमंद हैं"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Critical thinking involves analysing information, weighing evidence and judging claims, which comparing advertisements requires.",
+      "hi": "आलोचनात्मक चिंतन में जानकारी का विश्लेषण, प्रमाणों को तौलना और दावों को परखना शामिल है, जो विज्ञापनों की तुलना में करना पड़ता है।"
+     }
+    },
+    {
+     "id": "A4",
+     "qid": "cg-tet-cdp-0072",
+     "topic": {
+      "en": "Disadvantaged and diverse learners",
+      "hi": "वंचित एवं विविध पृष्ठभूमि के शिक्षार्थी"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "A first-generation learner from a poor family often cannot complete homework because there is no one at home to help. The teacher should",
+      "hi": "गरीब परिवार की पहली पीढ़ी की एक शिक्षार्थी अक्सर गृहकार्य पूरा नहीं कर पाती, क्योंकि घर पर कोई मदद करने वाला नहीं है। शिक्षक को—"
+     },
+     "options": [
+      {
+       "en": "assume she is not interested in studies",
+       "hi": "मान लेना चाहिए कि उसकी पढ़ाई में रुचि नहीं है"
+      },
+      {
+       "en": "punish her so she takes homework seriously",
+       "hi": "उसे दंड देना चाहिए ताकि वह गृहकार्य को गंभीरता से ले"
+      },
+      {
+       "en": "ask her parents to arrange private tuition",
+       "hi": "अभिभावकों से निजी ट्यूशन लगवाने को कहना चाहिए"
+      },
+      {
+       "en": "give support in school, such as time for guided practice, and avoid blaming the child",
+       "hi": "विद्यालय में ही सहायता देनी चाहिए, जैसे मार्गदर्शित अभ्यास का समय, और बच्चे को दोष नहीं देना चाहिए"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Disadvantaged learners need the school to compensate for missing home support; blame or punishment only pushes them away.",
+      "hi": "वंचित शिक्षार्थियों के लिए विद्यालय को घर पर न मिल पाने वाली सहायता की पूर्ति करनी चाहिए; दोष देना या दंड उन्हें और दूर कर देता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Hindi Language and Pedagogy",
+    "hi": "हिन्दी भाषा एवं शिक्षाशास्त्र"
+   },
+   "subject": "hindi",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "cg-tet-hindi-0001",
+     "topic": {
+      "en": "संधि",
+      "hi": "संधि"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "'विद्यालय' का सही संधि-विच्छेद है—",
+      "hi": "'विद्यालय' का सही संधि-विच्छेद है—"
+     },
+     "options": [
+      {
+       "en": "विद + आलय",
+       "hi": "विद + आलय"
+      },
+      {
+       "en": "विद्या + आलय",
+       "hi": "विद्या + आलय"
+      },
+      {
+       "en": "विद्य + आलय",
+       "hi": "विद्य + आलय"
+      },
+      {
+       "en": "विद्या + लय",
+       "hi": "विद्या + लय"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "विद्या + आलय में आ + आ = आ होकर 'विद्यालय' बनता है; यह दीर्घ संधि है।",
+      "hi": "विद्या + आलय में आ + आ = आ होकर 'विद्यालय' बनता है; यह दीर्घ संधि है।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "cg-tet-hindi-0015",
+     "topic": {
+      "en": "विलोम शब्द",
+      "hi": "विलोम शब्द"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "'सुगम' का विलोम शब्द है—",
+      "hi": "'सुगम' का विलोम शब्द है—"
+     },
+     "options": [
+      {
+       "en": "सुलभ",
+       "hi": "सुलभ"
+      },
+      {
+       "en": "आगम",
+       "hi": "आगम"
+      },
+      {
+       "en": "सरल",
+       "hi": "सरल"
+      },
+      {
+       "en": "दुर्गम",
+       "hi": "दुर्गम"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "'सुगम' का अर्थ है जहाँ आसानी से पहुँचा जा सके; इसका विलोम 'दुर्गम' है।",
+      "hi": "'सुगम' का अर्थ है जहाँ आसानी से पहुँचा जा सके; इसका विलोम 'दुर्गम' है।"
+     }
+    },
+    {
+     "id": "B3",
+     "qid": "cg-tet-hindi-0027",
+     "topic": {
+      "en": "सर्वनाम",
+      "hi": "सर्वनाम"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'मैं यह काम खुद कर लूँगा।' वाक्य में 'खुद' कौन-सा सर्वनाम है?",
+      "hi": "'मैं यह काम खुद कर लूँगा।' वाक्य में 'खुद' कौन-सा सर्वनाम है?"
+     },
+     "options": [
+      {
+       "en": "पुरुषवाचक सर्वनाम",
+       "hi": "पुरुषवाचक सर्वनाम"
+      },
+      {
+       "en": "निजवाचक सर्वनाम",
+       "hi": "निजवाचक सर्वनाम"
+      },
+      {
+       "en": "संबंधवाचक सर्वनाम",
+       "hi": "संबंधवाचक सर्वनाम"
+      },
+      {
+       "en": "निश्चयवाचक सर्वनाम",
+       "hi": "निश्चयवाचक सर्वनाम"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "'खुद', 'स्वयं', 'आप' (अपने आप के अर्थ में) कर्ता के अपने लिए प्रयुक्त होते हैं, इसलिए निजवाचक सर्वनाम हैं।",
+      "hi": "'खुद', 'स्वयं', 'आप' (अपने आप के अर्थ में) कर्ता के अपने लिए प्रयुक्त होते हैं, इसलिए निजवाचक सर्वनाम हैं।"
+     }
+    },
+    {
+     "id": "B4",
+     "qid": "cg-tet-hindi-0045",
+     "topic": {
+      "en": "वाक्यांश के लिए एक शब्द",
+      "hi": "वाक्यांश के लिए एक शब्द"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "'जिसका कोई शत्रु न हो' के लिए एक शब्द है—",
+      "hi": "'जिसका कोई शत्रु न हो' के लिए एक शब्द है—"
+     },
+     "options": [
+      {
+       "en": "निर्भय",
+       "hi": "निर्भय"
+      },
+      {
+       "en": "अपराजित",
+       "hi": "अपराजित"
+      },
+      {
+       "en": "अजातशत्रु",
+       "hi": "अजातशत्रु"
+      },
+      {
+       "en": "शत्रुघ्न",
+       "hi": "शत्रुघ्न"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "जिसका कोई शत्रु पैदा ही न हुआ हो, उसे 'अजातशत्रु' कहते हैं; 'शत्रुघ्न' का अर्थ शत्रुओं का नाश करने वाला है।",
+      "hi": "जिसका कोई शत्रु पैदा ही न हुआ हो, उसे 'अजातशत्रु' कहते हैं; 'शत्रुघ्न' का अर्थ शत्रुओं का नाश करने वाला है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "English Language and Pedagogy",
+    "hi": "अंग्रेज़ी भाषा एवं शिक्षाशास्त्र"
+   },
+   "subject": "english",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "cg-tet-english-0016",
+     "topic": {
+      "en": "Vocabulary: synonyms",
+      "hi": "Vocabulary: synonyms"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Choose the word closest in meaning to 'enormous'.",
+      "hi": "Choose the word closest in meaning to 'enormous'."
+     },
+     "options": [
+      {
+       "en": "noisy",
+       "hi": "noisy"
+      },
+      {
+       "en": "tiny",
+       "hi": "tiny"
+      },
+      {
+       "en": "quick",
+       "hi": "quick"
+      },
+      {
+       "en": "huge",
+       "hi": "huge"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "'Enormous' means very large, so 'huge' is its synonym.",
+      "hi": "'Enormous' means very large, so 'huge' is its synonym."
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "cg-tet-english-0041",
+     "topic": {
+      "en": "Assessing listening",
+      "hi": "Assessing listening"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which activity is most suitable for assessing listening in Class 2?",
+      "hi": "Which activity is most suitable for assessing listening in Class 2?"
+     },
+     "options": [
+      {
+       "en": "Copying a passage from the board",
+       "hi": "Copying a passage from the board"
+      },
+      {
+       "en": "Listening to instructions and drawing what is described",
+       "hi": "Listening to instructions and drawing what is described"
+      },
+      {
+       "en": "Writing an essay",
+       "hi": "Writing an essay"
+      },
+      {
+       "en": "Reading silently",
+       "hi": "Reading silently"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "A 'listen and draw' task shows whether the child has understood spoken English without depending on writing.",
+      "hi": "A 'listen and draw' task shows whether the child has understood spoken English without depending on writing."
+     }
+    },
+    {
+     "id": "C3",
+     "qid": "cg-tet-english-0010",
+     "topic": {
+      "en": "Narration",
+      "hi": "Narration"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Choose the correct indirect speech: He said, \"I am tired.\"",
+      "hi": "Choose the correct indirect speech: He said, \"I am tired.\""
+     },
+     "options": [
+      {
+       "en": "He said that he is being tired.",
+       "hi": "He said that he is being tired."
+      },
+      {
+       "en": "He told that he had been tired.",
+       "hi": "He told that he had been tired."
+      },
+      {
+       "en": "He said that I am tired.",
+       "hi": "He said that I am tired."
+      },
+      {
+       "en": "He said that he was tired.",
+       "hi": "He said that he was tired."
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "With a past reporting verb, 'I' changes to 'he' and 'am' changes to 'was'.",
+      "hi": "With a past reporting verb, 'I' changes to 'he' and 'am' changes to 'was'."
+     }
+    },
+    {
+     "id": "C4",
+     "qid": "cg-tet-english-0014",
+     "topic": {
+      "en": "Subject–verb agreement",
+      "hi": "Subject–verb agreement"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Choose the correct verb: Each of the boys ___ a new book.",
+      "hi": "Choose the correct verb: Each of the boys ___ a new book."
+     },
+     "options": [
+      {
+       "en": "are having",
+       "hi": "are having"
+      },
+      {
+       "en": "have",
+       "hi": "have"
+      },
+      {
+       "en": "has",
+       "hi": "has"
+      },
+      {
+       "en": "were having",
+       "hi": "were having"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "'Each' is singular, so it takes the singular verb 'has'.",
+      "hi": "'Each' is singular, so it takes the singular verb 'has'."
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Mathematics and Pedagogy",
+    "hi": "गणित एवं शिक्षाशास्त्र"
+   },
+   "subject": "maths",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "cg-tet-maths-0001",
+     "topic": {
+      "en": "Number system",
+      "hi": "संख्या पद्धति"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "What is the place value of 7 in 47,293?",
+      "hi": "47,293 में 7 का स्थानीय मान क्या है?"
+     },
+     "options": [
+      {
+       "en": "7,000",
+       "hi": "7,000"
+      },
+      {
+       "en": "70,000",
+       "hi": "70,000"
+      },
+      {
+       "en": "700",
+       "hi": "700"
+      },
+      {
+       "en": "7",
+       "hi": "7"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "7 is in the thousands place, so its place value is 7 × 1,000 = 7,000.",
+      "hi": "7 हज़ार के स्थान पर है, इसलिए इसका स्थानीय मान 7 × 1,000 = 7,000 है।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "cg-tet-maths-0002",
+     "topic": {
+      "en": "Number system",
+      "hi": "संख्या पद्धति"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Using each of the digits 3, 0, 8 and 5 exactly once, what is the largest 4-digit number?",
+      "hi": "अंकों 3, 0, 8 और 5 में से प्रत्येक का केवल एक बार प्रयोग करके बनने वाली सबसे बड़ी 4-अंकीय संख्या कौन-सी है?"
+     },
+     "options": [
+      {
+       "en": "8350",
+       "hi": "8350"
+      },
+      {
+       "en": "8503",
+       "hi": "8503"
+      },
+      {
+       "en": "5830",
+       "hi": "5830"
+      },
+      {
+       "en": "8530",
+       "hi": "8530"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Arrange the digits in descending order: 8, 5, 3, 0 gives 8530.",
+      "hi": "अंकों को घटते क्रम में रखने पर 8, 5, 3, 0 से 8530 बनता है।"
+     }
+    },
+    {
+     "id": "D3",
+     "qid": "cg-tet-maths-0011",
+     "topic": {
+      "en": "Percentage, profit and interest",
+      "hi": "प्रतिशत, लाभ और ब्याज"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "What is the simple interest on ₹5,000 at 6% per annum for 3 years?",
+      "hi": "₹5,000 पर 6% वार्षिक दर से 3 वर्ष का साधारण ब्याज कितना होगा?"
+     },
+     "options": [
+      {
+       "en": "₹1,800",
+       "hi": "₹1,800"
+      },
+      {
+       "en": "₹900",
+       "hi": "₹900"
+      },
+      {
+       "en": "₹600",
+       "hi": "₹600"
+      },
+      {
+       "en": "₹300",
+       "hi": "₹300"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "SI = (P × R × T)/100 = (5000 × 6 × 3)/100 = ₹900.",
+      "hi": "साधारण ब्याज = (मूलधन × दर × समय)/100 = (5000 × 6 × 3)/100 = ₹900।"
+     }
+    },
+    {
+     "id": "D4",
+     "qid": "cg-tet-maths-0033",
+     "topic": {
+      "en": "Data handling",
+      "hi": "आँकड़ों का प्रबंधन"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "What is the median of 7, 3, 9, 5, 11?",
+      "hi": "7, 3, 9, 5, 11 की माध्यिका क्या है?"
+     },
+     "options": [
+      {
+       "en": "7",
+       "hi": "7"
+      },
+      {
+       "en": "5",
+       "hi": "5"
+      },
+      {
+       "en": "9",
+       "hi": "9"
+      },
+      {
+       "en": "35",
+       "hi": "35"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Arranged in order: 3, 5, 7, 9, 11; the middle value is 7.",
+      "hi": "क्रम में रखने पर: 3, 5, 7, 9, 11; बीच का मान 7 है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "Environmental Studies and Pedagogy",
+    "hi": "पर्यावरण अध्ययन एवं शिक्षाशास्त्र"
+   },
+   "subject": "evs",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "cg-tet-cg-0018",
+     "topic": {
+      "en": "Folk arts of Chhattisgarh",
+      "hi": "छत्तीसगढ़ की लोक कलाएँ"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In Suwa dance of Chhattisgarh, the dancers are mainly",
+      "hi": "छत्तीसगढ़ के सुआ नृत्य में नृत्य करने वाली मुख्यतः होती हैं—"
+     },
+     "options": [
+      {
+       "en": "children on bamboo stilts",
+       "hi": "बाँस की गेड़ी पर बच्चे"
+      },
+      {
+       "en": "priests in a temple",
+       "hi": "मंदिर के पुजारी"
+      },
+      {
+       "en": "women, who dance in a circle around a figure of a parrot",
+       "hi": "महिलाएँ, जो तोते (सुआ) की प्रतिमा के चारों ओर गोल घेरे में नाचती हैं"
+      },
+      {
+       "en": "men carrying sticks and shields",
+       "hi": "लाठी और ढाल लिए पुरुष"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Suwa is a women's dance in which a clay or wooden parrot is placed in the centre and songs are sung to it.",
+      "hi": "सुआ महिलाओं का नृत्य है, जिसमें बीच में मिट्टी या लकड़ी का तोता रखकर उसे संबोधित करते हुए गीत गाए जाते हैं।"
+     }
+    },
+    {
+     "id": "E2",
+     "qid": "cg-tet-evs-0026",
+     "topic": {
+      "en": "Family and community",
+      "hi": "परिवार और समुदाय"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "A family consisting of parents and their children only is called a",
+      "hi": "केवल माता-पिता और उनके बच्चों वाले परिवार को कहते हैं—"
+     },
+     "options": [
+      {
+       "en": "nuclear family",
+       "hi": "एकल परिवार"
+      },
+      {
+       "en": "joint family",
+       "hi": "संयुक्त परिवार"
+      },
+      {
+       "en": "extended family",
+       "hi": "विस्तारित परिवार"
+      },
+      {
+       "en": "community",
+       "hi": "समुदाय"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "A nuclear family has parents and their children; a joint family also includes grandparents, uncles, aunts and others.",
+      "hi": "एकल परिवार में माता-पिता और उनके बच्चे होते हैं; संयुक्त परिवार में दादा-दादी, चाचा-चाची आदि भी होते हैं।"
+     }
+    },
+    {
+     "id": "E3",
+     "qid": "cg-tet-cg-0012",
+     "topic": {
+      "en": "Folk arts of Chhattisgarh",
+      "hi": "छत्तीसगढ़ की लोक कलाएँ"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Panthi dance of Chhattisgarh is mainly associated with",
+      "hi": "छत्तीसगढ़ का पंथी नृत्य मुख्य रूप से किससे जुड़ा है?"
+     },
+     "options": [
+      {
+       "en": "the Muria tribe's ghotul",
+       "hi": "मुरिया जनजाति के घोटुल से"
+      },
+      {
+       "en": "the Satnami community and the teachings of Guru Ghasidas",
+       "hi": "सतनामी समाज और गुरु घासीदास के उपदेशों से"
+      },
+      {
+       "en": "the Pola festival",
+       "hi": "पोला पर्व से"
+      },
+      {
+       "en": "the Raut community at Diwali",
+       "hi": "दीवाली पर राउत समाज से"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Panthi is performed by the Satnami community, and its songs praise Guru Ghasidas and his teachings.",
+      "hi": "पंथी नृत्य सतनामी समाज करता है और इसके गीतों में गुरु घासीदास और उनके उपदेशों का गुणगान होता है।"
+     }
+    },
+    {
+     "id": "E4",
+     "qid": "cg-tet-evs-0034",
+     "topic": {
+      "en": "Water",
+      "hi": "जल"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Collecting rainwater from rooftops and storing it or sending it into the ground is called",
+      "hi": "छतों से वर्षा का पानी इकट्ठा करके संग्रहीत करना या ज़मीन में पहुँचाना कहलाता है—"
+     },
+     "options": [
+      {
+       "en": "evaporation",
+       "hi": "वाष्पीकरण"
+      },
+      {
+       "en": "irrigation",
+       "hi": "सिंचाई"
+      },
+      {
+       "en": "rainwater harvesting",
+       "hi": "वर्षा जल संचयन"
+      },
+      {
+       "en": "desalination",
+       "hi": "विलवणीकरण"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Rainwater harvesting conserves rainwater and helps recharge groundwater.",
+      "hi": "वर्षा जल संचयन से वर्षा का पानी बचता है और भूजल का पुनर्भरण होता है।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:41+00:00",
+  "pattern_source": {
+   "questions": "content/bank/cg-tet/_pattern.md",
+   "duration_minutes": "content/bank/cg-tet/_pattern.md",
+   "negative_marking": "content/bank/cg-tet/_pattern.md",
+   "options": "content/bank/cg-tet/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "Paper 1 (primary): CDP, Hindi, English, Mathematics and EVS, 30 each; no negative marking.",
+  "subject_counts": {
+   "cdp": 4,
+   "hindi": 4,
+   "english": 4,
+   "maths": 4,
+   "evs": 4
+  }
+ }
+}

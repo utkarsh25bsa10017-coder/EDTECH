@@ -1,0 +1,828 @@
+{
+ "id": "free-01",
+ "exam": "ctet",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 20,
+ "marks_per_question": 1,
+ "negative_marking": 0,
+ "options": 4,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "Child Development and Pedagogy",
+    "hi": "बाल विकास एवं शिक्षाशास्त्र"
+   },
+   "subject": "cdp",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "ctet-cdp-0040",
+     "topic": {
+      "en": "Socialisation and gender",
+      "hi": "समाजीकरण एवं जेंडर"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In a Class 4 role play, a teacher always gives the role of doctor to boys and nurse to girls. This practice most likely:",
+      "hi": "कक्षा 4 के अभिनय में शिक्षिका डॉक्टर की भूमिका हमेशा लड़कों को और नर्स की भूमिका लड़कियों को देती है। यह प्रक्रिया संभवतः:"
+     },
+     "options": [
+      {
+       "en": "promotes gender equality",
+       "hi": "जेंडर समानता को बढ़ावा देती है"
+      },
+      {
+       "en": "develops scientific temper",
+       "hi": "वैज्ञानिक दृष्टिकोण विकसित करती है"
+      },
+      {
+       "en": "is neutral and has no effect",
+       "hi": "तटस्थ है और इसका कोई प्रभाव नहीं"
+      },
+      {
+       "en": "reinforces gender stereotypes",
+       "hi": "जेंडर रूढ़िवादिता को पुष्ट करती है"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Assigning roles by gender teaches children that some jobs belong to one gender, reinforcing stereotypes.",
+      "hi": "जेंडर के आधार पर भूमिकाएँ देने से बच्चे सीखते हैं कि कुछ काम एक ही जेंडर के लिए हैं, जिससे रूढ़िवादिता पुष्ट होती है।"
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "ctet-cdp-0084",
+     "topic": {
+      "en": "Assessment and CCE",
+      "hi": "आकलन एवं सतत और व्यापक मूल्यांकन"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Assessment carried out during teaching to identify learning gaps and improve teaching is called:",
+      "hi": "शिक्षण के दौरान अधिगम की कमियों को पहचानने और शिक्षण सुधारने के लिए किया गया आकलन कहलाता है:"
+     },
+     "options": [
+      {
+       "en": "summative assessment",
+       "hi": "योगात्मक आकलन"
+      },
+      {
+       "en": "formative assessment",
+       "hi": "रचनात्मक आकलन"
+      },
+      {
+       "en": "placement assessment",
+       "hi": "स्थापन आकलन"
+      },
+      {
+       "en": "norm-referenced testing",
+       "hi": "मानक-संदर्भित परीक्षण"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Formative assessment (assessment for learning) is ongoing and is used to give feedback and adjust teaching.",
+      "hi": "रचनात्मक आकलन (अधिगम के लिए आकलन) निरंतर चलता है और प्रतिपुष्टि देने तथा शिक्षण में बदलाव के लिए प्रयोग होता है।"
+     }
+    },
+    {
+     "id": "A3",
+     "qid": "ctet-cdp-0045",
+     "topic": {
+      "en": "Individual differences and intelligence",
+      "hi": "वैयक्तिक भिन्नताएँ एवं बुद्धि"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Arjun loves sorting leaves, identifying birds and noticing patterns in plants. In Gardner's framework, his strength is:",
+      "hi": "अर्जुन को पत्तियाँ छाँटना, पक्षियों को पहचानना और पौधों में पैटर्न देखना बहुत पसंद है। गार्डनर के ढाँचे में उसकी प्रबलता है:"
+     },
+     "options": [
+      {
+       "en": "naturalistic intelligence",
+       "hi": "प्रकृतिवादी बुद्धि"
+      },
+      {
+       "en": "musical intelligence",
+       "hi": "संगीतात्मक बुद्धि"
+      },
+      {
+       "en": "bodily-kinaesthetic intelligence",
+       "hi": "शारीरिक-गतिसंवेदी बुद्धि"
+      },
+      {
+       "en": "linguistic intelligence",
+       "hi": "भाषायी बुद्धि"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Recognising and classifying living things and natural patterns is naturalistic intelligence.",
+      "hi": "जीवों और प्राकृतिक पैटर्न को पहचानना और वर्गीकृत करना प्रकृतिवादी बुद्धि है।"
+     }
+    },
+    {
+     "id": "A4",
+     "qid": "ctet-cdp-0052",
+     "topic": {
+      "en": "Learning and constructivism",
+      "hi": "अधिगम एवं रचनावाद"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Before starting a lesson on 'Water', a teacher asks children where water in their homes comes from and how their families store it. The main purpose is to:",
+      "hi": "'जल' पर पाठ शुरू करने से पहले शिक्षिका बच्चों से पूछती है कि उनके घरों में पानी कहाँ से आता है और परिवार उसे कैसे संग्रहित करते हैं। इसका मुख्य उद्देश्य है:"
+     },
+     "options": [
+      {
+       "en": "test children's memory",
+       "hi": "बच्चों की स्मरण-शक्ति की परीक्षा लेना"
+      },
+      {
+       "en": "fill time before the real lesson",
+       "hi": "असली पाठ से पहले समय भरना"
+      },
+      {
+       "en": "find out which families are poor",
+       "hi": "यह पता लगाना कि कौन-से परिवार गरीब हैं"
+      },
+      {
+       "en": "connect new learning to children's prior knowledge and experiences",
+       "hi": "नए अधिगम को बच्चों के पूर्व ज्ञान और अनुभवों से जोड़ना"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Linking school knowledge to children's lives and prior experiences is a core constructivist and NCF 2005 principle.",
+      "hi": "विद्यालयी ज्ञान को बच्चों के जीवन और पूर्व अनुभवों से जोड़ना रचनावाद और NCF 2005 का मूल सिद्धांत है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Language I: Hindi",
+    "hi": "भाषा I: हिन्दी"
+   },
+   "subject": "hindi",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "ctet-hindi-0001",
+     "topic": {
+      "en": "हिंदी भाषा शिक्षणशास्त्र",
+      "hi": "हिंदी भाषा शिक्षणशास्त्र"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "कक्षा 2 की एक बच्ची घर में भोजपुरी बोलती है और कक्षा में भी बातचीत करते समय भोजपुरी शब्दों का प्रयोग करती है। हिंदी शिक्षिका के लिए सबसे उपयुक्त कदम क्या है?",
+      "hi": "कक्षा 2 की एक बच्ची घर में भोजपुरी बोलती है और कक्षा में भी बातचीत करते समय भोजपुरी शब्दों का प्रयोग करती है। हिंदी शिक्षिका के लिए सबसे उपयुक्त कदम क्या है?"
+     },
+     "options": [
+      {
+       "en": "उसे कक्षा में केवल मानक हिंदी बोलने के लिए बाध्य करना",
+       "hi": "उसे कक्षा में केवल मानक हिंदी बोलने के लिए बाध्य करना"
+      },
+      {
+       "en": "भोजपुरी शब्द बोलने पर उसे टोककर चुप करा देना",
+       "hi": "भोजपुरी शब्द बोलने पर उसे टोककर चुप करा देना"
+      },
+      {
+       "en": "उसकी घर की भाषा को संसाधन मानकर उसे बोलने के अवसर देना और धीरे-धीरे हिंदी से जोड़ना",
+       "hi": "उसकी घर की भाषा को संसाधन मानकर उसे बोलने के अवसर देना और धीरे-धीरे हिंदी से जोड़ना"
+      },
+      {
+       "en": "उसके अभिभावकों से घर में भी केवल हिंदी बोलने को कहना",
+       "hi": "उसके अभिभावकों से घर में भी केवल हिंदी बोलने को कहना"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "NCF-2005 बच्चों की घर की भाषा को कक्षा में एक संसाधन मानता है। उसकी भाषा को स्वीकार कर उसे हिंदी से जोड़ने पर बच्चा आत्मविश्वास के साथ नई भाषा सीखता है।",
+      "hi": "NCF-2005 बच्चों की घर की भाषा को कक्षा में एक संसाधन मानता है। उसकी भाषा को स्वीकार कर उसे हिंदी से जोड़ने पर बच्चा आत्मविश्वास के साथ नई भाषा सीखता है।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "ctet-hindi-0070",
+     "topic": {
+      "en": "अपठित काव्यांश",
+      "hi": "अपठित काव्यांश"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "निम्नलिखित काव्यांश को पढ़कर प्रश्न का उत्तर दीजिए—\n\nनन्ही-सी इक बूँद चली,\nबादल की गोदी से निकली।\nसोच रही थी— कहाँ गिरूँगी,\nधूल बनूँगी या मोती बनूँगी?\nगिरी खेत में, मिट्टी भीगी,\nसूखी धरती फिर से जागी।\nछोटी हूँ, पर काम बड़ा है,\nमुझसे ही तो अन्न खड़ा है।\n\nकाव्यांश के लिए सबसे उपयुक्त शीर्षक कौन-सा है?",
+      "hi": "निम्नलिखित काव्यांश को पढ़कर प्रश्न का उत्तर दीजिए—\n\nनन्ही-सी इक बूँद चली,\nबादल की गोदी से निकली।\nसोच रही थी— कहाँ गिरूँगी,\nधूल बनूँगी या मोती बनूँगी?\nगिरी खेत में, मिट्टी भीगी,\nसूखी धरती फिर से जागी।\nछोटी हूँ, पर काम बड़ा है,\nमुझसे ही तो अन्न खड़ा है।\n\nकाव्यांश के लिए सबसे उपयुक्त शीर्षक कौन-सा है?"
+     },
+     "options": [
+      {
+       "en": "बूँद की यात्रा",
+       "hi": "बूँद की यात्रा"
+      },
+      {
+       "en": "बादलों का देश",
+       "hi": "बादलों का देश"
+      },
+      {
+       "en": "धूल का संसार",
+       "hi": "धूल का संसार"
+      },
+      {
+       "en": "मोती की खोज",
+       "hi": "मोती की खोज"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "पूरी कविता बूँद के बादल से निकलकर खेत में गिरने और अन्न उगाने तक की कहानी है, इसलिए 'बूँद की यात्रा' सबसे उपयुक्त शीर्षक है।",
+      "hi": "पूरी कविता बूँद के बादल से निकलकर खेत में गिरने और अन्न उगाने तक की कहानी है, इसलिए 'बूँद की यात्रा' सबसे उपयुक्त शीर्षक है।"
+     }
+    },
+    {
+     "id": "B3",
+     "qid": "ctet-hindi-0003",
+     "topic": {
+      "en": "हिंदी भाषा शिक्षणशास्त्र",
+      "hi": "हिंदी भाषा शिक्षणशास्त्र"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "नोम चॉम्स्की के अनुसार बच्चों में भाषा सीखने की जन्मजात क्षमता होती है। इस विचार का भाषा-कक्षा के लिए सबसे उपयुक्त निहितार्थ क्या है?",
+      "hi": "नोम चॉम्स्की के अनुसार बच्चों में भाषा सीखने की जन्मजात क्षमता होती है। इस विचार का भाषा-कक्षा के लिए सबसे उपयुक्त निहितार्थ क्या है?"
+     },
+     "options": [
+      {
+       "en": "बच्चों को व्याकरण के नियम कंठस्थ कराना",
+       "hi": "बच्चों को व्याकरण के नियम कंठस्थ कराना"
+      },
+      {
+       "en": "बच्चों को केवल शुद्ध उच्चारण का यांत्रिक अभ्यास कराना",
+       "hi": "बच्चों को केवल शुद्ध उच्चारण का यांत्रिक अभ्यास कराना"
+      },
+      {
+       "en": "बच्चों को भाषा-समृद्ध परिवेश देकर भाषा प्रयोग के भरपूर अवसर देना",
+       "hi": "बच्चों को भाषा-समृद्ध परिवेश देकर भाषा प्रयोग के भरपूर अवसर देना"
+      },
+      {
+       "en": "भाषा की गलतियाँ करने पर बच्चों को दंडित करना",
+       "hi": "भाषा की गलतियाँ करने पर बच्चों को दंडित करना"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "चॉम्स्की के अनुसार बच्चों में भाषा-अर्जन की जन्मजात क्षमता होती है, जो भाषा के संपर्क में आने पर सक्रिय होती है। इसलिए शिक्षक का काम भाषा-समृद्ध परिवेश और प्रयोग के अवसर देना है।",
+      "hi": "चॉम्स्की के अनुसार बच्चों में भाषा-अर्जन की जन्मजात क्षमता होती है, जो भाषा के संपर्क में आने पर सक्रिय होती है। इसलिए शिक्षक का काम भाषा-समृद्ध परिवेश और प्रयोग के अवसर देना है।"
+     }
+    },
+    {
+     "id": "B4",
+     "qid": "ctet-hindi-0011",
+     "topic": {
+      "en": "हिंदी भाषा शिक्षणशास्त्र",
+      "hi": "हिंदी भाषा शिक्षणशास्त्र"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "NCF-2005 की दृष्टि से प्राथमिक स्तर पर व्याकरण-शिक्षण का सबसे उपयुक्त तरीका कौन-सा है?",
+      "hi": "NCF-2005 की दृष्टि से प्राथमिक स्तर पर व्याकरण-शिक्षण का सबसे उपयुक्त तरीका कौन-सा है?"
+     },
+     "options": [
+      {
+       "en": "संदर्भ और भाषा-प्रयोग के माध्यम से व्याकरण को सहज रूप से समझाना",
+       "hi": "संदर्भ और भाषा-प्रयोग के माध्यम से व्याकरण को सहज रूप से समझाना"
+      },
+      {
+       "en": "व्याकरण की परिभाषाएँ और नियम कंठस्थ कराना",
+       "hi": "व्याकरण की परिभाषाएँ और नियम कंठस्थ कराना"
+      },
+      {
+       "en": "व्याकरण की पुस्तक से अलग-अलग वाक्यों का यांत्रिक अभ्यास कराना",
+       "hi": "व्याकरण की पुस्तक से अलग-अलग वाक्यों का यांत्रिक अभ्यास कराना"
+      },
+      {
+       "en": "व्याकरण को पूरी तरह पाठ्यक्रम से हटा देना",
+       "hi": "व्याकरण को पूरी तरह पाठ्यक्रम से हटा देना"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "प्राथमिक स्तर पर व्याकरण अलग से नियमों के रूप में नहीं, बल्कि भाषा-प्रयोग और संदर्भ के माध्यम से सिखाया जाना चाहिए। इससे बच्चे भाषा की व्यवस्था को स्वाभाविक रूप से समझते हैं।",
+      "hi": "प्राथमिक स्तर पर व्याकरण अलग से नियमों के रूप में नहीं, बल्कि भाषा-प्रयोग और संदर्भ के माध्यम से सिखाया जाना चाहिए। इससे बच्चे भाषा की व्यवस्था को स्वाभाविक रूप से समझते हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "Language II: English",
+    "hi": "भाषा II: अंग्रेज़ी"
+   },
+   "subject": "english",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "ctet-english-0004",
+     "topic": {
+      "en": "Language Pedagogy",
+      "hi": "Language Pedagogy"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "A Class 2 teacher notices that many children in her class speak Bhojpuri at home. According to NCF 2005, she should:",
+      "hi": "A Class 2 teacher notices that many children in her class speak Bhojpuri at home. According to NCF 2005, she should:"
+     },
+     "options": [
+      {
+       "en": "use the children's home language as a resource to build their understanding of English",
+       "hi": "use the children's home language as a resource to build their understanding of English"
+      },
+      {
+       "en": "forbid the use of Bhojpuri in class so that children learn English faster",
+       "hi": "forbid the use of Bhojpuri in class so that children learn English faster"
+      },
+      {
+       "en": "fine children who speak in their home language in class",
+       "hi": "fine children who speak in their home language in class"
+      },
+      {
+       "en": "teach only in English from the first day without any reference to the home language",
+       "hi": "teach only in English from the first day without any reference to the home language"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "NCF 2005 treats multilingualism as a resource. Building on the child's home language supports understanding and helps in learning English.",
+      "hi": "NCF 2005 treats multilingualism as a resource. Building on the child's home language supports understanding and helps in learning English."
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "ctet-english-0023",
+     "topic": {
+      "en": "Language Pedagogy",
+      "hi": "Language Pedagogy"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Before reading a story, a teacher asks learners to guess what it might be about by looking at its title and pictures. This is:",
+      "hi": "Before reading a story, a teacher asks learners to guess what it might be about by looking at its title and pictures. This is:"
+     },
+     "options": [
+      {
+       "en": "a pre-reading activity",
+       "hi": "a pre-reading activity"
+      },
+      {
+       "en": "a while-reading activity",
+       "hi": "a while-reading activity"
+      },
+      {
+       "en": "a post-reading activity",
+       "hi": "a post-reading activity"
+      },
+      {
+       "en": "a summative assessment",
+       "hi": "a summative assessment"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Predicting from the title and pictures happens before reading. It activates prior knowledge and creates interest in the text.",
+      "hi": "Predicting from the title and pictures happens before reading. It activates prior knowledge and creates interest in the text."
+     }
+    },
+    {
+     "id": "C3",
+     "qid": "ctet-english-0010",
+     "topic": {
+      "en": "Language Pedagogy",
+      "hi": "Language Pedagogy"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "A young learner of English says 'two mouses' instead of 'two mice'. This error most likely shows that the child:",
+      "hi": "A young learner of English says 'two mouses' instead of 'two mice'. This error most likely shows that the child:"
+     },
+     "options": [
+      {
+       "en": "has a learning disability",
+       "hi": "has a learning disability"
+      },
+      {
+       "en": "is overgeneralising a grammatical rule she has internalised",
+       "hi": "is overgeneralising a grammatical rule she has internalised"
+      },
+      {
+       "en": "has never been exposed to English",
+       "hi": "has never been exposed to English"
+      },
+      {
+       "en": "is not paying attention in class",
+       "hi": "is not paying attention in class"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Adding '-s' to 'mouse' shows that the child has internalised the regular plural rule and is applying it too widely. Such errors are a natural sign of learning.",
+      "hi": "Adding '-s' to 'mouse' shows that the child has internalised the regular plural rule and is applying it too widely. Such errors are a natural sign of learning."
+     }
+    },
+    {
+     "id": "C4",
+     "qid": "ctet-english-0025",
+     "topic": {
+      "en": "Language Pedagogy",
+      "hi": "Language Pedagogy"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Krashen's 'affective filter' hypothesis suggests that learners acquire a second language better when:",
+      "hi": "Krashen's 'affective filter' hypothesis suggests that learners acquire a second language better when:"
+     },
+     "options": [
+      {
+       "en": "they are anxious about making mistakes",
+       "hi": "they are anxious about making mistakes"
+      },
+      {
+       "en": "the classroom is relaxed and their anxiety is low",
+       "hi": "the classroom is relaxed and their anxiety is low"
+      },
+      {
+       "en": "they are tested very frequently",
+       "hi": "they are tested very frequently"
+      },
+      {
+       "en": "they are taught only by native speakers",
+       "hi": "they are taught only by native speakers"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Anxiety and low confidence raise the 'affective filter' and block input. A relaxed, encouraging classroom lowers the filter and supports acquisition.",
+      "hi": "Anxiety and low confidence raise the 'affective filter' and block input. A relaxed, encouraging classroom lowers the filter and supports acquisition."
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Mathematics",
+    "hi": "गणित"
+   },
+   "subject": "maths",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "ctet-maths-0024",
+     "topic": {
+      "en": "Geometry: shapes and solids",
+      "hi": "ज्यामिति: आकृतियाँ और ठोस"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which solid has 6 faces, 8 corners and 12 edges, but not all its faces are squares?",
+      "hi": "किस ठोस में 6 फलक, 8 कोने और 12 किनारे होते हैं, परंतु उसके सभी फलक वर्गाकार नहीं होते?"
+     },
+     "options": [
+      {
+       "en": "Cuboid",
+       "hi": "घनाभ"
+      },
+      {
+       "en": "Cylinder",
+       "hi": "बेलन"
+      },
+      {
+       "en": "Cone",
+       "hi": "शंकु"
+      },
+      {
+       "en": "Triangular prism",
+       "hi": "त्रिभुजाकार प्रिज़्म"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "A cuboid, like a matchbox, has 6 rectangular faces, 8 corners and 12 edges; a cube is the special case where all faces are squares.",
+      "hi": "माचिस की डिब्बी जैसा घनाभ 6 आयताकार फलकों, 8 कोनों और 12 किनारों वाला होता है; घन इसका विशेष रूप है जिसके सभी फलक वर्ग होते हैं।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "ctet-maths-0038",
+     "topic": {
+      "en": "Pedagogy: teaching-learning materials and methods",
+      "hi": "शिक्षाशास्त्र: शिक्षण-अधिगम सामग्री और विधियाँ"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which sequence is most suitable for introducing the idea of a fraction in Class III?",
+      "hi": "कक्षा III में भिन्न की अवधारणा प्रस्तुत करने के लिए कौन-सा क्रम सबसे उपयुक्त है?"
+     },
+     "options": [
+      {
+       "en": "Symbols → pictures → objects",
+       "hi": "प्रतीक → चित्र → वस्तुएँ"
+      },
+      {
+       "en": "Folding paper or sharing real objects → pictures → symbols",
+       "hi": "कागज़ मोड़ना या वास्तविक वस्तुएँ बाँटना → चित्र → प्रतीक"
+      },
+      {
+       "en": "Pictures → symbols → objects",
+       "hi": "चित्र → प्रतीक → वस्तुएँ"
+      },
+      {
+       "en": "Definitions → examples → exercises",
+       "hi": "परिभाषा → उदाहरण → अभ्यास"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Children learn best moving from concrete experiences to pictorial representations and then to abstract symbols (the concrete–pictorial–abstract sequence).",
+      "hi": "बच्चे मूर्त अनुभवों से चित्रात्मक निरूपण और फिर अमूर्त प्रतीकों की ओर बढ़ते हुए सबसे अच्छा सीखते हैं (मूर्त–चित्रात्मक–अमूर्त क्रम)।"
+     }
+    },
+    {
+     "id": "D3",
+     "qid": "ctet-maths-0010",
+     "topic": {
+      "en": "Perimeter and area",
+      "hi": "परिमाप और क्षेत्रफल"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "A rectangular garden is 12 m long and 8 m wide. A farmer puts 3 rounds of wire around it. How much wire does he need?",
+      "hi": "एक आयताकार बगीचा 12 मी लंबा और 8 मी चौड़ा है। एक किसान इसके चारों ओर तार के 3 चक्कर लगाता है। उसे कितने तार की आवश्यकता होगी?"
+     },
+     "options": [
+      {
+       "en": "96 m",
+       "hi": "96 मी"
+      },
+      {
+       "en": "120 m",
+       "hi": "120 मी"
+      },
+      {
+       "en": "40 m",
+       "hi": "40 मी"
+      },
+      {
+       "en": "288 m",
+       "hi": "288 मी"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Perimeter = 2 × (12 + 8) = 40 m; for 3 rounds the wire needed is 3 × 40 = 120 m.",
+      "hi": "परिमाप = 2 × (12 + 8) = 40 मी; 3 चक्करों के लिए 3 × 40 = 120 मी तार चाहिए।"
+     }
+    },
+    {
+     "id": "D4",
+     "qid": "ctet-maths-0030",
+     "topic": {
+      "en": "Pedagogy: error analysis",
+      "hi": "शिक्षाशास्त्र: त्रुटि विश्लेषण"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Kavita says 0.25 is greater than 0.5 'because 25 is bigger than 5'. Which activity will best correct her idea?",
+      "hi": "कविता कहती है कि 0.25, 0.5 से बड़ा है 'क्योंकि 25, 5 से बड़ा है'। उसकी धारणा सुधारने के लिए कौन-सी गतिविधि सबसे उपयुक्त है?"
+     },
+     "options": [
+      {
+       "en": "Ask her to memorise that more digits do not mean a bigger decimal",
+       "hi": "उसे रटवाना कि अधिक अंकों का अर्थ बड़ा दशमलव नहीं होता"
+      },
+      {
+       "en": "Give her a written rule for comparing decimals",
+       "hi": "उसे दशमलवों की तुलना का एक लिखित नियम देना"
+      },
+      {
+       "en": "Shade 0.25 and 0.5 on two 10 × 10 grids and compare the shaded parts",
+       "hi": "दो 10 × 10 ग्रिड पर 0.25 और 0.5 को छायांकित कर छायांकित भागों की तुलना कराना"
+      },
+      {
+       "en": "Tell her to ignore the decimal point while comparing",
+       "hi": "उसे तुलना करते समय दशमलव बिंदु पर ध्यान न देने को कहना"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "On a hundred-square grid 0.5 covers 50 squares and 0.25 only 25, so the child sees the actual sizes; this addresses the whole-number thinking behind the error.",
+      "hi": "सौ खानों वाले ग्रिड पर 0.5 के 50 खाने और 0.25 के केवल 25 खाने छायांकित होते हैं, जिससे बच्ची वास्तविक मान देख पाती है; इससे त्रुटि के पीछे की पूर्ण संख्या वाली सोच दूर होती है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "Environmental Studies",
+    "hi": "पर्यावरण अध्ययन"
+   },
+   "subject": "evs",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "ctet-evs-0010",
+     "topic": {
+      "en": "Travel and directions",
+      "hi": "यात्रा और दिशाएँ"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "In the morning, Arjun stands facing the rising sun. Which direction is behind him?",
+      "hi": "सुबह अर्जुन उगते सूरज की ओर मुँह करके खड़ा है। उसकी पीठ के पीछे कौन-सी दिशा है?"
+     },
+     "options": [
+      {
+       "en": "East",
+       "hi": "पूर्व"
+      },
+      {
+       "en": "North",
+       "hi": "उत्तर"
+      },
+      {
+       "en": "South",
+       "hi": "दक्षिण"
+      },
+      {
+       "en": "West",
+       "hi": "पश्चिम"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "The sun rises in the east, so Arjun faces east and west is behind him.",
+      "hi": "सूरज पूर्व में उगता है, इसलिए अर्जुन का मुँह पूर्व की ओर है और पश्चिम उसके पीछे है।"
+     }
+    },
+    {
+     "id": "E2",
+     "qid": "ctet-evs-0023",
+     "topic": {
+      "en": "Pedagogy: nature and scope of EVS",
+      "hi": "शिक्षाशास्त्र: पर्यावरण अध्ययन की प्रकृति और क्षेत्र"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which of the following is NOT one of the six themes of the NCERT EVS syllabus for Classes III–V?",
+      "hi": "निम्नलिखित में से कौन-सा कक्षा III–V के NCERT पर्यावरण अध्ययन पाठ्यक्रम के छह थीमों में से एक नहीं है?"
+     },
+     "options": [
+      {
+       "en": "Food",
+       "hi": "भोजन"
+      },
+      {
+       "en": "Shelter",
+       "hi": "आवास"
+      },
+      {
+       "en": "Electricity",
+       "hi": "विद्युत"
+      },
+      {
+       "en": "Travel",
+       "hi": "यात्रा"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "The six themes are Family and Friends, Food, Shelter, Water, Travel, and Things We Make and Do; Electricity is not one of them.",
+      "hi": "छह थीम हैं: परिवार और मित्र, भोजन, आवास, पानी, यात्रा तथा हम चीज़ें कैसे बनाते और करते हैं; विद्युत इनमें शामिल नहीं है।"
+     }
+    },
+    {
+     "id": "E3",
+     "qid": "ctet-evs-0004",
+     "topic": {
+      "en": "Plants",
+      "hi": "पौधे"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "The seeds of which plant are light, with fine hair, and are carried far away by the wind?",
+      "hi": "किस पौधे के बीज हल्के और महीन रोएँदार होते हैं तथा हवा द्वारा दूर तक ले जाए जाते हैं?"
+     },
+     "options": [
+      {
+       "en": "Coconut",
+       "hi": "नारियल"
+      },
+      {
+       "en": "Mango",
+       "hi": "आम"
+      },
+      {
+       "en": "Madar (aak)",
+       "hi": "मदार (आक)"
+      },
+      {
+       "en": "Groundnut",
+       "hi": "मूँगफली"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Madar seeds have silky hair that lets the wind carry them; the coconut can be carried by water, while mango and groundnut seeds are not wind-dispersed.",
+      "hi": "मदार के बीजों पर रेशमी रोएँ होते हैं जिनसे हवा उन्हें उड़ा ले जाती है; नारियल पानी द्वारा बह सकता है, जबकि आम और मूँगफली के बीज हवा से नहीं फैलते।"
+     }
+    },
+    {
+     "id": "E4",
+     "qid": "ctet-evs-0028",
+     "topic": {
+      "en": "Pedagogy: children's ideas and alternative conceptions",
+      "hi": "शिक्षाशास्त्र: बच्चों के विचार और वैकल्पिक अवधारणाएँ"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Children in Class III believe that 'heavy things sink and light things float'. Which activity will best help them revise this idea?",
+      "hi": "कक्षा III के बच्चे मानते हैं कि 'भारी चीज़ें डूबती हैं और हल्की चीज़ें तैरती हैं'। कौन-सी गतिविधि उन्हें यह विचार सुधारने में सबसे अधिक मदद करेगी?"
+     },
+     "options": [
+      {
+       "en": "Writing the correct statement ten times",
+       "hi": "सही कथन दस बार लिखना"
+      },
+      {
+       "en": "Testing objects such as a big wooden block, a small pin and a key in a tub of water and discussing the results",
+       "hi": "पानी के टब में लकड़ी का बड़ा टुकड़ा, छोटी पिन और चाबी जैसी वस्तुएँ डालकर परखना और परिणामों पर चर्चा करना"
+      },
+      {
+       "en": "Showing them a chart of floating and sinking objects",
+       "hi": "उन्हें तैरने और डूबने वाली वस्तुओं का चार्ट दिखाना"
+      },
+      {
+       "en": "Telling them the scientific rule for floating",
+       "hi": "उन्हें तैरने का वैज्ञानिक नियम बताना"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "A heavy wooden block floating while a light pin sinks directly challenges the children's idea and prompts them to rethink it.",
+      "hi": "भारी लकड़ी का टुकड़ा तैरता है और हल्की पिन डूब जाती है, यह सीधे बच्चों के विचार को चुनौती देता है और उन्हें दोबारा सोचने को प्रेरित करता है।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:41+00:00",
+  "pattern_source": {
+   "questions": "content/bank/ctet/_pattern.md",
+   "duration_minutes": "content/bank/ctet/_pattern.md",
+   "negative_marking": "content/bank/ctet/_pattern.md",
+   "options": "content/bank/ctet/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "Paper 1 (classes I-V). Science and Social Studies items belong to Paper 2 and are left out of mocks.",
+  "subject_counts": {
+   "cdp": 4,
+   "hindi": 4,
+   "english": 4,
+   "maths": 4,
+   "evs": 4
+  }
+ }
+}

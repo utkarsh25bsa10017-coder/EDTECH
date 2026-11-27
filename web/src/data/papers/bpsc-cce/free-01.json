@@ -1,0 +1,941 @@
+{
+ "id": "free-01",
+ "exam": "bpsc-cce",
+ "title": {
+  "en": "Free Practice Set",
+  "hi": "निःशुल्क अभ्यास सेट"
+ },
+ "kind": "free",
+ "free": true,
+ "status": "draft",
+ "duration_minutes": 16,
+ "marks_per_question": 1,
+ "negative_marking": 0.3333,
+ "options": 5,
+ "questions": 20,
+ "sections": [
+  {
+   "id": "A",
+   "name": {
+    "en": "History",
+    "hi": "इतिहास"
+   },
+   "subject": "hist",
+   "questions": [
+    {
+     "id": "A1",
+     "qid": "bpsc-cce-hist-0001",
+     "topic": {
+      "en": "Ancient India",
+      "hi": "प्राचीन भारत"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "At which Harappan site was the 'Great Bath' discovered?",
+      "hi": "हड़प्पा सभ्यता के किस स्थल से 'विशाल स्नानागार' प्राप्त हुआ है?"
+     },
+     "options": [
+      {
+       "en": "Harappa",
+       "hi": "हड़प्पा"
+      },
+      {
+       "en": "Mohenjo-daro",
+       "hi": "मोहनजोदड़ो"
+      },
+      {
+       "en": "Kalibangan",
+       "hi": "कालीबंगा"
+      },
+      {
+       "en": "Dholavira",
+       "hi": "धोलावीरा"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "The Great Bath, a large watertight brick tank, was found in the citadel area of Mohenjo-daro in Sindh.",
+      "hi": "विशाल स्नानागार, पकी ईंटों से बना जलरोधी कुंड, सिंध स्थित मोहनजोदड़ो के दुर्ग क्षेत्र में मिला है।"
+     }
+    },
+    {
+     "id": "A2",
+     "qid": "bpsc-cce-hist-0017",
+     "topic": {
+      "en": "Ancient India",
+      "hi": "प्राचीन भारत"
+     },
+     "difficulty": "medium",
+     "type": "assertion",
+     "text": {
+      "en": "Assertion (A): The Gandhara school of art shows strong Greek (Hellenistic) influence.\nReason (R): The Gandhara school flourished in the north-west of the subcontinent, a region in close contact with the Hellenistic world.",
+      "hi": "कथन (A): गांधार कला शैली पर यूनानी (हेलेनिस्टिक) प्रभाव स्पष्ट दिखाई देता है।\nकारण (R): गांधार शैली उपमहाद्वीप के उत्तर-पश्चिम में विकसित हुई, जो हेलेनिस्टिक जगत के निकट संपर्क में था।"
+     },
+     "options": [
+      {
+       "en": "Both A and R are true, and R is the correct explanation of A",
+       "hi": "A और R दोनों सही हैं तथा R, A की सही व्याख्या है"
+      },
+      {
+       "en": "Both A and R are true, but R is not the correct explanation of A",
+       "hi": "A और R दोनों सही हैं, परंतु R, A की सही व्याख्या नहीं है"
+      },
+      {
+       "en": "A is true, but R is false",
+       "hi": "A सही है, परंतु R गलत है"
+      },
+      {
+       "en": "A is false, but R is true",
+       "hi": "A गलत है, परंतु R सही है"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Both are true, and the location explains the influence: contact with Indo-Greek and Hellenistic traditions in the north-west gave Gandhara sculpture its Greek features such as wavy hair and draped robes.",
+      "hi": "दोनों सही हैं और R, A की व्याख्या करता है: उत्तर-पश्चिम में हिंद-यवन तथा हेलेनिस्टिक परंपरा के संपर्क से गांधार मूर्तिकला में घुँघराले बाल और लहरदार वस्त्र जैसी यूनानी विशेषताएँ आईं।"
+     }
+    },
+    {
+     "id": "A3",
+     "qid": "bpsc-cce-hist-0025",
+     "topic": {
+      "en": "Medieval India",
+      "hi": "मध्यकालीन भारत"
+     },
+     "difficulty": "medium",
+     "type": "match",
+     "text": {
+      "en": "Match List-I with List-II and select the correct answer using the code given below:\nList-I (Poet)\nA. Tulsidas\nB. Surdas\nC. Jayadeva\nD. Malik Muhammad Jayasi\nList-II (Work)\n1. Gita Govinda\n2. Padmavat\n3. Sursagar\n4. Ramcharitmanas",
+      "hi": "सूची-I को सूची-II से सुमेलित कीजिए और नीचे दिए गए कूट का प्रयोग कर सही उत्तर चुनिए:\nसूची-I (कवि)\nA. तुलसीदास\nB. सूरदास\nC. जयदेव\nD. मलिक मुहम्मद जायसी\nसूची-II (रचना)\n1. गीत गोविंद\n2. पद्मावत\n3. सूरसागर\n4. रामचरितमानस"
+     },
+     "options": [
+      {
+       "en": "A-4, B-1, C-3, D-2",
+       "hi": "A-4, B-1, C-3, D-2"
+      },
+      {
+       "en": "A-4, B-3, C-1, D-2",
+       "hi": "A-4, B-3, C-1, D-2"
+      },
+      {
+       "en": "A-3, B-4, C-1, D-2",
+       "hi": "A-3, B-4, C-1, D-2"
+      },
+      {
+       "en": "A-4, B-3, C-2, D-1",
+       "hi": "A-4, B-3, C-2, D-1"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "Tulsidas wrote Ramcharitmanas, Surdas Sursagar, Jayadeva the Sanskrit Gita Govinda, and Jayasi the Awadhi epic Padmavat.",
+      "hi": "तुलसीदास ने रामचरितमानस, सूरदास ने सूरसागर, जयदेव ने संस्कृत में गीत गोविंद और जायसी ने अवधी में पद्मावत की रचना की।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "name": {
+    "en": "Geography",
+    "hi": "भूगोल"
+   },
+   "subject": "geo",
+   "questions": [
+    {
+     "id": "B1",
+     "qid": "bpsc-cce-geo-0009",
+     "topic": {
+      "en": "India: Physiography",
+      "hi": "भारत: भौतिक स्वरूप"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The Standard Meridian of India (82°30′ E) passes through which of the following places?",
+      "hi": "भारत की मानक याम्योत्तर (82°30′ पूर्व) निम्नलिखित में से किस स्थान से होकर गुजरती है?"
+     },
+     "options": [
+      {
+       "en": "Mirzapur",
+       "hi": "मिर्जापुर"
+      },
+      {
+       "en": "Varanasi",
+       "hi": "वाराणसी"
+      },
+      {
+       "en": "Patna",
+       "hi": "पटना"
+      },
+      {
+       "en": "Bhopal",
+       "hi": "भोपाल"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Indian Standard Time is based on the 82°30′ E meridian, which passes through Mirzapur in Uttar Pradesh. IST is 5 hours 30 minutes ahead of GMT.",
+      "hi": "भारतीय मानक समय 82°30′ पूर्वी देशांतर पर आधारित है, जो उत्तर प्रदेश के मिर्जापुर से गुजरता है। यह GMT से 5 घंटे 30 मिनट आगे है।"
+     }
+    },
+    {
+     "id": "B2",
+     "qid": "bpsc-cce-geo-0002",
+     "topic": {
+      "en": "India: Physiography",
+      "hi": "भारत: भौतिक स्वरूप"
+     },
+     "difficulty": "medium",
+     "type": "sequence",
+     "text": {
+      "en": "Arrange the following Himalayan ranges from south to north:\n1. Greater Himalaya (Himadri)\n2. Shiwalik\n3. Trans-Himalaya\n4. Lesser Himalaya (Himachal)",
+      "hi": "निम्नलिखित हिमालयी श्रेणियों को दक्षिण से उत्तर के क्रम में व्यवस्थित कीजिए:\n1. वृहत् हिमालय (हिमाद्रि)\n2. शिवालिक\n3. ट्रांस-हिमालय\n4. लघु हिमालय (हिमाचल)"
+     },
+     "options": [
+      {
+       "en": "2-4-1-3",
+       "hi": "2-4-1-3"
+      },
+      {
+       "en": "4-2-1-3",
+       "hi": "4-2-1-3"
+      },
+      {
+       "en": "2-1-4-3",
+       "hi": "2-1-4-3"
+      },
+      {
+       "en": "4-2-3-1",
+       "hi": "4-2-3-1"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "From south to north the order is Shiwalik (outer Himalaya), Lesser Himalaya, Greater Himalaya and then the Trans-Himalaya ranges such as the Zaskar and Ladakh.",
+      "hi": "दक्षिण से उत्तर का क्रम है: शिवालिक (बाह्य हिमालय), लघु हिमालय, वृहत् हिमालय और फिर ज़ास्कर व लद्दाख जैसी ट्रांस-हिमालयी श्रेणियाँ।"
+     }
+    },
+    {
+     "id": "B3",
+     "qid": "bpsc-cce-geo-0022",
+     "topic": {
+      "en": "India: Transport",
+      "hi": "भारत: परिवहन"
+     },
+     "difficulty": "medium",
+     "type": "sequence",
+     "text": {
+      "en": "Arrange the following ports on the west coast of India from north to south:\n1. Mormugao\n2. Kochi\n3. Deendayal (Kandla)\n4. Mumbai",
+      "hi": "भारत के पश्चिमी तट के निम्नलिखित बंदरगाहों को उत्तर से दक्षिण के क्रम में व्यवस्थित कीजिए:\n1. मोरमुगाओ\n2. कोच्चि\n3. दीनदयाल (कांडला)\n4. मुंबई"
+     },
+     "options": [
+      {
+       "en": "3-4-1-2",
+       "hi": "3-4-1-2"
+      },
+      {
+       "en": "4-3-1-2",
+       "hi": "4-3-1-2"
+      },
+      {
+       "en": "3-1-4-2",
+       "hi": "3-1-4-2"
+      },
+      {
+       "en": "3-4-2-1",
+       "hi": "3-4-2-1"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Deendayal (Kandla) is in Gujarat, Mumbai in Maharashtra, Mormugao in Goa and Kochi in Kerala, giving the order 3-4-1-2.",
+      "hi": "दीनदयाल (कांडला) गुजरात में, मुंबई महाराष्ट्र में, मोरमुगाओ गोवा में और कोच्चि केरल में है, अतः क्रम 3-4-1-2 है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "name": {
+    "en": "Indian Polity",
+    "hi": "भारतीय राजव्यवस्था"
+   },
+   "subject": "polity",
+   "questions": [
+    {
+     "id": "C1",
+     "qid": "bpsc-cce-polity-0030",
+     "topic": {
+      "en": "State Executive",
+      "hi": "राज्य कार्यपालिका"
+     },
+     "difficulty": "easy",
+     "type": "assertion",
+     "text": {
+      "en": "Assertion (A): The Governor of a state is appointed by the President.\nReason (R): The Governor is elected by the Legislative Assembly of the state.",
+      "hi": "कथन (A): राज्य के राज्यपाल की नियुक्ति राष्ट्रपति करता है।\nकारण (R): राज्यपाल का निर्वाचन राज्य की विधानसभा द्वारा किया जाता है।"
+     },
+     "options": [
+      {
+       "en": "Both A and R are true, and R is the correct explanation of A",
+       "hi": "A और R दोनों सही हैं तथा R, A की सही व्याख्या है"
+      },
+      {
+       "en": "Both A and R are true, but R is not the correct explanation of A",
+       "hi": "A और R दोनों सही हैं, परंतु R, A की सही व्याख्या नहीं है"
+      },
+      {
+       "en": "A is true, but R is false",
+       "hi": "A सही है, परंतु R गलत है"
+      },
+      {
+       "en": "A is false, but R is true",
+       "hi": "A गलत है, परंतु R सही है"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "A is true (Article 155: appointment by warrant under the President's hand and seal). R is false; the Constituent Assembly rejected an elected Governor.",
+      "hi": "A सही है (अनुच्छेद 155: राष्ट्रपति के हस्ताक्षर व मुद्रा सहित अधिपत्र द्वारा नियुक्ति)। R गलत है; संविधान सभा ने निर्वाचित राज्यपाल का विचार अस्वीकार कर दिया था।"
+     }
+    },
+    {
+     "id": "C2",
+     "qid": "bpsc-cce-polity-0039",
+     "topic": {
+      "en": "Constitutional and Statutory Bodies",
+      "hi": "संवैधानिक एवं वैधानिक निकाय"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which of the following is a statutory body and NOT a constitutional body?",
+      "hi": "निम्नलिखित में से कौन-सा वैधानिक निकाय है, संवैधानिक निकाय नहीं?"
+     },
+     "options": [
+      {
+       "en": "National Human Rights Commission",
+       "hi": "राष्ट्रीय मानवाधिकार आयोग"
+      },
+      {
+       "en": "Central Vigilance Commission",
+       "hi": "केंद्रीय सतर्कता आयोग"
+      },
+      {
+       "en": "Comptroller and Auditor General",
+       "hi": "नियंत्रक एवं महालेखा परीक्षक"
+      },
+      {
+       "en": "Union Public Service Commission",
+       "hi": "संघ लोक सेवा आयोग"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 4,
+     "explanation": {
+      "en": "Both the NHRC (Protection of Human Rights Act, 1993) and the CVC (CVC Act, 2003) are statutory, so more than one option is correct. The CAG (Article 148) and UPSC (Article 315) are constitutional.",
+      "hi": "राष्ट्रीय मानवाधिकार आयोग (मानवाधिकार संरक्षण अधिनियम, 1993) और केंद्रीय सतर्कता आयोग (CVC अधिनियम, 2003) दोनों वैधानिक हैं, अतः एक से अधिक विकल्प सही हैं। CAG (अनुच्छेद 148) और UPSC (अनुच्छेद 315) संवैधानिक हैं।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "name": {
+    "en": "Economy",
+    "hi": "अर्थव्यवस्था"
+   },
+   "subject": "eco",
+   "questions": [
+    {
+     "id": "D1",
+     "qid": "bpsc-cce-eco-0001",
+     "topic": {
+      "en": "Planning and NITI Aayog",
+      "hi": "योजना एवं नीति आयोग"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "Which body replaced the Planning Commission of India in 2015?",
+      "hi": "वर्ष 2015 में भारत के योजना आयोग का स्थान किस संस्था ने लिया?"
+     },
+     "options": [
+      {
+       "en": "National Development Council",
+       "hi": "राष्ट्रीय विकास परिषद"
+      },
+      {
+       "en": "NITI Aayog",
+       "hi": "नीति आयोग"
+      },
+      {
+       "en": "Finance Commission",
+       "hi": "वित्त आयोग"
+      },
+      {
+       "en": "Inter-State Council",
+       "hi": "अंतर-राज्य परिषद"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "NITI Aayog (National Institution for Transforming India) replaced the Planning Commission with effect from 1 January 2015.",
+      "hi": "नीति आयोग (नेशनल इंस्टीट्यूशन फॉर ट्रांसफॉर्मिंग इंडिया) ने 1 जनवरी 2015 से योजना आयोग का स्थान लिया।"
+     }
+    },
+    {
+     "id": "D2",
+     "qid": "bpsc-cce-eco-0018",
+     "topic": {
+      "en": "Money, banking and RBI",
+      "hi": "मुद्रा, बैंकिंग एवं आरबीआई"
+     },
+     "difficulty": "medium",
+     "type": "sequence",
+     "text": {
+      "en": "Arrange the following events in chronological order:\n1. Nationalisation of 14 major commercial banks\n2. Establishment of NABARD\n3. Nationalisation of the Reserve Bank of India\n4. Formation of the State Bank of India\nSelect the correct answer using the codes given below:",
+      "hi": "निम्नलिखित घटनाओं को कालक्रमानुसार व्यवस्थित कीजिए:\n1. 14 प्रमुख वाणिज्यिक बैंकों का राष्ट्रीयकरण\n2. नाबार्ड की स्थापना\n3. भारतीय रिज़र्व बैंक का राष्ट्रीयकरण\n4. भारतीय स्टेट बैंक का गठन\nनीचे दिए गए कूट का प्रयोग कर सही उत्तर चुनिए:"
+     },
+     "options": [
+      {
+       "en": "3, 1, 4, 2",
+       "hi": "3, 1, 4, 2"
+      },
+      {
+       "en": "4, 3, 1, 2",
+       "hi": "4, 3, 1, 2"
+      },
+      {
+       "en": "3, 4, 1, 2",
+       "hi": "3, 4, 1, 2"
+      },
+      {
+       "en": "3, 4, 2, 1",
+       "hi": "3, 4, 2, 1"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "RBI was nationalised in 1949, SBI was formed in 1955, 14 banks were nationalised in 1969 and NABARD was set up in 1982.",
+      "hi": "आरबीआई का राष्ट्रीयकरण 1949 में, एसबीआई का गठन 1955 में, 14 बैंकों का राष्ट्रीयकरण 1969 में तथा नाबार्ड की स्थापना 1982 में हुई।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "name": {
+    "en": "General Science",
+    "hi": "सामान्य विज्ञान"
+   },
+   "subject": "sci",
+   "questions": [
+    {
+     "id": "E1",
+     "qid": "bpsc-cce-sci-0007",
+     "topic": {
+      "en": "Physics",
+      "hi": "भौतिकी"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "The blue colour of the clear sky is mainly due to:",
+      "hi": "साफ आकाश का नीला रंग मुख्यतः किस कारण होता है?"
+     },
+     "options": [
+      {
+       "en": "Reflection of light",
+       "hi": "प्रकाश का परावर्तन"
+      },
+      {
+       "en": "Refraction of light",
+       "hi": "प्रकाश का अपवर्तन"
+      },
+      {
+       "en": "Diffraction of light",
+       "hi": "प्रकाश का विवर्तन"
+      },
+      {
+       "en": "Scattering of light",
+       "hi": "प्रकाश का प्रकीर्णन"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Air molecules scatter shorter (blue) wavelengths much more strongly than longer (red) ones, so scattered blue light fills the sky.",
+      "hi": "वायु के अणु छोटी (नीली) तरंगदैर्घ्य को लंबी (लाल) तरंगदैर्घ्य की तुलना में कहीं अधिक प्रकीर्णित करते हैं, इसलिए आकाश नीला दिखता है।"
+     }
+    },
+    {
+     "id": "E2",
+     "qid": "bpsc-cce-sci-0022",
+     "topic": {
+      "en": "Chemistry",
+      "hi": "रसायन विज्ञान"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which noble gas is the most abundant in the Earth's atmosphere?",
+      "hi": "पृथ्वी के वायुमंडल में सबसे अधिक मात्रा में पाई जाने वाली उत्कृष्ट (नोबल) गैस कौन-सी है?"
+     },
+     "options": [
+      {
+       "en": "Argon",
+       "hi": "आर्गन"
+      },
+      {
+       "en": "Helium",
+       "hi": "हीलियम"
+      },
+      {
+       "en": "Neon",
+       "hi": "नियॉन"
+      },
+      {
+       "en": "Krypton",
+       "hi": "क्रिप्टॉन"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Argon makes up a little under 1% of dry air, far more than all other noble gases combined; after nitrogen and oxygen it is the third most abundant gas.",
+      "hi": "शुष्क वायु में आर्गन लगभग 1% से थोड़ा कम है, जो अन्य सभी उत्कृष्ट गैसों के योग से कहीं अधिक है; नाइट्रोजन और ऑक्सीजन के बाद यह तीसरी सबसे प्रचुर गैस है।"
+     }
+    },
+    {
+     "id": "E3",
+     "qid": "bpsc-cce-sci-0036",
+     "topic": {
+      "en": "Biology and health",
+      "hi": "जीव विज्ञान एवं स्वास्थ्य"
+     },
+     "difficulty": "medium",
+     "type": "single",
+     "text": {
+      "en": "Which is the largest gland in the human body?",
+      "hi": "मानव शरीर की सबसे बड़ी ग्रंथि कौन-सी है?"
+     },
+     "options": [
+      {
+       "en": "Pancreas",
+       "hi": "अग्न्याशय"
+      },
+      {
+       "en": "Thyroid",
+       "hi": "थायरॉयड"
+      },
+      {
+       "en": "Pituitary",
+       "hi": "पीयूष ग्रंथि"
+      },
+      {
+       "en": "Adrenal",
+       "hi": "अधिवृक्क ग्रंथि"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 4,
+     "explanation": {
+      "en": "The liver is the largest gland in the human body. It is not listed in options A–D, so 'None of the above' applies.",
+      "hi": "यकृत (लिवर) मानव शरीर की सबसे बड़ी ग्रंथि है। यह A–D में नहीं है, अतः 'उपर्युक्त में से कोई नहीं' सही है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "name": {
+    "en": "Bihar Special",
+    "hi": "बिहार विशेष"
+   },
+   "subject": "bihar",
+   "questions": [
+    {
+     "id": "F1",
+     "qid": "bpsc-cce-bihar-0023",
+     "topic": {
+      "en": "Bihar: Formation and Administration",
+      "hi": "बिहार: गठन एवं प्रशासन"
+     },
+     "difficulty": "easy",
+     "type": "single",
+     "text": {
+      "en": "How many administrative divisions does Bihar have?",
+      "hi": "बिहार में कितने प्रशासनिक प्रमंडल हैं?"
+     },
+     "options": [
+      {
+       "en": "7",
+       "hi": "7"
+      },
+      {
+       "en": "8",
+       "hi": "8"
+      },
+      {
+       "en": "9",
+       "hi": "9"
+      },
+      {
+       "en": "10",
+       "hi": "10"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "Bihar has 9 divisions: Patna, Tirhut, Saran, Darbhanga, Kosi, Purnia, Bhagalpur, Munger and Magadh, covering 38 districts.",
+      "hi": "बिहार में 9 प्रमंडल हैं: पटना, तिरहुत, सारण, दरभंगा, कोसी, पूर्णिया, भागलपुर, मुंगेर और मगध, जिनमें कुल 38 जिले हैं।"
+     }
+    },
+    {
+     "id": "F2",
+     "qid": "bpsc-cce-bihar-0004",
+     "topic": {
+      "en": "Ancient Bihar",
+      "hi": "प्राचीन बिहार"
+     },
+     "difficulty": "medium",
+     "type": "match",
+     "text": {
+      "en": "Match List-I (Buddhist Council) with List-II (Venue):\nList-I\nA. First Council\nB. Second Council\nC. Third Council\nD. Fourth Council\nList-II\n1. Pataliputra\n2. Kundalavana (Kashmir)\n3. Rajagriha\n4. Vaishali",
+      "hi": "सूची-I (बौद्ध संगीति) को सूची-II (स्थल) से सुमेलित कीजिए:\nसूची-I\nA. प्रथम संगीति\nB. द्वितीय संगीति\nC. तृतीय संगीति\nD. चतुर्थ संगीति\nसूची-II\n1. पाटलिपुत्र\n2. कुंडलवन (कश्मीर)\n3. राजगृह\n4. वैशाली"
+     },
+     "options": [
+      {
+       "en": "A-4, B-3, C-1, D-2",
+       "hi": "A-4, B-3, C-1, D-2"
+      },
+      {
+       "en": "A-3, B-4, C-1, D-2",
+       "hi": "A-3, B-4, C-1, D-2"
+      },
+      {
+       "en": "A-3, B-1, C-4, D-2",
+       "hi": "A-3, B-1, C-4, D-2"
+      },
+      {
+       "en": "A-1, B-4, C-3, D-2",
+       "hi": "A-1, B-4, C-3, D-2"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 1,
+     "explanation": {
+      "en": "The councils were held at Rajagriha (under Ajatashatru), Vaishali (under Kalashoka), Pataliputra (under Ashoka) and Kundalavana in Kashmir (under Kanishka). Three of the four were in present-day Bihar.",
+      "hi": "बौद्ध संगीतियाँ क्रमशः राजगृह (अजातशत्रु), वैशाली (कालाशोक), पाटलिपुत्र (अशोक) और कश्मीर के कुंडलवन (कनिष्क) में हुईं। इनमें से तीन वर्तमान बिहार में आयोजित हुईं।"
+     }
+    },
+    {
+     "id": "F3",
+     "qid": "bpsc-cce-bihar-0040",
+     "topic": {
+      "en": "Bihar: Art and Culture",
+      "hi": "बिहार: कला एवं संस्कृति"
+     },
+     "difficulty": "medium",
+     "type": "match",
+     "text": {
+      "en": "Match List-I (Fair) with List-II (Place):\nList-I\nA. Pitripaksha Mela\nB. Shravani Mela (start of the Kanwar route)\nC. Harihar Kshetra Mela\nD. Malmas Mela\nList-II\n1. Rajgir\n2. Gaya\n3. Sonepur\n4. Sultanganj",
+      "hi": "सूची-I (मेला) को सूची-II (स्थान) से सुमेलित कीजिए:\nसूची-I\nA. पितृपक्ष मेला\nB. श्रावणी मेला (काँवड़ यात्रा का आरंभ)\nC. हरिहर क्षेत्र मेला\nD. मलमास मेला\nसूची-II\n1. राजगीर\n2. गया\n3. सोनपुर\n4. सुल्तानगंज"
+     },
+     "options": [
+      {
+       "en": "A-2, B-4, C-3, D-1",
+       "hi": "A-2, B-4, C-3, D-1"
+      },
+      {
+       "en": "A-2, B-3, C-4, D-1",
+       "hi": "A-2, B-3, C-4, D-1"
+      },
+      {
+       "en": "A-1, B-4, C-3, D-2",
+       "hi": "A-1, B-4, C-3, D-2"
+      },
+      {
+       "en": "A-4, B-2, C-3, D-1",
+       "hi": "A-4, B-2, C-3, D-1"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Pitripaksha Mela is held at Gaya, pilgrims of the Shravani Mela collect Ganga water at Sultanganj, the Harihar Kshetra fair is at Sonepur, and the Malmas Mela is at Rajgir.",
+      "hi": "पितृपक्ष मेला गया में, श्रावणी मेले के काँवड़िये सुल्तानगंज से गंगाजल उठाते हैं, हरिहर क्षेत्र मेला सोनपुर में और मलमास मेला राजगीर में लगता है।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "G",
+   "name": {
+    "en": "Current Events",
+    "hi": "समसामयिकी"
+   },
+   "subject": "ca",
+   "questions": [
+    {
+     "id": "G1",
+     "qid": "bpsc-cce-ca-0006",
+     "topic": {
+      "en": "Science and Space",
+      "hi": "विज्ञान एवं अंतरिक्ष"
+     },
+     "difficulty": "medium",
+     "type": "sequence",
+     "text": {
+      "en": "Arrange the following Indian space milestones in chronological order:\n1. Launch of Aditya-L1\n2. Chandrayaan-3 landing on the Moon\n3. SpaDeX docking in orbit\n4. Shubhanshu Shukla reaches the International Space Station",
+      "hi": "निम्नलिखित भारतीय अंतरिक्ष उपलब्धियों को कालक्रम के अनुसार व्यवस्थित कीजिए:\n1. आदित्य-L1 का प्रक्षेपण\n2. चंद्रयान-3 की चंद्रमा पर लैंडिंग\n3. स्पेडेक्स की कक्षा में डॉकिंग\n4. शुभांशु शुक्ला का अंतरराष्ट्रीय अंतरिक्ष स्टेशन पहुँचना"
+     },
+     "options": [
+      {
+       "en": "1, 2, 3, 4",
+       "hi": "1, 2, 3, 4"
+      },
+      {
+       "en": "2, 1, 4, 3",
+       "hi": "2, 1, 4, 3"
+      },
+      {
+       "en": "2, 3, 1, 4",
+       "hi": "2, 3, 1, 4"
+      },
+      {
+       "en": "2, 1, 3, 4",
+       "hi": "2, 1, 3, 4"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 3,
+     "explanation": {
+      "en": "Chandrayaan-3 landed on 23 August 2023, Aditya-L1 was launched on 2 September 2023, SpaDeX docked in January 2025, and Shukla reached the ISS in June 2025.",
+      "hi": "चंद्रयान-3 23 अगस्त 2023 को उतरा, आदित्य-L1 2 सितंबर 2023 को प्रक्षेपित हुआ, स्पेडेक्स ने जनवरी 2025 में डॉकिंग की और शुक्ला जून 2025 में ISS पहुँचे।"
+     }
+    }
+   ]
+  },
+  {
+   "id": "H",
+   "name": {
+    "en": "Mental Ability and Quantitative Aptitude",
+    "hi": "मानसिक क्षमता एवं संख्यात्मक अभियोग्यता"
+   },
+   "subject": "mental",
+   "questions": [
+    {
+     "id": "H1",
+     "qid": "bpsc-cce-mental-0050",
+     "topic": {
+      "en": "Mensuration and Geometry",
+      "hi": "क्षेत्रमिति एवं ज्यामिति"
+     },
+     "difficulty": "easy",
+     "type": "assertion",
+     "text": {
+      "en": "Assertion (A): The product of any two consecutive integers is always even.\nReason (R): Of any two consecutive integers, one is always even.",
+      "hi": "कथन (A): किन्हीं दो क्रमागत पूर्णांकों का गुणनफल सदैव सम होता है।\nकारण (R): किन्हीं दो क्रमागत पूर्णांकों में से एक सदैव सम होता है।"
+     },
+     "options": [
+      {
+       "en": "Both A and R are true, and R is the correct explanation of A",
+       "hi": "A और R दोनों सही हैं तथा R, A की सही व्याख्या है"
+      },
+      {
+       "en": "Both A and R are true, but R is not the correct explanation of A",
+       "hi": "A और R दोनों सही हैं, परंतु R, A की सही व्याख्या नहीं है"
+      },
+      {
+       "en": "A is true, but R is false",
+       "hi": "A सही है, परंतु R गलत है"
+      },
+      {
+       "en": "A is false, but R is true",
+       "hi": "A गलत है, परंतु R सही है"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "Both are true, and because one of the two factors is even, the product must be even, so R explains A.",
+      "hi": "दोनों सही हैं; चूँकि दोनों गुणनखंडों में से एक सम है, गुणनफल सम ही होगा, अतः R, A की सही व्याख्या है।"
+     }
+    },
+    {
+     "id": "H2",
+     "qid": "bpsc-cce-mental-0011",
+     "topic": {
+      "en": "Direction Sense",
+      "hi": "दिशा ज्ञान"
+     },
+     "difficulty": "medium",
+     "type": "numeric",
+     "text": {
+      "en": "Ram walks 10 m north, turns right and walks 6 m, then turns right again and walks 18 m. How far is he from his starting point?",
+      "hi": "राम 10 मीटर उत्तर की ओर चलता है, फिर दाएँ मुड़कर 6 मीटर चलता है, फिर दोबारा दाएँ मुड़कर 18 मीटर चलता है। वह अपने आरंभिक बिंदु से कितनी दूरी पर है?"
+     },
+     "options": [
+      {
+       "en": "6 m",
+       "hi": "6 मीटर"
+      },
+      {
+       "en": "8 m",
+       "hi": "8 मीटर"
+      },
+      {
+       "en": "10 m",
+       "hi": "10 मीटर"
+      },
+      {
+       "en": "12 m",
+       "hi": "12 मीटर"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 2,
+     "explanation": {
+      "en": "He ends 6 m east and 8 m south of the start (18 − 10 = 8). Distance = √(6² + 8²) = 10 m.",
+      "hi": "वह आरंभिक बिंदु से 6 मीटर पूर्व और 8 मीटर दक्षिण में है (18 − 10 = 8)। दूरी = √(6² + 8²) = 10 मीटर।"
+     }
+    },
+    {
+     "id": "H3",
+     "qid": "bpsc-cce-mental-0022",
+     "topic": {
+      "en": "Ratio, Ages and Partnership",
+      "hi": "अनुपात, आयु एवं साझेदारी"
+     },
+     "difficulty": "medium",
+     "type": "numeric",
+     "text": {
+      "en": "The ratio of the present ages of a father and his son is 7 : 2. After 10 years it will be 9 : 4. What is the father's present age?",
+      "hi": "पिता और पुत्र की वर्तमान आयु का अनुपात 7 : 2 है। 10 वर्ष बाद यह अनुपात 9 : 4 हो जाएगा। पिता की वर्तमान आयु क्या है?"
+     },
+     "options": [
+      {
+       "en": "35 years",
+       "hi": "35 वर्ष"
+      },
+      {
+       "en": "42 years",
+       "hi": "42 वर्ष"
+      },
+      {
+       "en": "28 years",
+       "hi": "28 वर्ष"
+      },
+      {
+       "en": "49 years",
+       "hi": "49 वर्ष"
+      },
+      {
+       "en": "None of the above / More than one of the above",
+       "hi": "उपर्युक्त में से कोई नहीं / उपर्युक्त में से एक से अधिक"
+      }
+     ],
+     "answer": 0,
+     "explanation": {
+      "en": "(7x + 10)/(2x + 10) = 9/4 gives 28x + 40 = 18x + 90, so x = 5 and the father is 35.",
+      "hi": "(7x + 10)/(2x + 10) = 9/4 से 28x + 40 = 18x + 90, अतः x = 5 और पिता की आयु 35 वर्ष है।"
+     }
+    }
+   ]
+  }
+ ],
+ "assembly": {
+  "seed": 2026,
+  "bank_size": 400,
+  "generated": "2026-11-27T22:44:40+00:00",
+  "pattern_source": {
+   "questions": "content/bank/bpsc-cce/_pattern.md",
+   "duration_minutes": "content/bank/bpsc-cce/_pattern.md",
+   "negative_marking": "content/bank/bpsc-cce/_pattern.md",
+   "options": "content/bank/bpsc-cce/_pattern.md",
+   "split": "defaults (pipeline/patterns.py)"
+  },
+  "pattern_notes": "General Studies, 150 questions, 2 hours, 5 options (A-E), 1/3 negative marking (68th onwards).",
+  "subject_counts": {
+   "hist": 3,
+   "geo": 3,
+   "polity": 2,
+   "eco": 2,
+   "sci": 3,
+   "bihar": 3,
+   "ca": 1,
+   "mental": 3
+  }
+ }
+}
