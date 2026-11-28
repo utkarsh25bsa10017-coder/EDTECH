@@ -92,6 +92,8 @@ Auth: an HttpOnly cookie `pr_session` **or** `Authorization: Bearer <token>` (th
 
 The web reads the API base from `PUBLIC_API_BASE` (empty = same origin).
 
+**Hosting.** The website is on Vercel (https://edtech-ashy-three.vercel.app, project root `web/`). `web/vercel.json` proxies `/api/*` to the API server at `https://api.161-97-97-207.sslip.io`, which Dokploy's Traefik publishes with a Let's Encrypt certificate (labels in `deploy/docker-compose.yml`, host from `API_HOST` in `deploy/.env`). To the browser it stays same-origin, so `PUBLIC_API_BASE` stays empty on Vercel. When a real domain arrives, change `API_HOST` and the rewrite destination together. The native app needs `PUBLIC_API_BASE` set to the API address, because it isn't served from Vercel.
+
 ## Database (Supabase Postgres)
 
 - The API server is the only client. It connects with `DATABASE_URL`, the Supabase **session pooler** string (`aws-0-ap-south-1.pooler.supabase.com:5432`, user `postgres.<project-ref>`). The direct `db.<ref>.supabase.co` host is IPv6-only, and Docker's default network has no IPv6. Don't use the transaction pooler (port 6543): it breaks the prepared statements the server uses.

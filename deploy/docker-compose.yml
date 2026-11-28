@@ -1,5 +1,6 @@
-# Prashnottar services on this server. Both bind to localhost only;
-# expose them publicly through Dokploy/Traefik when the domain is ready.
+# Prashnottar services on this server. Both bind to localhost; the API is also
+# published over HTTPS by Dokploy's Traefik at API_HOST (set in deploy/.env).
+# The Vercel site proxies /api/* there (web/vercel.json).
 #   docker compose -f deploy/docker-compose.yml --env-file deploy/.env up -d --build
 name: prashnottar
 
@@ -18,6 +19,17 @@ services:
       - ../content:/srv/content
     ports:
       - "127.0.0.1:8787:8787"
+    networks: [default, dokploy-network]
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: dokploy-network
+      traefik.http.routers.prashnottar-api.rule: Host(`${API_HOST:-api.161-97-97-207.sslip.io}`)
+      traefik.http.routers.prashnottar-api.entrypoints: websecure
+      traefik.http.routers.prashnottar-api.tls.certresolver: letsencrypt
+      traefik.http.routers.prashnottar-api-http.rule: Host(`${API_HOST:-api.161-97-97-207.sslip.io}`)
+      traefik.http.routers.prashnottar-api-http.entrypoints: web
+      traefik.http.routers.prashnottar-api-http.middlewares: redirect-to-https@file
+      traefik.http.services.prashnottar-api.loadbalancer.server.port: "8787"
     mem_limit: 256m
     restart: unless-stopped
 
@@ -52,3 +64,7 @@ services:
 
 volumes:
   n8n-data:
+
+networks:
+  dokploy-network:
+    external: true
