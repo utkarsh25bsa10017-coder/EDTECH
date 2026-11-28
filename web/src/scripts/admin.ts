@@ -1,6 +1,7 @@
 // Admin console. Nothing is shown until GET /api/auth/me says role "admin".
 // Credentials are checked by the server only; none live in this file.
 import { api, ApiError, clearSession, me, saveSession, type Session } from './api.ts';
+import { bindPhoneInput, loginPhone } from './phone.ts';
 
 const esc = (s: unknown) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
 
@@ -74,6 +75,7 @@ function errMsg(e: unknown): string {
     if (e.status === 401 || e.status === 403) return 'Not allowed. Sign in again.';
     return `Error ${e.status}: ${e.message}`;
   }
+  if (e instanceof Error && e.message) return e.message;
   return 'Something went wrong.';
 }
 
@@ -108,6 +110,7 @@ export async function initAdmin() {
     }
   }
 
+  bindPhoneInput(loginForm.querySelector<HTMLInputElement>('input[name=phone]')!);
   loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const fd = new FormData(loginForm);
@@ -115,12 +118,14 @@ export async function initAdmin() {
     const btn = loginForm.querySelector<HTMLButtonElement>('button')!;
     btn.disabled = true;
     try {
-      const s = await api<Session>('/api/auth/login', { body: { username: String(fd.get('username') ?? '').trim(), password: String(fd.get('password') ?? '') } });
+      const phone = loginPhone(String(fd.get('phone') ?? ''));
+      if (!phone) throw new Error('Enter the 10-digit admin mobile number.');
+      const s = await api<Session>('/api/auth/login', { body: { phone, password: String(fd.get('password') ?? '') } });
       if (s?.token) saveSession(s);
       loginForm.reset();
       await gate();
     } catch (e2) {
-      loginErr.textContent = e2 instanceof ApiError && (e2.status === 401 || e2.status === 403) ? 'Wrong username or password.' : errMsg(e2);
+      loginErr.textContent = e2 instanceof ApiError && (e2.status === 401 || e2.status === 403) ? 'Wrong phone number or password.' : errMsg(e2);
       loginErr.hidden = false;
     } finally {
       btn.disabled = false;

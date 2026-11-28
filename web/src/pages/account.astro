@@ -1,47 +1,68 @@
 ---
 import Base from '../layouts/Base.astro';
 import L from '../components/L.astro';
+import Logo from '../components/Logo.astro';
 import { href, pricingUrl } from '../lib/url.ts';
 ---
-<Base title="Your account" page="account" noindex>
-  <section class="container narrow page-pad" data-account>
-    <p class="muted" data-loading><L en="Checking your account…" hi="आपका खाता जांचा जा रहा है…" /></p>
+<Base title="Sign in" page="account" noindex>
+  <section class="auth-wrap page-pad" data-account>
+    <p class="muted center" data-loading><L en="Checking your account…" hi="आपका खाता जांचा जा रहा है…" /></p>
 
-    <div class="panel" data-auth hidden>
-      <h1 class="h-md"><L en="Sign in to open your packs" hi="अपने पैक खोलने के लिए साइन इन करें" /></h1>
-      <p class="muted small"><L en="Free questions never need an account." hi="मुफ़्त प्रश्नों के लिए खाते की ज़रूरत नहीं।" /></p>
-      <div class="seg" role="tablist" aria-label="Sign in or create account">
-        <button type="button" class="seg-b" role="tab" aria-selected="true" data-auth-tab="login"><L en="Sign in" hi="साइन इन" /></button>
-        <button type="button" class="seg-b" role="tab" aria-selected="false" data-auth-tab="register"><L en="Create account" hi="खाता बनाएं" /></button>
+    <div data-auth hidden>
+      <!-- Sign in -->
+      <div class="panel auth-card" data-view="login">
+        <div class="auth-head">
+          <Logo size={44} />
+          <h1 class="h-md"><L en="Sign in" hi="साइन इन करें" /></h1>
+          <p class="muted"><L en="Use your mobile number and password." hi="अपना मोबाइल नंबर और पासवर्ड डालें।" /></p>
+        </div>
+        <form class="form" data-auth-form="login" novalidate>
+          <label class="field"><span><L en="Mobile number" hi="मोबाइल नंबर" /></span>
+            <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{10}" placeholder="10-digit number" required /></span>
+          </label>
+          <label class="field"><span><L en="Password" hi="पासवर्ड" /></span>
+            <span class="pw-in"><input name="password" type="password" autocomplete="current-password" required /><button type="button" class="pw-toggle" data-pw-toggle aria-label="Show password">Show</button></span>
+          </label>
+          <p class="form-err" role="alert" hidden></p>
+          <button class="btn btn-primary btn-block btn-lg" type="submit"><L en="Sign in" hi="साइन इन करें" /></button>
+        </form>
+        <div class="or"><span><L en="New to Prashnottar?" hi="Prashnottar पर नए हैं?" /></span></div>
+        <button class="btn btn-block btn-lg" type="button" data-go="register"><L en="Create account" hi="खाता बनाएं" /></button>
+        <p class="muted small center foot"><L en="Free practice sets never need an account." hi="मुफ़्त प्रैक्टिस सेट के लिए खाते की ज़रूरत नहीं।" /></p>
       </div>
 
-      <form class="form auth-form" data-auth-form="login" novalidate>
-        <label class="field"><span><L en="Phone number" hi="फ़ोन नंबर" /></span><input name="username" type="tel" inputmode="numeric" autocomplete="username" required /></label>
-        <label class="field"><span><L en="Password" hi="पासवर्ड" /></span><input name="password" type="password" autocomplete="current-password" required /></label>
-        <p class="form-err" role="alert" hidden></p>
-        <button class="btn btn-primary btn-block" type="submit"><L en="Sign in" hi="साइन इन करें" /></button>
-      </form>
-
-      <form class="form auth-form" data-auth-form="register" hidden novalidate>
-        <label class="field"><span><L en="Name" hi="नाम" /></span><input name="name" type="text" autocomplete="name" maxlength="60" required /></label>
-        <label class="field"><span><L en="Phone number (10 digits)" hi="फ़ोन नंबर (10 अंक)" /></span>
-          <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="14" required /></span></label>
-        <label class="field"><span><L en="Password (at least 8 characters)" hi="पासवर्ड (कम से कम 8 अक्षर)" /></span><input name="password" type="password" autocomplete="new-password" minlength="8" required /></label>
-        <p class="form-err" role="alert" hidden></p>
-        <button class="btn btn-primary btn-block" type="submit"><L en="Create account" hi="खाता बनाएं" /></button>
-        <p class="muted small"><L en="By creating an account you accept the" hi="खाता बनाकर आप स्वीकार करते हैं:" /> <a href={href('/terms/')}><L en="terms" hi="नियम व शर्तें" /></a> · <a href={href('/privacy/')}><L en="privacy policy" hi="गोपनीयता नीति" /></a></p>
-      </form>
+      <!-- Create account -->
+      <div class="panel auth-card" data-view="register" hidden>
+        <div class="auth-head">
+          <Logo size={44} />
+          <h1 class="h-md"><L en="Create account" hi="खाता बनाएं" /></h1>
+          <p class="muted"><L en="Use the number you paid with, so your packs show up." hi="वही नंबर डालें जिससे भुगतान किया, ताकि आपके पैक दिखें।" /></p>
+        </div>
+        <form class="form" data-auth-form="register" novalidate>
+          <label class="field"><span><L en="Name" hi="नाम" /></span><input name="name" type="text" autocomplete="name" maxlength="60" required /></label>
+          <label class="field"><span><L en="Mobile number" hi="मोबाइल नंबर" /></span>
+            <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[6-9][0-9]{9}" placeholder="10-digit number" required /></span>
+          </label>
+          <label class="field"><span><L en="Password" hi="पासवर्ड" /> <span class="muted small hint"><L en="(at least 8 characters)" hi="(कम से कम 8 अक्षर)" /></span></span>
+            <span class="pw-in"><input name="password" type="password" autocomplete="new-password" minlength="8" required /><button type="button" class="pw-toggle" data-pw-toggle aria-label="Show password">Show</button></span>
+          </label>
+          <p class="form-err" role="alert" hidden></p>
+          <button class="btn btn-primary btn-block btn-lg" type="submit"><L en="Create account" hi="खाता बनाएं" /></button>
+          <p class="muted small center"><L en="By creating an account you accept the" hi="खाता बनाकर आप स्वीकार करते हैं:" /> <a href={href('/terms/')}><L en="terms" hi="नियम व शर्तें" /></a> · <a href={href('/privacy/')}><L en="privacy policy" hi="गोपनीयता नीति" /></a></p>
+        </form>
+        <p class="center switch"><L en="Already have an account?" hi="पहले से खाता है?" /> <button type="button" class="linkish" data-go="login"><L en="Sign in" hi="साइन इन करें" /></button></p>
+      </div>
     </div>
 
-    <div class="panel" data-me hidden>
+    <div class="panel auth-card" data-me hidden>
       <p class="eyebrow"><L en="Signed in" hi="साइन इन" /></p>
       <h1 class="h-md" data-me-name></h1>
       <p class="muted" data-me-phone></p>
       <h2 class="h-sm"><L en="Your packs" hi="आपके पैक" /></h2>
       <ul class="pass-list" data-me-passes></ul>
       <div class="row-actions">
+        <a class="btn btn-primary" href={href('/admin/')} data-me-admin hidden><L en="Open admin" hi="एडमिन खोलें" /></a>
         <a class="btn" href={pricingUrl()}><L en="See packs" hi="पैक देखें" /></a>
-        <a class="btn btn-quiet" href={href('/admin/')} data-me-admin hidden>Admin</a>
         <button class="btn btn-quiet" type="button" data-logout><L en="Sign out" hi="साइन आउट" /></button>
       </div>
     </div>
@@ -54,8 +75,107 @@ import { href, pricingUrl } from '../lib/url.ts';
 </script>
 
 <style>
-  .auth-form {
-    margin-top: 1rem;
+  .auth-wrap {
+    width: 100%;
+    max-width: 420px;
+    margin-inline: auto;
+    padding-inline: 16px;
+  }
+  .center {
+    text-align: center;
+  }
+  .auth-card {
+    padding: 1.75rem 1.4rem;
+  }
+  @media (min-width: 760px) {
+    .auth-card {
+      padding: 2rem 2rem 1.75rem;
+      margin-top: 1.5rem;
+    }
+  }
+  .auth-head {
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    gap: 0.35rem;
+    margin-bottom: 1.4rem;
+  }
+  .auth-head h1 {
+    margin: 0.5rem 0 0;
+  }
+  .auth-head p {
+    margin: 0;
+  }
+  .pw-in {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--panel-solid);
+    overflow: hidden;
+  }
+  .pw-in:focus-within {
+    outline: 3px solid var(--accent);
+    outline-offset: 1px;
+  }
+  .field .pw-in input {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    flex: 1;
+    min-width: 0;
+  }
+  .field .pw-in input:focus {
+    outline: none;
+  }
+  .pw-toggle {
+    min-height: calc(var(--tap) - 2px);
+    min-width: 64px;
+    padding: 0 0.85rem;
+    border: 0;
+    border-left: 1px solid var(--line);
+    background: transparent;
+    color: var(--accent);
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .phone-in:has(input[aria-invalid='true']),
+  .pw-in:has(input[aria-invalid='true']) {
+    border-color: var(--bad);
+  }
+  .hint {
+    font-weight: 400;
+  }
+  .or {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 1.4rem 0 0.9rem;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .or::before,
+  .or::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .foot,
+  .switch {
+    margin: 1.1rem 0 0;
+  }
+  .linkish {
+    border: 0;
+    background: none;
+    padding: 0.4rem 0.2rem;
+    color: var(--accent);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: var(--tap);
   }
   .pass-list {
     list-style: none;

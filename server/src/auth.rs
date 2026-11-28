@@ -38,9 +38,15 @@ pub fn verify_password(password: &str, hash: &str) -> bool {
         .unwrap_or(false)
 }
 
-/// Creates the admin account, or resets its password to the one in the
-/// environment, so changing ADMIN_PASSWORD and restarting takes effect.
-pub fn ensure_admin(conn: &Connection, username: &str, password: &str) -> rusqlite::Result<()> {
+/// Creates the admin account, or brings it in line with the environment
+/// (phone, password, role), so changing ADMIN_PHONE / ADMIN_PASSWORD and
+/// restarting takes effect. The admin signs in with ADMIN_PHONE like everyone else.
+pub fn ensure_admin(conn: &Connection, username: &str, phone: &str, password: &str) -> rusqlite::Result<()> {
+    // Free the number if a different account holds it, so the admin can sign in with it.
+    conn.execute(
+        "UPDATE users SET phone = NULL WHERE phone = ?1 AND (username IS NULL OR username != ?2)",
+        params![phone, username],
+    )?;
     let existing: Option<(i64, String)> = conn
         .query_row(
             "SELECT id, password_hash FROM users WHERE username = ?1",
@@ -49,17 +55,17 @@ pub fn ensure_admin(conn: &Connection, username: &str, password: &str) -> rusqli
         )
         .optional()?;
     match existing {
-        Some((id, hash)) if !verify_password(password, &hash) => {
+        Some((id, hash)) => {
+            let hash = if verify_password(password, &hash) { hash } else { hash_password(password) };
             conn.execute(
-                "UPDATE users SET password_hash = ?1, role = 'admin' WHERE id = ?2",
-                params![hash_password(password), id],
+                "UPDATE users SET phone = ?1, password_hash = ?2, role = 'admin' WHERE id = ?3",
+                params![phone, hash, id],
             )?;
         }
-        Some(_) => {}
         None => {
             conn.execute(
-                "INSERT INTO users (name, username, password_hash, role, created_at) VALUES (?1, ?1, ?2, 'admin', ?3)",
-                params![username, hash_password(password), now()],
+                "INSERT INTO users (name, username, phone, password_hash, role, created_at) VALUES (?1, ?1, ?2, ?3, 'admin', ?4)",
+                params![username, phone, hash_password(password), now()],
             )?;
         }
     }
@@ -122,6 +128,20 @@ pub fn session_cookie(token: &str, secure: bool) -> String {
 
 pub fn clear_cookie() -> String {
     "pr_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0".to_string()
+}
+
+/// The 10 digits a person typed to sign in (optional +91 / 91 / 0 prefix).
+/// Looser than `normalize_phone`: any 10 digits, so the admin number works.
+pub fn login_phone(raw: &str) -> Option<String> {
+    let digits: String = raw.chars().filter(|c| c.is_ascii_digit()).collect();
+    let d = if digits.len() == 12 && digits.starts_with("91") {
+        &digits[2..]
+    } else if digits.len() == 11 && digits.starts_with('0') {
+        &digits[1..]
+    } else {
+        &digits[..]
+    };
+    (d.len() == 10).then(|| d.to_string())
 }
 
 /// Indian mobile number: 10 digits starting 6-9, optional +91 / 91 / 0 prefix.

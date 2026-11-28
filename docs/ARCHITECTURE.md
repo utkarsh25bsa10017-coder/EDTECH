@@ -71,7 +71,7 @@ Auth: an HttpOnly cookie `pr_session` **or** `Authorization: Bearer <token>` (th
 
 | Method and path | Body / query | Returns | Who |
 |---|---|---|---|
-| `POST /api/auth/login` | `{ "username": "...", "password": "..." }` (username or phone) | `{ "token", "role": "admin" \| "student", "name" }` | anyone |
+| `POST /api/auth/login` | `{ "phone": "10 digits", "password": "..." }` (admin uses `ADMIN_PHONE`) | `{ "token", "role": "admin" \| "student", "name" }` | anyone |
 | `POST /api/auth/register` | `{ "name", "phone", "password" }` | same as login | anyone |
 | `POST /api/auth/logout` | | `{ "ok": true }` | signed in |
 | `GET /api/auth/me` | | `{ "role", "name", "phone", "passes": ["bpsc-tre"] }` | signed in |

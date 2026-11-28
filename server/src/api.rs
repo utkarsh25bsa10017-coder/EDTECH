@@ -93,27 +93,28 @@ fn session_response(state: &AppState, token: String, user: &User) -> Response {
 
 #[derive(Deserialize)]
 pub struct LoginReq {
-    username: String,
+    #[serde(alias = "username")]
+    phone: String,
     password: String,
 }
 
+/// Everyone, admin included, signs in with a 10-digit phone number and password.
 pub async fn login(State(state): State<AppState>, Json(req): Json<LoginReq>) -> ApiResult<Response> {
-    let ident = req.username.trim().to_string();
-    let phone = auth::normalize_phone(&ident);
+    let phone = auth::login_phone(&req.phone).ok_or_else(|| ApiError::bad("enter your 10-digit phone number"))?;
     let conn = db(&state)?;
     let row: Option<(i64, String, Option<String>, String, String)> = conn
         .query_row(
-            "SELECT id, name, phone, role, password_hash FROM users WHERE username = ?1 OR phone = ?2",
-            params![ident, phone.unwrap_or_default()],
+            "SELECT id, name, phone, role, password_hash FROM users WHERE phone = ?1",
+            params![phone],
             |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)),
         )
         .optional()
         .map_err(ApiError::internal)?;
     let Some((id, name, phone, role, hash)) = row else {
-        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong username or password".into()));
+        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong phone number or password".into()));
     };
     if !auth::verify_password(&req.password, &hash) {
-        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong username or password".into()));
+        return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong phone number or password".into()));
     }
     let token = auth::new_session(&conn, id).map_err(ApiError::internal)?;
     let user = User { id, name, phone, role };
@@ -133,8 +134,8 @@ pub async fn register(State(state): State<AppState>, Json(req): Json<RegisterReq
         return Err(ApiError::bad("enter your name"));
     }
     let phone = auth::normalize_phone(&req.phone).ok_or_else(|| ApiError::bad("enter a valid 10-digit mobile number"))?;
-    if req.password.chars().count() < 6 {
-        return Err(ApiError::bad("password must be at least 6 characters"));
+    if req.password.chars().count() < 8 {
+        return Err(ApiError::bad("password must be at least 8 characters"));
     }
     let conn = db(&state)?;
     let exists: bool = conn

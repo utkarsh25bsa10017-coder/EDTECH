@@ -33,6 +33,7 @@ pub struct Config {
     pub bank_dir: PathBuf,
     pub site_url: String,
     pub admin_username: String,
+    pub admin_phone: String,
     pub admin_password: String,
     pub automation_key: String,
     pub anthropic_key: String,
@@ -61,7 +62,8 @@ impl Config {
             paid_papers_dir: PathBuf::from(env_or("PAID_PAPERS_DIR", &root.join("content/papers").to_string_lossy())),
             bank_dir: PathBuf::from(env_or("BANK_DIR", &root.join("content/bank").to_string_lossy())),
             site_url: env_or("PUBLIC_SITE_URL", "http://localhost:8787").trim_end_matches('/').to_string(),
-            admin_username: env_or("ADMIN_USERNAME", ""),
+            admin_username: env_or("ADMIN_USERNAME", "admin"),
+            admin_phone: env_or("ADMIN_PHONE", ""),
             admin_password: env_or("ADMIN_PASSWORD", ""),
             automation_key: env_or("AUTOMATION_KEY", ""),
             anthropic_key: env_or("ANTHROPIC_API_KEY", ""),
@@ -109,10 +111,11 @@ async fn main() {
     std::fs::create_dir_all(&cfg.data_dir).expect("create data dir");
     let conn = db::open(&cfg.data_dir.join("prashnottar.db")).expect("open database");
 
-    if cfg.admin_username.is_empty() || cfg.admin_password.is_empty() {
-        tracing::warn!("ADMIN_USERNAME / ADMIN_PASSWORD not set: no admin account will be created");
-    } else {
-        auth::ensure_admin(&conn, &cfg.admin_username, &cfg.admin_password).expect("seed admin");
+    match auth::login_phone(&cfg.admin_phone) {
+        Some(phone) if !cfg.admin_password.is_empty() => {
+            auth::ensure_admin(&conn, &cfg.admin_username, &phone, &cfg.admin_password).expect("seed admin");
+        }
+        _ => tracing::warn!("ADMIN_PHONE (10 digits) / ADMIN_PASSWORD not set: no admin account will be created"),
     }
     if cfg.anthropic_key.is_empty() {
         tracing::warn!("ANTHROPIC_API_KEY not set: the chatbot will answer with a fallback message");

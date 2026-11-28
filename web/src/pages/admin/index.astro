@@ -11,7 +11,9 @@ import { EXAMS } from '../../lib/exams.ts';
     <div class="panel login" data-admin-login hidden>
       <h1 class="h-md">Admin sign in</h1>
       <form class="form" novalidate>
-        <label class="field"><span>Username</span><input name="username" type="text" autocomplete="username" required /></label>
+        <label class="field"><span>Mobile number</span>
+          <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{10}" placeholder="10-digit number" required /></span>
+        </label>
         <label class="field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label>
         <p class="form-err" role="alert" hidden></p>
         <button class="btn btn-primary btn-block" type="submit">Sign in</button>
