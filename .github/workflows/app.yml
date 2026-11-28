@@ -1,0 +1,130 @@
+# Builds the native app for Android, Windows and iOS.
+# Runs on demand (Actions tab -> "App builds" -> Run workflow) or on tags app-v*.
+# Set the repository variable PUBLIC_API_BASE (e.g. https://api.your-domain.in)
+# so the app talks to the live server.
+name: App builds
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["app-v*"]
+
+env:
+  PUBLIC_API_BASE: ${{ vars.PUBLIC_API_BASE }}
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+        working-directory: web
+      - run: npm run build
+        working-directory: web
+      - uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+
+  android:
+    needs: web
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - name: Install NDK
+        run: sdkmanager --install "ndk;27.0.12077973"
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-linux-android,armv7-linux-androideabi,x86_64-linux-android,i686-linux-android
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+        working-directory: app
+      - run: npx tauri icon app-icon.svg
+        working-directory: app
+      - run: npx tauri android init --ci
+        working-directory: app
+        env:
+          NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/27.0.12077973
+      # Debug APK for testing on phones. A Play Store release needs a signing
+      # keystore stored as repository secrets (see app/README.md).
+      - run: npx tauri android build --apk --debug
+        working-directory: app
+        env:
+          NDK_HOME: ${{ env.ANDROID_SDK_ROOT }}/ndk/27.0.12077973
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prashnottar-android
+          path: app/src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+
+  windows:
+    needs: web
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+        working-directory: app
+      - run: npx tauri icon app-icon.svg
+        working-directory: app
+      - run: npx tauri build
+        working-directory: app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prashnottar-windows
+          path: |
+            app/src-tauri/target/release/bundle/nsis/*.exe
+            app/src-tauri/target/release/bundle/msi/*.msi
+
+  ios:
+    needs: web
+    runs-on: macos-latest
+    # A device / App Store build needs an Apple Developer account and signing
+    # secrets; until then this produces a simulator build only.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: web-dist
+          path: web/dist
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios,aarch64-apple-ios-sim,x86_64-apple-ios
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm install
+        working-directory: app
+      - run: npx tauri icon app-icon.svg
+        working-directory: app
+      - run: npx tauri ios init --ci
+        working-directory: app
+      - run: npx tauri ios build --debug --target aarch64-sim
+        working-directory: app
+      - uses: actions/upload-artifact@v4
+        with:
+          name: prashnottar-ios-simulator
+          path: app/src-tauri/gen/apple/build/**/*.app
