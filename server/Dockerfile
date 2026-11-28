@@ -7,9 +7,9 @@ COPY src ./src
 RUN touch src/main.rs && cargo build --release
 
 FROM debian:trixie-slim
-RUN useradd --system --uid 10001 app && mkdir -p /data && chown app /data
+RUN useradd --system --uid 10001 app
 COPY --from=build /src/target/release/prashnottar-server /usr/local/bin/prashnottar-server
 USER app
-ENV PORT=8787 DATA_DIR=/data PROJECT_ROOT=/srv
+ENV PORT=8787 PROJECT_ROOT=/srv
 EXPOSE 8787
 CMD ["prashnottar-server"]

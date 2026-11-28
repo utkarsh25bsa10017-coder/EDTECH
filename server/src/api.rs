@@ -6,7 +6,7 @@ use axum::{
     Json,
 };
 use hmac::{Hmac, Mac};
-use rusqlite::{params, OptionalExtension};
+use sqlx::PgPool;
 use serde::Deserialize;
 use serde_json::{json, Value};
 use sha2::Sha256;
@@ -49,12 +49,12 @@ impl IntoResponse for ApiError {
 
 type ApiResult<T> = Result<T, ApiError>;
 
-fn db(state: &AppState) -> ApiResult<std::sync::MutexGuard<'_, rusqlite::Connection>> {
-    state.db.lock().map_err(|_| ApiError::internal("db lock poisoned"))
+fn db(state: &AppState) -> &PgPool {
+    &state.db
 }
 
-fn require_admin(state: &AppState, headers: &HeaderMap) -> ApiResult<User> {
-    let user = auth::current_user(state, headers).ok_or_else(ApiError::unauthorized)?;
+async fn require_admin(state: &AppState, headers: &HeaderMap) -> ApiResult<User> {
+    let user = auth::current_user(state, headers).await.ok_or_else(ApiError::unauthorized)?;
     if !user.is_admin() {
         return Err(ApiError::forbidden("admin only"));
     }
@@ -69,15 +69,17 @@ fn require_automation(state: &AppState, headers: &HeaderMap) -> ApiResult<()> {
     Ok(())
 }
 
-fn passes_for(conn: &rusqlite::Connection, phone: Option<&str>) -> Vec<String> {
+async fn passes_for(db: &PgPool, phone: Option<&str>) -> Vec<String> {
     let Some(phone) = phone else { return vec![] };
-    let mut stmt = match conn.prepare("SELECT DISTINCT exam FROM passes WHERE phone = ?1 AND expires_at > ?2") {
-        Ok(s) => s,
-        Err(_) => return vec![],
-    };
-    stmt.query_map(params![phone, now()], |r| r.get::<_, String>(0))
-        .map(|rows| rows.filter_map(|r| r.ok()).collect())
-        .unwrap_or_default()
+    sqlx::query_scalar("SELECT DISTINCT exam FROM passes WHERE phone = $1 AND expires_at > $2")
+        .bind(phone)
+        .bind(now())
+        .fetch_all(db)
+        .await
+        .unwrap_or_else(|e| {
+            tracing::error!("passes lookup failed: {e}");
+            vec![]
+        })
 }
 
 fn session_response(state: &AppState, token: String, user: &User) -> Response {
@@ -101,22 +103,19 @@ pub struct LoginReq {
 /// Everyone, admin included, signs in with a 10-digit phone number and password.
 pub async fn login(State(state): State<AppState>, Json(req): Json<LoginReq>) -> ApiResult<Response> {
     let phone = auth::login_phone(&req.phone).ok_or_else(|| ApiError::bad("enter your 10-digit phone number"))?;
-    let conn = db(&state)?;
-    let row: Option<(i64, String, Option<String>, String, String)> = conn
-        .query_row(
-            "SELECT id, name, phone, role, password_hash FROM users WHERE phone = ?1",
-            params![phone],
-            |r| Ok((r.get(0)?, r.get(1)?, r.get(2)?, r.get(3)?, r.get(4)?)),
-        )
-        .optional()
-        .map_err(ApiError::internal)?;
+    let row: Option<(i64, String, Option<String>, String, String)> =
+        sqlx::query_as("SELECT id, name, phone, role, password_hash FROM users WHERE phone = $1")
+            .bind(&phone)
+            .fetch_optional(db(&state))
+            .await
+            .map_err(ApiError::internal)?;
     let Some((id, name, phone, role, hash)) = row else {
         return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong phone number or password".into()));
     };
     if !auth::verify_password(&req.password, &hash) {
         return Err(ApiError(StatusCode::UNAUTHORIZED, "wrong phone number or password".into()));
     }
-    let token = auth::new_session(&conn, id).map_err(ApiError::internal)?;
+    let token = auth::new_session(db(&state), id).await.map_err(ApiError::internal)?;
     let user = User { id, name, phone, role };
     Ok(session_response(&state, token, &user))
 }
@@ -137,38 +136,40 @@ pub async fn register(State(state): State<AppState>, Json(req): Json<RegisterReq
     if req.password.chars().count() < 8 {
         return Err(ApiError::bad("password must be at least 8 characters"));
     }
-    let conn = db(&state)?;
-    let exists: bool = conn
-        .query_row("SELECT 1 FROM users WHERE phone = ?1", params![phone], |_| Ok(true))
-        .optional()
-        .map_err(ApiError::internal)?
-        .unwrap_or(false);
-    if exists {
-        return Err(ApiError(StatusCode::CONFLICT, "this number already has an account; sign in instead".into()));
-    }
-    conn.execute(
-        "INSERT INTO users (name, phone, password_hash, role, created_at) VALUES (?1, ?2, ?3, 'student', ?4)",
-        params![name, phone, auth::hash_password(&req.password), now()],
+    // ON CONFLICT also covers two sign-ups for the same number at once.
+    let id: Option<i64> = sqlx::query_scalar(
+        "INSERT INTO users (name, phone, password_hash, role, created_at) VALUES ($1, $2, $3, 'student', $4)
+         ON CONFLICT (phone) DO NOTHING RETURNING id",
     )
+    .bind(name)
+    .bind(&phone)
+    .bind(auth::hash_password(&req.password))
+    .bind(now())
+    .fetch_optional(db(&state))
+    .await
     .map_err(ApiError::internal)?;
-    let id = conn.last_insert_rowid();
-    let token = auth::new_session(&conn, id).map_err(ApiError::internal)?;
+    let Some(id) = id else {
+        return Err(ApiError(StatusCode::CONFLICT, "this number already has an account; sign in instead".into()));
+    };
+    let token = auth::new_session(db(&state), id).await.map_err(ApiError::internal)?;
     let user = User { id, name: name.to_string(), phone: Some(phone), role: "student".into() };
     Ok(session_response(&state, token, &user))
 }
 
 pub async fn logout(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Response> {
     if let Some(token) = auth::token_from_headers(&headers) {
-        let conn = db(&state)?;
-        conn.execute("DELETE FROM sessions WHERE token = ?1", params![token]).map_err(ApiError::internal)?;
+        sqlx::query("DELETE FROM sessions WHERE token = $1")
+            .bind(token)
+            .execute(db(&state))
+            .await
+            .map_err(ApiError::internal)?;
     }
     Ok(([(header::SET_COOKIE, auth::clear_cookie())], Json(json!({ "ok": true }))).into_response())
 }
 
 pub async fn me(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
-    let user = auth::current_user(&state, &headers).ok_or_else(ApiError::unauthorized)?;
-    let conn = db(&state)?;
-    let passes = passes_for(&conn, user.phone.as_deref());
+    let user = auth::current_user(&state, &headers).await.ok_or_else(ApiError::unauthorized)?;
+    let passes = passes_for(db(&state), user.phone.as_deref()).await;
     Ok(Json(json!({ "role": user.role, "name": user.name, "phone": user.phone, "passes": passes })))
 }
 
@@ -197,18 +198,25 @@ pub async fn create_lead(State(state): State<AppState>, Json(req): Json<LeadReq>
         return Err(ApiError::bad("please tick the consent box"));
     }
     let name = req.name.as_deref().map(str::trim).filter(|n| !n.is_empty()).map(|n| n.chars().take(80).collect::<String>());
-    let conn = db(&state)?;
     let t = now();
-    conn.execute(
+    sqlx::query(
         "INSERT INTO leads (phone, name, exam, score, total, source, consent, followup_step, next_followup_at, created_at)
-         VALUES (?1, ?2, ?3, ?4, ?5, ?6, 1, 0, ?7, ?7)
-         ON CONFLICT(phone, exam) DO UPDATE SET
-            name = COALESCE(excluded.name, leads.name),
-            score = COALESCE(excluded.score, leads.score),
-            total = COALESCE(excluded.total, leads.total),
-            consent = 1",
-        params![phone, name, req.exam, req.score, req.total, req.source, t],
+         VALUES ($1, $2, $3, $4, $5, $6, true, 0, $7, $7)
+         ON CONFLICT (phone, exam) DO UPDATE SET
+            name = COALESCE(EXCLUDED.name, leads.name),
+            score = COALESCE(EXCLUDED.score, leads.score),
+            total = COALESCE(EXCLUDED.total, leads.total),
+            consent = true",
     )
+    .bind(&phone)
+    .bind(name)
+    .bind(&req.exam)
+    .bind(req.score)
+    .bind(req.total)
+    .bind(&req.source)
+    .bind(t)
+    .execute(db(&state))
+    .await
     .map_err(ApiError::internal)?;
     Ok(Json(json!({ "ok": true })))
 }
@@ -231,23 +239,23 @@ pub async fn create_attempt(
     if !content::valid_exam(&req.exam) || req.paper.len() > 64 || req.answers.len() > 400 {
         return Err(ApiError::bad("invalid attempt"));
     }
-    let user_id = auth::current_user(&state, &headers).map(|u| u.id);
-    let conn = db(&state)?;
-    conn.execute(
-        "INSERT INTO attempts (user_id, exam, paper, score, total, answers, topics, created_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)",
-        params![
-            user_id,
-            req.exam,
-            req.paper,
-            req.score,
-            req.total,
-            serde_json::to_string(&req.answers).unwrap_or_default(),
-            req.topics.to_string(),
-            now()
-        ],
+    let user_id = auth::current_user(&state, &headers).await.map(|u| u.id);
+    let id: i64 = sqlx::query_scalar(
+        "INSERT INTO attempts (user_id, exam, paper, score, total, answers, topics, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id",
     )
+    .bind(user_id)
+    .bind(&req.exam)
+    .bind(&req.paper)
+    .bind(req.score)
+    .bind(req.total)
+    .bind(sqlx::types::Json(&req.answers))
+    .bind(&req.topics)
+    .bind(now())
+    .fetch_one(db(&state))
+    .await
     .map_err(ApiError::internal)?;
-    Ok(Json(json!({ "ok": true, "id": conn.last_insert_rowid() })))
+    Ok(Json(json!({ "ok": true, "id": id })))
 }
 
 // ------------------------------------------------------------------ papers
@@ -269,10 +277,9 @@ pub async fn get_paper(
     let v: Value = serde_json::from_str(&text).map_err(ApiError::internal)?;
     let is_free = paper.free && v["free"].as_bool().unwrap_or(true);
     if !is_free {
-        let user = auth::current_user(&state, &headers).ok_or_else(ApiError::unauthorized)?;
+        let user = auth::current_user(&state, &headers).await.ok_or_else(ApiError::unauthorized)?;
         if !user.is_admin() {
-            let conn = db(&state)?;
-            if !passes_for(&conn, user.phone.as_deref()).iter().any(|e| e == &exam) {
+            if !passes_for(db(&state), user.phone.as_deref()).await.iter().any(|e| e == &exam) {
                 return Err(ApiError(StatusCode::PAYMENT_REQUIRED, "this paper needs a pass for this exam".into()));
             }
         }
@@ -427,8 +434,11 @@ pub async fn bot_whatsapp(
     }
 
     if is_stop(&text) {
-        let conn = db(&state)?;
-        conn.execute("UPDATE leads SET opted_out = 1 WHERE phone = ?1", params![phone]).map_err(ApiError::internal)?;
+        sqlx::query("UPDATE leads SET opted_out = true WHERE phone = $1")
+            .bind(&phone)
+            .execute(db(&state))
+            .await
+            .map_err(ApiError::internal)?;
         return Ok(Json(json!({
             "reply": "ठीक है, अब आपको हमारी ओर से संदेश नहीं भेजे जाएंगे। कभी भी फिर से जुड़ने के लिए 'START' लिखें।",
             "handoff": false
@@ -436,31 +446,34 @@ pub async fn bot_whatsapp(
     }
 
     let history = {
-        let conn = db(&state)?;
         let t = now();
         // Someone who messages us first counts as a click-to-WhatsApp lead.
-        conn.execute(
+        sqlx::query(
             "INSERT INTO leads (phone, name, exam, source, consent, followup_step, next_followup_at, created_at)
-             VALUES (?1, ?2, 'bpsc-tre', 'ctwa', 1, 0, ?3, ?3)
-             ON CONFLICT(phone, exam) DO UPDATE SET opted_out = CASE WHEN ?4 THEN 0 ELSE leads.opted_out END",
-            params![phone, req.name, t, text.trim().eq_ignore_ascii_case("start")],
+             VALUES ($1, $2, 'bpsc-tre', 'ctwa', true, 0, $3, $3)
+             ON CONFLICT (phone, exam) DO UPDATE SET opted_out = CASE WHEN $4 THEN false ELSE leads.opted_out END",
         )
+        .bind(&phone)
+        .bind(&req.name)
+        .bind(t)
+        .bind(text.trim().eq_ignore_ascii_case("start"))
+        .execute(db(&state))
+        .await
         .map_err(ApiError::internal)?;
-        conn.execute(
-            "INSERT INTO wa_messages (phone, role, content, created_at) VALUES (?1, 'user', ?2, ?3)",
-            params![phone, text, t],
-        )
-        .map_err(ApiError::internal)?;
-        let mut stmt = conn
-            .prepare("SELECT role, content FROM wa_messages WHERE phone = ?1 ORDER BY id DESC LIMIT 12")
+        sqlx::query("INSERT INTO wa_messages (phone, role, content, created_at) VALUES ($1, 'user', $2, $3)")
+            .bind(&phone)
+            .bind(&text)
+            .bind(t)
+            .execute(db(&state))
+            .await
             .map_err(ApiError::internal)?;
-        let mut rows: Vec<Value> = stmt
-            .query_map(params![phone], |r| Ok(json!({ "role": r.get::<_, String>(0)?, "content": r.get::<_, String>(1)? })))
-            .map_err(ApiError::internal)?
-            .filter_map(|r| r.ok())
-            .collect();
-        rows.reverse();
-        rows
+        let rows: Vec<(String, String)> =
+            sqlx::query_as("SELECT role, content FROM wa_messages WHERE phone = $1 ORDER BY id DESC LIMIT 12")
+                .bind(&phone)
+                .fetch_all(db(&state))
+                .await
+                .map_err(ApiError::internal)?;
+        rows.into_iter().rev().map(|(role, content)| json!({ "role": role, "content": content })).collect::<Vec<Value>>()
     };
 
     let msgs = clean_history(&history, 12);
@@ -473,12 +486,13 @@ pub async fn bot_whatsapp(
         Err(e) => (fallback_reply(&e, true), true),
     };
 
-    let conn = db(&state)?;
-    conn.execute(
-        "INSERT INTO wa_messages (phone, role, content, created_at) VALUES (?1, 'assistant', ?2, ?3)",
-        params![phone, reply, now()],
-    )
-    .map_err(ApiError::internal)?;
+    sqlx::query("INSERT INTO wa_messages (phone, role, content, created_at) VALUES ($1, 'assistant', $2, $3)")
+        .bind(&phone)
+        .bind(&reply)
+        .bind(now())
+        .execute(db(&state))
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "reply": reply, "handoff": handoff })))
 }
 
@@ -508,31 +522,20 @@ fn followup_message(site: &str, exam: &str, name: Option<&str>, step: i64) -> Op
 
 pub async fn due_followups(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
     require_automation(&state, &headers)?;
-    let conn = db(&state)?;
-    let mut stmt = conn
-        .prepare(
-            "SELECT l.id, l.phone, l.name, l.exam, l.followup_step, l.source,
-                    EXISTS (SELECT 1 FROM wa_messages w WHERE w.phone = l.phone AND w.role = 'user' AND w.created_at > ?1 - 86000)
-             FROM leads l
-             WHERE l.consent = 1 AND l.opted_out = 0 AND l.followup_step < 4 AND l.next_followup_at <= ?1
-             ORDER BY l.next_followup_at LIMIT 50",
-        )
-        .map_err(ApiError::internal)?;
+    let due: Vec<(i64, String, Option<String>, String, i64, String, bool)> = sqlx::query_as(
+        "SELECT l.id, l.phone, l.name, l.exam, l.followup_step, l.source,
+                EXISTS (SELECT 1 FROM wa_messages w WHERE w.phone = l.phone AND w.role = 'user' AND w.created_at > $1 - 86000)
+         FROM leads l
+         WHERE l.consent AND NOT l.opted_out AND l.followup_step < 4 AND l.next_followup_at <= $1
+         ORDER BY l.next_followup_at LIMIT 50",
+    )
+    .bind(now())
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
     let site = &state.cfg.site_url;
-    let rows: Vec<Value> = stmt
-        .query_map(params![now()], |r| {
-            Ok((
-                r.get::<_, i64>(0)?,
-                r.get::<_, String>(1)?,
-                r.get::<_, Option<String>>(2)?,
-                r.get::<_, String>(3)?,
-                r.get::<_, i64>(4)?,
-                r.get::<_, String>(5)?,
-                r.get::<_, bool>(6)?,
-            ))
-        })
-        .map_err(ApiError::internal)?
-        .filter_map(|r| r.ok())
+    let rows: Vec<Value> = due
+        .into_iter()
         .filter_map(|(id, phone, name, exam, step, source, window_open)| {
             followup_message(site, &exam, name.as_deref(), step).map(|message| {
                 let link = if step == 3 { format!("{site}/pricing/") } else { format!("{site}/{exam}/") };
@@ -565,39 +568,41 @@ pub async fn mark_followup(
     Json(req): Json<FollowupMark>,
 ) -> ApiResult<Json<Value>> {
     require_automation(&state, &headers)?;
-    let conn = db(&state)?;
     let t = now();
-    match req.status.as_str() {
-        "sent" => conn.execute(
-            "UPDATE leads SET followup_step = ?1 + 1, next_followup_at = ?2 WHERE id = ?3 AND followup_step = ?1",
-            params![req.step, t + 86400, lead_id],
-        ),
-        "failed" => conn.execute("UPDATE leads SET next_followup_at = ?1 WHERE id = ?2", params![t + 600, lead_id]),
+    let q = match req.status.as_str() {
+        "sent" => sqlx::query(
+            "UPDATE leads SET followup_step = $1 + 1, next_followup_at = $2 WHERE id = $3 AND followup_step = $1",
+        )
+        .bind(req.step)
+        .bind(t + 86400)
+        .bind(lead_id),
+        "failed" => sqlx::query("UPDATE leads SET next_followup_at = $1 WHERE id = $2").bind(t + 600).bind(lead_id),
         _ => return Err(ApiError::bad("status must be sent or failed")),
-    }
-    .map_err(ApiError::internal)?;
+    };
+    q.execute(db(&state)).await.map_err(ApiError::internal)?;
     Ok(Json(json!({ "ok": true })))
 }
 
 // ------------------------------------------------------------------ admin
 
 pub async fn admin_stats(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
-    let conn = db(&state)?;
-    let count = |sql: &str| -> i64 { conn.query_row(sql, [], |r| r.get(0)).unwrap_or(0) };
-    let leads = count("SELECT COUNT(*) FROM leads");
-    let students = count("SELECT COUNT(*) FROM users WHERE role = 'student'");
-    let attempts = count("SELECT COUNT(*) FROM attempts");
-    let passes = count("SELECT COUNT(*) FROM passes");
-    let mut stmt = conn
-        .prepare("SELECT exam, status, COUNT(*) FROM questions GROUP BY exam, status")
-        .map_err(ApiError::internal)?;
+    require_admin(&state, &headers).await?;
+    let pool = db(&state);
+    let counts: (i64, i64, i64, i64) = sqlx::query_as(
+        "SELECT (SELECT COUNT(*) FROM leads), (SELECT COUNT(*) FROM users WHERE role = 'student'),
+                (SELECT COUNT(*) FROM attempts), (SELECT COUNT(*) FROM passes)",
+    )
+    .fetch_one(pool)
+    .await
+    .map_err(ApiError::internal)?;
+    let (leads, students, attempts, passes) = counts;
+    let by_status: Vec<(String, String, i64)> =
+        sqlx::query_as("SELECT exam, status, COUNT(*) FROM questions GROUP BY exam, status")
+            .fetch_all(pool)
+            .await
+            .map_err(ApiError::internal)?;
     let mut questions = serde_json::Map::new();
-    for row in stmt
-        .query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, String>(1)?, r.get::<_, i64>(2)?)))
-        .map_err(ApiError::internal)?
-        .flatten()
-    {
+    for row in by_status {
         let entry = questions.entry(row.0).or_insert_with(|| json!({}));
         entry[row.1] = json!(row.2);
     }
@@ -614,56 +619,53 @@ pub struct ListQuery {
 }
 
 pub async fn admin_leads(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
-    let conn = db(&state)?;
+    require_admin(&state, &headers).await?;
     let limit = q.limit.unwrap_or(100).clamp(1, 500);
-    let mut stmt = conn
-        .prepare(
-            "SELECT id, phone, name, exam, score, total, source, opted_out, followup_step, created_at FROM leads
-             WHERE (?1 IS NULL OR exam = ?1) ORDER BY id DESC LIMIT ?2",
-        )
-        .map_err(ApiError::internal)?;
-    let rows: Vec<Value> = stmt
-        .query_map(params![q.exam, limit], |r| {
-            Ok(json!({
-                "id": r.get::<_, i64>(0)?, "phone": r.get::<_, String>(1)?, "name": r.get::<_, Option<String>>(2)?,
-                "exam": r.get::<_, String>(3)?, "score": r.get::<_, Option<i64>>(4)?, "total": r.get::<_, Option<i64>>(5)?,
-                "source": r.get::<_, String>(6)?, "opted_out": r.get::<_, i64>(7)? == 1,
-                "followup_step": r.get::<_, i64>(8)?, "created_at": r.get::<_, i64>(9)?
-            }))
+    type LeadRow = (i64, String, Option<String>, String, Option<i64>, Option<i64>, String, bool, i64, i64);
+    let found: Vec<LeadRow> = sqlx::query_as(
+        "SELECT id, phone, name, exam, score, total, source, opted_out, followup_step, created_at FROM leads
+         WHERE ($1::text IS NULL OR exam = $1) ORDER BY id DESC LIMIT $2",
+    )
+    .bind(&q.exam)
+    .bind(limit)
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = found
+        .into_iter()
+        .map(|r| {
+            json!({
+                "id": r.0, "phone": r.1, "name": r.2, "exam": r.3, "score": r.4, "total": r.5,
+                "source": r.6, "opted_out": r.7, "followup_step": r.8, "created_at": r.9
+            })
         })
-        .map_err(ApiError::internal)?
-        .filter_map(|r| r.ok())
         .collect();
     Ok(Json(Value::Array(rows)))
 }
 
 pub async fn admin_questions(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
-    let conn = db(&state)?;
+    require_admin(&state, &headers).await?;
     let limit = q.limit.unwrap_or(50).clamp(1, 200);
     let offset = q.offset.unwrap_or(0).max(0);
-    let like = q.q.as_deref().map(|s| format!("%{}%", s.trim()));
-    let mut stmt = conn
-        .prepare(
-            "SELECT body FROM questions
-             WHERE (?1 IS NULL OR exam = ?1) AND (?2 IS NULL OR status = ?2) AND (?3 IS NULL OR body LIKE ?3)
-             ORDER BY id LIMIT ?4 OFFSET ?5",
-        )
+    let like = q.q.as_deref().map(str::trim).filter(|s| !s.is_empty()).map(|s| format!("%{s}%"));
+    const FILTER: &str =
+        "($1::text IS NULL OR exam = $1) AND ($2::text IS NULL OR status = $2) AND ($3::text IS NULL OR body::text ILIKE $3)";
+    let rows: Vec<Value> = sqlx::query_scalar(&format!("SELECT body FROM questions WHERE {FILTER} ORDER BY id LIMIT $4 OFFSET $5"))
+        .bind(&q.exam)
+        .bind(&q.status)
+        .bind(&like)
+        .bind(limit)
+        .bind(offset)
+        .fetch_all(db(&state))
+        .await
         .map_err(ApiError::internal)?;
-    let rows: Vec<Value> = stmt
-        .query_map(params![q.exam, q.status, like, limit, offset], |r| r.get::<_, String>(0))
-        .map_err(ApiError::internal)?
-        .filter_map(|r| r.ok())
-        .filter_map(|b| serde_json::from_str(&b).ok())
-        .collect();
-    let total: i64 = conn
-        .query_row(
-            "SELECT COUNT(*) FROM questions WHERE (?1 IS NULL OR exam = ?1) AND (?2 IS NULL OR status = ?2) AND (?3 IS NULL OR body LIKE ?3)",
-            params![q.exam, q.status, like],
-            |r| r.get(0),
-        )
-        .unwrap_or(0);
+    let total: i64 = sqlx::query_scalar(&format!("SELECT COUNT(*) FROM questions WHERE {FILTER}"))
+        .bind(&q.exam)
+        .bind(&q.status)
+        .bind(&like)
+        .fetch_one(db(&state))
+        .await
+        .map_err(ApiError::internal)?;
     Ok(Json(json!({ "total": total, "items": rows })))
 }
 
@@ -678,11 +680,11 @@ pub async fn admin_update_question(
     Path(id): Path<String>,
     Json(req): Json<StatusReq>,
 ) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
+    require_admin(&state, &headers).await?;
     if !matches!(req.status.as_str(), "draft" | "reviewed" | "rejected") {
         return Err(ApiError::bad("status must be draft, reviewed or rejected"));
     }
-    content::set_question_status(&state, &id, &req.status).map_err(|e| {
+    content::set_question_status(&state, &id, &req.status).await.map_err(|e| {
         if e.contains("not found") {
             ApiError::not_found()
         } else {
@@ -693,32 +695,30 @@ pub async fn admin_update_question(
 }
 
 pub async fn admin_attempts(State(state): State<AppState>, headers: HeaderMap, Query(q): Query<ListQuery>) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
-    let conn = db(&state)?;
+    require_admin(&state, &headers).await?;
     let limit = q.limit.unwrap_or(100).clamp(1, 500);
-    let mut stmt = conn
-        .prepare(
-            "SELECT a.id, a.exam, a.paper, a.score, a.total, a.created_at, u.name FROM attempts a
-             LEFT JOIN users u ON u.id = a.user_id ORDER BY a.id DESC LIMIT ?1",
-        )
-        .map_err(ApiError::internal)?;
-    let rows: Vec<Value> = stmt
-        .query_map(params![limit], |r| {
-            Ok(json!({
-                "id": r.get::<_, i64>(0)?, "exam": r.get::<_, String>(1)?, "paper": r.get::<_, String>(2)?,
-                "score": r.get::<_, f64>(3)?, "total": r.get::<_, i64>(4)?, "created_at": r.get::<_, i64>(5)?,
-                "student": r.get::<_, Option<String>>(6)?
-            }))
+    let found: Vec<(i64, String, String, f64, i64, i64, Option<String>)> = sqlx::query_as(
+        "SELECT a.id, a.exam, a.paper, a.score, a.total, a.created_at, u.name FROM attempts a
+         LEFT JOIN users u ON u.id = a.user_id ORDER BY a.id DESC LIMIT $1",
+    )
+    .bind(limit)
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = found
+        .into_iter()
+        .map(|r| {
+            json!({
+                "id": r.0, "exam": r.1, "paper": r.2, "score": r.3, "total": r.4, "created_at": r.5, "student": r.6
+            })
         })
-        .map_err(ApiError::internal)?
-        .filter_map(|r| r.ok())
         .collect();
     Ok(Json(Value::Array(rows)))
 }
 
 pub async fn admin_reload(State(state): State<AppState>, headers: HeaderMap) -> ApiResult<Json<Value>> {
-    require_admin(&state, &headers)?;
-    let n = content::import_bank(&state).map_err(ApiError::internal)?;
+    require_admin(&state, &headers).await?;
+    let n = content::import_bank(&state).await.map_err(ApiError::internal)?;
     Ok(Json(json!({ "ok": true, "questions": n })))
 }
 
@@ -756,13 +756,20 @@ pub async fn razorpay_webhook(State(state): State<AppState>, headers: HeaderMap,
         return Err(ApiError::bad("missing exam note"));
     }
     let payment_id = entity["id"].as_str().unwrap_or("").to_string();
-    let conn = db(&state)?;
     let t = now();
     for (i, exam) in exams.iter().enumerate() {
-        conn.execute(
-            "INSERT OR IGNORE INTO passes (phone, exam, tier, payment_id, created_at, expires_at) VALUES (?1, ?2, ?3, ?4, ?5, ?6)",
-            params![phone, exam, tier, format!("{payment_id}:{i}"), t, t + state.cfg.pass_days * 86400],
+        sqlx::query(
+            "INSERT INTO passes (phone, exam, tier, payment_id, created_at, expires_at) VALUES ($1, $2, $3, $4, $5, $6)
+             ON CONFLICT (payment_id) DO NOTHING",
         )
+        .bind(&phone)
+        .bind(exam)
+        .bind(&tier)
+        .bind(format!("{payment_id}:{i}"))
+        .bind(t)
+        .bind(t + state.cfg.pass_days * 86400)
+        .execute(db(&state))
+        .await
         .map_err(ApiError::internal)?;
     }
     Ok(Json(json!({ "ok": true })))

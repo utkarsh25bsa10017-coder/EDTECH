@@ -77,7 +77,7 @@ The full creative library, scripts and WhatsApp messages are in [`adscript.md`](
 
 - **Website and app UI:** Astro (`web/`). Clean glass UI: flat neutral background, frosted panels, one solid accent, no gradients or decorative AI styling, large tap targets, thumb-reachable actions, keyboard shortcuts in tests.
 - **Native app (Rust):** a Tauri 2 shell (`app/`) for **Android, iOS and Windows**, bundling the same UI. Builds run on GitHub Actions; this server has no compiler, and iOS needs a Mac runner. **Payments stay on the web:** Google Play charges 11–26% on Indian in-app sales even with alternative billing, and Apple requires its own in-app purchase.
-- **API server (Rust, axum + SQLite):** auth (admin and students), leads, attempts, paid papers behind the paywall, the guidance chatbot, WhatsApp bot replies for n8n, and the admin panel. Runs on this server in Docker.
+- **API server (Rust, axum + Postgres on Supabase):** auth (admin and students), leads, attempts, paid papers behind the paywall, the guidance chatbot, WhatsApp bot replies for n8n, and the admin panel. Runs on this server in Docker.
 - **Automation:** n8n on this server (Docker), workflows in `automation/n8n/`.
 - **Guidance chatbot:** on the site and app, answers about packs, dates and study planning from our own facts (Claude API; key coming from the owner). The teaching AI stays in the app, not on WhatsApp: Meta's WhatsApp rules allow business sales and support bots, not general-purpose AI assistants.
 - **Retry rule for every external API:** on transient errors, wait 10 seconds and retry in a loop; on permanent errors (bad key, 4xx), stop and log. Details in `docs/ARCHITECTURE.md`.

@@ -12,12 +12,10 @@ services:
     user: "${APP_UID:-1000}:${APP_GID:-1000}"
     environment:
       PROJECT_ROOT: /srv
-      DATA_DIR: /data
     volumes:
       - ../web/dist:/srv/web/dist:ro
       - ../web/src/data/papers:/srv/web/src/data/papers:ro
       - ../content:/srv/content
-      - ../server/data:/data
     ports:
       - "127.0.0.1:8787:8787"
     mem_limit: 256m

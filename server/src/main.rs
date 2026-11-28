@@ -26,7 +26,7 @@ use tower_http::{
 
 pub struct Config {
     pub port: u16,
-    pub data_dir: PathBuf,
+    pub database_url: String,
     pub web_dist: PathBuf,
     pub free_papers_dir: PathBuf,
     pub paid_papers_dir: PathBuf,
@@ -56,7 +56,7 @@ impl Config {
         let root = PathBuf::from(env_or("PROJECT_ROOT", ".."));
         Config {
             port: env_or("PORT", "8787").parse().unwrap_or(8787),
-            data_dir: PathBuf::from(env_or("DATA_DIR", "data")),
+            database_url: env_or("DATABASE_URL", ""),
             web_dist: PathBuf::from(env_or("WEB_DIST", &root.join("web/dist").to_string_lossy())),
             free_papers_dir: PathBuf::from(env_or("FREE_PAPERS_DIR", &root.join("web/src/data/papers").to_string_lossy())),
             paid_papers_dir: PathBuf::from(env_or("PAID_PAPERS_DIR", &root.join("content/papers").to_string_lossy())),
@@ -85,7 +85,7 @@ impl Config {
 
 #[derive(Clone)]
 pub struct AppState {
-    pub db: Arc<Mutex<rusqlite::Connection>>,
+    pub db: sqlx::PgPool,
     pub cfg: Arc<Config>,
     pub http: reqwest::Client,
     /// ip -> (window start, count) for the public chatbot
@@ -108,12 +108,25 @@ async fn main() {
         .init();
 
     let cfg = Config::from_env();
-    std::fs::create_dir_all(&cfg.data_dir).expect("create data dir");
-    let conn = db::open(&cfg.data_dir.join("prashnottar.db")).expect("open database");
+    if cfg.database_url.is_empty() {
+        tracing::error!("DATABASE_URL is not set (Supabase session pooler connection string)");
+        std::process::exit(1);
+    }
+    let pool = match db::connect(&cfg.database_url).await {
+        Ok(p) => p,
+        Err(e) => {
+            tracing::error!("can't use the database: {e}");
+            std::process::exit(1);
+        }
+    };
+    tracing::info!("database ready");
 
     match auth::login_phone(&cfg.admin_phone) {
         Some(phone) if !cfg.admin_password.is_empty() => {
-            auth::ensure_admin(&conn, &cfg.admin_username, &phone, &cfg.admin_password).expect("seed admin");
+            if let Err(e) = auth::ensure_admin(&pool, &cfg.admin_username, &phone, &cfg.admin_password).await {
+                tracing::error!("can't create the admin account: {e}");
+                std::process::exit(1);
+            }
         }
         _ => tracing::warn!("ADMIN_PHONE (10 digits) / ADMIN_PASSWORD not set: no admin account will be created"),
     }
@@ -122,7 +135,7 @@ async fn main() {
     }
 
     let state = AppState {
-        db: Arc::new(Mutex::new(conn)),
+        db: pool,
         cfg: Arc::new(cfg),
         http: reqwest::Client::builder()
             .timeout(std::time::Duration::from_secs(120))
@@ -132,7 +145,7 @@ async fn main() {
         qfiles: Arc::new(Mutex::new(HashMap::new())),
     };
 
-    match content::import_bank(&state) {
+    match content::import_bank(&state).await {
         Ok(n) => tracing::info!("question bank: {n} questions loaded"),
         Err(e) => tracing::warn!("question bank not loaded: {e}"),
     }

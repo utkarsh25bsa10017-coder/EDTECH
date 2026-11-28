@@ -2,7 +2,6 @@
 //! and paper listing/loading (free papers from the static build folder,
 //! paid papers from content/papers, which is never in the public build).
 
-use rusqlite::params;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
 
@@ -35,15 +34,17 @@ fn en(v: &Value) -> String {
     v.get("en").and_then(|x| x.as_str()).unwrap_or("").to_string()
 }
 
-/// Loads every question in content/bank/<exam>/*.json into SQLite (replacing
-/// what was there) and remembers which file each question lives in.
-pub fn import_bank(state: &AppState) -> Result<usize, String> {
+/// Loads every question in content/bank/<exam>/*.json into the database
+/// (replacing what was there) and remembers which file each question lives in.
+/// If an id appears twice, the later file wins.
+pub async fn import_bank(state: &AppState) -> Result<usize, String> {
     let root = &state.cfg.bank_dir;
     if !root.exists() {
         return Err(format!("{} does not exist yet", root.display()));
     }
     let mut map = std::collections::HashMap::new();
-    let mut rows: Vec<(String, String, String, String, String, String, String, String)> = Vec::new();
+    let mut index: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    let mut rows: Vec<[String; 8]> = Vec::new();
     for exam in EXAMS {
         for file in json_files(&root.join(exam)) {
             let text = match std::fs::read_to_string(&file) {
@@ -60,8 +61,8 @@ pub fn import_bank(state: &AppState) -> Result<usize, String> {
             for q in arr {
                 let Some(id) = q.get("id").and_then(|x| x.as_str()).map(String::from) else { continue };
                 map.insert(id.clone(), file.clone());
-                rows.push((
-                    id,
+                let row = [
+                    id.clone(),
                     exam.to_string(),
                     en(&q["subject"]),
                     en(&q["topic"]),
@@ -69,36 +70,50 @@ pub fn import_bank(state: &AppState) -> Result<usize, String> {
                     q["type"].as_str().unwrap_or("single").to_string(),
                     q["status"].as_str().unwrap_or("draft").to_string(),
                     q.to_string(),
-                ));
+                ];
+                match index.get(&id) {
+                    Some(&i) => rows[i] = row,
+                    None => {
+                        index.insert(id, rows.len());
+                        rows.push(row);
+                    }
+                }
             }
         }
     }
     let n = rows.len();
-    {
-        let mut conn = state.db.lock().map_err(|_| "db lock")?;
-        let tx = conn.transaction().map_err(|e| e.to_string())?;
-        tx.execute("DELETE FROM questions", []).map_err(|e| e.to_string())?;
-        {
-            let mut stmt = tx
-                .prepare(
-                    "INSERT OR REPLACE INTO questions (id, exam, subject, topic, difficulty, qtype, status, body, updated_at)
-                     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9)",
-                )
-                .map_err(|e| e.to_string())?;
-            let t = now();
-            for r in &rows {
-                stmt.execute(params![r.0, r.1, r.2, r.3, r.4, r.5, r.6, r.7, t]).map_err(|e| e.to_string())?;
-            }
-        }
-        tx.commit().map_err(|e| e.to_string())?;
+    let t = now();
+    let mut tx = state.db.begin().await.map_err(|e| e.to_string())?;
+    sqlx::query("DELETE FROM questions").execute(&mut *tx).await.map_err(|e| e.to_string())?;
+    for chunk in rows.chunks(500) {
+        let col = |i: usize| chunk.iter().map(|r| r[i].clone()).collect::<Vec<String>>();
+        sqlx::query(
+            "INSERT INTO questions (id, exam, subject, topic, difficulty, qtype, status, body, updated_at)
+             SELECT id, exam, subject, topic, difficulty, qtype, status, body::jsonb, $9
+             FROM UNNEST($1::text[], $2::text[], $3::text[], $4::text[], $5::text[], $6::text[], $7::text[], $8::text[])
+                  AS u(id, exam, subject, topic, difficulty, qtype, status, body)",
+        )
+        .bind(col(0))
+        .bind(col(1))
+        .bind(col(2))
+        .bind(col(3))
+        .bind(col(4))
+        .bind(col(5))
+        .bind(col(6))
+        .bind(col(7))
+        .bind(t)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| e.to_string())?;
     }
+    tx.commit().await.map_err(|e| e.to_string())?;
     *state.qfiles.lock().map_err(|_| "lock")? = map;
     Ok(n)
 }
 
-/// Sets a question's status in SQLite and in its bank file, so the pipeline
-/// (which reads the files) sees the admin's decision.
-pub fn set_question_status(state: &AppState, id: &str, status: &str) -> Result<(), String> {
+/// Sets a question's status in the database and in its bank file, so the
+/// pipeline (which reads the files) sees the admin's decision.
+pub async fn set_question_status(state: &AppState, id: &str, status: &str) -> Result<(), String> {
     let file = state
         .qfiles
         .lock()
@@ -123,16 +138,14 @@ pub fn set_question_status(state: &AppState, id: &str, status: &str) -> Result<(
     std::fs::write(&tmp, pretty + "\n").map_err(|e| e.to_string())?;
     std::fs::rename(&tmp, &file).map_err(|e| e.to_string())?;
 
-    let conn = state.db.lock().map_err(|_| "db lock")?;
-    let body: String = conn
-        .query_row("SELECT body FROM questions WHERE id = ?1", params![id], |r| r.get(0))
-        .map_err(|e| e.to_string())?;
-    let mut v: Value = serde_json::from_str(&body).map_err(|e| e.to_string())?;
-    v["status"] = Value::String(status.to_string());
-    conn.execute(
-        "UPDATE questions SET status = ?1, body = ?2, updated_at = ?3 WHERE id = ?4",
-        params![status, v.to_string(), now(), id],
+    sqlx::query(
+        "UPDATE questions SET status = $1, body = jsonb_set(body, '{status}', to_jsonb($1::text)), updated_at = $2 WHERE id = $3",
     )
+    .bind(status)
+    .bind(now())
+    .bind(id)
+    .execute(&state.db)
+    .await
     .map_err(|e| e.to_string())?;
     Ok(())
 }

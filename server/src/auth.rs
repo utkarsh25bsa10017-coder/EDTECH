@@ -4,7 +4,7 @@ use argon2::{
 };
 use axum::http::HeaderMap;
 use rand::RngCore;
-use rusqlite::{params, Connection, OptionalExtension};
+use sqlx::PgPool;
 
 use crate::{now, AppState};
 
@@ -41,46 +41,55 @@ pub fn verify_password(password: &str, hash: &str) -> bool {
 /// Creates the admin account, or brings it in line with the environment
 /// (phone, password, role), so changing ADMIN_PHONE / ADMIN_PASSWORD and
 /// restarting takes effect. The admin signs in with ADMIN_PHONE like everyone else.
-pub fn ensure_admin(conn: &Connection, username: &str, phone: &str, password: &str) -> rusqlite::Result<()> {
+pub async fn ensure_admin(db: &PgPool, username: &str, phone: &str, password: &str) -> sqlx::Result<()> {
+    let mut tx = db.begin().await?;
     // Free the number if a different account holds it, so the admin can sign in with it.
-    conn.execute(
-        "UPDATE users SET phone = NULL WHERE phone = ?1 AND (username IS NULL OR username != ?2)",
-        params![phone, username],
-    )?;
-    let existing: Option<(i64, String)> = conn
-        .query_row(
-            "SELECT id, password_hash FROM users WHERE username = ?1",
-            params![username],
-            |r| Ok((r.get(0)?, r.get(1)?)),
-        )
-        .optional()?;
+    sqlx::query("UPDATE users SET phone = NULL WHERE phone = $1 AND (username IS NULL OR username <> $2)")
+        .bind(phone)
+        .bind(username)
+        .execute(&mut *tx)
+        .await?;
+    let existing: Option<(i64, String)> = sqlx::query_as("SELECT id, password_hash FROM users WHERE username = $1")
+        .bind(username)
+        .fetch_optional(&mut *tx)
+        .await?;
     match existing {
         Some((id, hash)) => {
             let hash = if verify_password(password, &hash) { hash } else { hash_password(password) };
-            conn.execute(
-                "UPDATE users SET phone = ?1, password_hash = ?2, role = 'admin' WHERE id = ?3",
-                params![phone, hash, id],
-            )?;
+            sqlx::query("UPDATE users SET phone = $1, password_hash = $2, role = 'admin' WHERE id = $3")
+                .bind(phone)
+                .bind(hash)
+                .bind(id)
+                .execute(&mut *tx)
+                .await?;
         }
         None => {
-            conn.execute(
-                "INSERT INTO users (name, username, phone, password_hash, role, created_at) VALUES (?1, ?1, ?2, ?3, 'admin', ?4)",
-                params![username, phone, hash_password(password), now()],
-            )?;
+            sqlx::query(
+                "INSERT INTO users (name, username, phone, password_hash, role, created_at) VALUES ($1, $1, $2, $3, 'admin', $4)",
+            )
+            .bind(username)
+            .bind(phone)
+            .bind(hash_password(password))
+            .bind(now())
+            .execute(&mut *tx)
+            .await?;
         }
     }
-    Ok(())
+    tx.commit().await
 }
 
-pub fn new_session(conn: &Connection, user_id: i64) -> rusqlite::Result<String> {
+pub async fn new_session(db: &PgPool, user_id: i64) -> sqlx::Result<String> {
     let mut bytes = [0u8; 32];
     rand::thread_rng().fill_bytes(&mut bytes);
     let token = hex::encode(bytes);
     let t = now();
-    conn.execute(
-        "INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES (?1, ?2, ?3, ?4)",
-        params![token, user_id, t, t + SESSION_DAYS * 86400],
-    )?;
+    sqlx::query("INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES ($1, $2, $3, $4)")
+        .bind(&token)
+        .bind(user_id)
+        .bind(t)
+        .bind(t + SESSION_DAYS * 86400)
+        .execute(db)
+        .await?;
     Ok(token)
 }
 
@@ -97,25 +106,20 @@ pub fn token_from_headers(headers: &HeaderMap) -> Option<String> {
     })
 }
 
-pub fn current_user(state: &AppState, headers: &HeaderMap) -> Option<User> {
+pub async fn current_user(state: &AppState, headers: &HeaderMap) -> Option<User> {
     let token = token_from_headers(headers)?;
-    let conn = state.db.lock().ok()?;
-    conn.query_row(
+    let row: Option<(i64, String, Option<String>, String)> = sqlx::query_as(
         "SELECT u.id, u.name, u.phone, u.role FROM sessions s JOIN users u ON u.id = s.user_id
-         WHERE s.token = ?1 AND s.expires_at > ?2",
-        params![token, now()],
-        |r| {
-            Ok(User {
-                id: r.get(0)?,
-                name: r.get(1)?,
-                phone: r.get(2)?,
-                role: r.get(3)?,
-            })
-        },
+         WHERE s.token = $1 AND s.expires_at > $2",
     )
-    .optional()
+    .bind(token)
+    .bind(now())
+    .fetch_optional(&state.db)
+    .await
+    .map_err(|e| tracing::error!("session lookup failed: {e}"))
     .ok()
-    .flatten()
+    .flatten();
+    row.map(|(id, name, phone, role)| User { id, name, phone, role })
 }
 
 pub fn session_cookie(token: &str, secure: bool) -> String {

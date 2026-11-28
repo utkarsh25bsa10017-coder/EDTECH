@@ -7,7 +7,7 @@ Every part of the build follows this file. Change it here first, then in code.
 | Path | What | Language |
 |---|---|---|
 | `web/` | Website and the app's UI (Astro, static build in `web/dist`) | TypeScript |
-| `server/` | API server: auth, leads, attempts, chatbot, WhatsApp bot replies, admin. Serves `web/dist` too. | Rust (axum, SQLite) |
+| `server/` | API server: auth, leads, attempts, chatbot, WhatsApp bot replies, admin. Serves `web/dist` too. | Rust (axum, Postgres on Supabase) |
 | `app/` | Native app shell for Android, iOS and Windows. Bundles `web/dist`. | Rust (Tauri 2) |
 | `content/bank/<exam>/*.json` | Question bank (the paid asset). **Gitignored**: the repo is public. | JSON |
 | `content/free/` | Free sample questions that may be public | JSON |
@@ -92,6 +92,14 @@ Auth: an HttpOnly cookie `pr_session` **or** `Authorization: Bearer <token>` (th
 
 The web reads the API base from `PUBLIC_API_BASE` (empty = same origin).
 
+## Database (Supabase Postgres)
+
+- The API server is the only client. It connects with `DATABASE_URL`, the Supabase **session pooler** string (`aws-0-ap-south-1.pooler.supabase.com:5432`, user `postgres.<project-ref>`). The direct `db.<ref>.supabase.co` host is IPv6-only, and Docker's default network has no IPv6. Don't use the transaction pooler (port 6543): it breaks the prepared statements the server uses.
+- The server creates its tables on start (`server/src/db.rs`), turns on row-level security on every table with no policies, and revokes all grants from Supabase's `anon` and `authenticated` roles. The Supabase publishable/anon key therefore can't read or write anything. Keep it that way: the question bank is the paid asset.
+- Timestamps are Unix seconds (`BIGINT`). `questions.body`, `attempts.answers` and `attempts.topics` are `JSONB`.
+- `questions` is a copy of `content/bank` (the files are the source of truth), rebuilt on every start and on `POST /api/admin/reload`.
+- The admin account is created or updated on every start from `ADMIN_USERNAME`, `ADMIN_PHONE` and `ADMIN_PASSWORD`.
+
 ## Ports on this server
 
 This server also runs production containers (Dokploy on 3000, Traefik on 80/443). Don't touch them.
@@ -106,4 +114,4 @@ Anthropic (chatbot, filter agent), Meta WhatsApp Cloud API, Razorpay, ElevenLabs
 
 ## Secrets
 
-Live in `.env` files on the server (gitignored); `*.env.example` files list the names only. That covers `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `ANTHROPIC_API_KEY`, `META_*`, `RAZORPAY_*`, `ELEVENLABS_API_KEY`, `HIGGSFIELD_API_KEY` and `AUTOMATION_KEY`. Never commit a real value.
+Live in `.env` files on the server (gitignored); `*.env.example` files list the names only. That covers `DATABASE_URL`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `ANTHROPIC_API_KEY`, `META_*`, `RAZORPAY_*`, `ELEVENLABS_API_KEY`, `HIGGSFIELD_API_KEY` and `AUTOMATION_KEY`. Never commit a real value.
