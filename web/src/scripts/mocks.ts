@@ -87,7 +87,7 @@ export async function initMocks() {
     const tags = [
       `<span class="tag ${p.free ? 'tag-ok' : ''}">${bi(p.free ? tr('Free', 'मुफ़्त') : k)}</span>`,
       open ? '' : `<span class="tag tag-lock">${bi(tr('Locked', 'लॉक'))}</span>`,
-      p.status === 'draft' ? `<span class="tag">${bi(tr('Draft', 'ड्राफ़्ट'))}</span>` : '',
+      all && p.status === 'draft' ? `<span class="tag">${bi(tr('Draft', 'ड्राफ़्ट'))}</span>` : '',
     ].join('');
     const d = durationBi(Number(p.duration_minutes) || 0);
     const actions = open
