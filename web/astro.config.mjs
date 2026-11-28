@@ -27,6 +27,8 @@ export default defineConfig({
   trailingSlash: 'always',
   // Keep whitespace between inline elements (Astro 7 defaults to 'jsx').
   compressHTML: true,
+  // OUT_DIR lets a test build go elsewhere: web/dist is served live by the API container.
+  outDir: process.env.OUT_DIR || './dist',
   build: { format: 'directory' },
   integrations: site ? [sitemap()] : [],
   devToolbar: { enabled: false },
