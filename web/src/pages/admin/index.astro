@@ -1,76 +1,117 @@
 ---
 // Admin console. Static shell only; every action calls the API, which checks
-// the session. No credentials or data are in this page.
+// the session. No credentials or data are in this page. Layout follows the
+// Shopify admin: top bar, left nav (a top strip on phones), pages of cards.
+// Styles live in ../../components/admin/admin.css, scoped under [data-admin].
 import Base from '../../layouts/Base.astro';
-import { EXAMS } from '../../lib/exams.ts';
+import Logo from '../../components/Logo.astro';
+import { EXAMS, EXAM_INFO } from '../../lib/exams.ts';
+import { href } from '../../lib/url.ts';
+import { icon } from '../../scripts/admin/util.ts';
+import '../../components/admin/admin.css';
+
+const examNames = JSON.stringify(Object.fromEntries(EXAMS.map((e) => [e, EXAM_INFO[e].short.en])));
+const nav = [
+  { key: 'home', label: 'Home', icon: icon('home') },
+  { key: 'leads', label: 'Leads', icon: icon('users') },
+  { key: 'questions', label: 'Questions', icon: icon('file') },
+  { key: 'attempts', label: 'Attempts', icon: icon('chart') },
+];
+const svg = (cls: string, body: string) =>
+  `<svg class="a-ic ${cls}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${body}</svg>`;
+const moon = svg('a-ic-moon', '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>');
+const sun = svg('a-ic-sun', '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>');
+const external = svg('', '<path d="M14 4h6v6"/><path d="M10 14 20 4"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>');
+const keyboard = svg('', '<rect x="2.5" y="6" width="19" height="12" rx="2"/><path d="M6.5 10h.01M10 10h.01M13.5 10h.01M17 10h.01M7.5 14h9"/>');
+const keys = {
+  Anywhere: [
+    [['g', 'h'], 'Go to Home'],
+    [['g', 'l'], 'Go to Leads'],
+    [['g', 'q'], 'Go to Questions'],
+    [['g', 'a'], 'Go to Attempts'],
+    [['/'], 'Search this page'],
+    [['?'], 'Show shortcuts'],
+  ],
+  'Question review': [
+    [['j', 'k'], 'Next / previous question'],
+    [['Enter'], 'Open question'],
+    [['r'], 'Mark reviewed, go to next'],
+    [['x'], 'Reject, go to next'],
+    [['d'], 'Back to draft'],
+    [['Space'], 'Select row'],
+    [['Esc'], 'Close panel / clear selection'],
+  ],
+} as Record<string, [string[], string][]>;
 ---
-<Base title="Admin" noindex chat={false} page="admin">
-  <section class="container page-pad" data-admin data-exams={EXAMS.join(',')}>
-    <p class="muted" data-admin-status>Checking…</p>
+<Base title="Admin" noindex bare chat={false} page="admin">
+  <div class="adm" data-admin data-exams={EXAMS.join(',')} data-exam-names={examNames}>
+    <p class="a-checking" data-admin-status role="status">Checking your session…</p>
 
-    <div class="panel login" data-admin-login hidden>
-      <h1 class="h-md">Admin sign in</h1>
-      <form class="form" novalidate>
-        <label class="field"><span>Mobile number</span>
-          <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{10}" placeholder="10-digit number" required /></span>
-        </label>
-        <label class="field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label>
-        <p class="form-err" role="alert" hidden></p>
-        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
-      </form>
+    <div class="a-login" data-admin-login hidden>
+      <div class="a-login-card">
+        <p class="a-login-brand"><Logo size={28} /><span>Prashnottar <span class="a-dim">Admin</span></span></p>
+        <h1>Sign in</h1>
+        <p class="a-dim a-login-sub">Use the admin mobile number and password.</p>
+        <form class="form" novalidate>
+          <label class="field"><span>Mobile number</span>
+            <span class="phone-in"><span class="cc" aria-hidden="true">+91</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" pattern="[0-9]{10}" placeholder="10-digit number" required /></span>
+          </label>
+          <label class="field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required /></label>
+          <p class="form-err" role="alert" hidden></p>
+          <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+        </form>
+        <p class="a-login-back"><a href={href('/')}>Back to the site</a></p>
+      </div>
     </div>
 
-    <div data-admin-app hidden>
-      <div class="admin-head">
-        <h1 class="h-md">Admin</h1>
-        <span class="muted small">Signed in as <strong data-admin-who></strong></span>
-        <button class="btn btn-quiet" type="button" data-admin-logout>Sign out</button>
+    <div class="a-app" data-admin-app hidden>
+      <header class="a-top">
+        <a class="a-brand" href="#/home" aria-label="Admin home"><Logo size={28} /><span class="a-brand-t">Prashnottar <span>Admin</span></span></a>
+        <span class="a-top-sp"></span>
+        <button class="a-top-btn a-hide-sm" type="button" data-open-keys aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"><Fragment set:html={keyboard} /></button>
+        <button class="a-top-btn" type="button" data-theme-toggle aria-label="Switch light or dark theme" title="Light or dark theme"><Fragment set:html={moon + sun} /></button>
+        <span class="a-who"><span class="a-avatar" data-admin-initial aria-hidden="true">A</span><span class="a-who-n" data-admin-who></span></span>
+        <button class="a-top-btn a-top-out" type="button" data-admin-logout>Sign out</button>
+      </header>
+
+      <div class="a-shell">
+        <nav class="a-nav" aria-label="Admin">
+          <div class="a-nav-in">
+          <ul>
+            {nav.map((n) => (
+              <li><a href={`#/${n.key}`} data-nav={n.key}><Fragment set:html={n.icon} /><span>{n.label}</span>{n.key === 'questions' && <span class="a-nav-count" data-count="questions" title="Drafts to review" hidden></span>}</a></li>
+            ))}
+          </ul>
+          <ul class="a-nav-end">
+            <li><a href={href('/')} target="_blank" rel="noopener" aria-label="View site (opens in a new tab)"><Fragment set:html={external} /><span>View site</span></a></li>
+          </ul>
+          </div>
+        </nav>
+        <div class="a-main" data-admin-page></div>
       </div>
-      <div class="seg" role="tablist" aria-label="Admin sections">
-        <button type="button" class="seg-b" role="tab" data-tab="stats" aria-selected="true">Stats</button>
-        <button type="button" class="seg-b" role="tab" data-tab="leads" aria-selected="false">Leads</button>
-        <button type="button" class="seg-b" role="tab" data-tab="questions" aria-selected="false">Question review</button>
-        <button type="button" class="seg-b" role="tab" data-tab="attempts" aria-selected="false">Attempts</button>
-      </div>
-      <div class="panel pane" data-pane="stats" role="tabpanel"></div>
-      <div class="pane" data-pane="leads" role="tabpanel" hidden></div>
-      <div class="pane" data-pane="questions" role="tabpanel" hidden></div>
-      <div class="pane" data-pane="attempts" role="tabpanel" hidden></div>
     </div>
-  </section>
+
+    <div class="a-toast" data-admin-toast role="status" aria-live="polite" hidden></div>
+
+    <dialog class="a-dialog" data-admin-keys aria-labelledby="a-keys-t">
+      <div class="a-dialog-h"><h2 id="a-keys-t">Keyboard shortcuts</h2><button type="button" class="a-btn a-btn-icon a-btn-plain" data-close-keys aria-label="Close"><Fragment set:html={icon('x', 18)} /></button></div>
+      <div class="a-keys">
+        {Object.entries(keys).map(([group, list]) => (
+          <section>
+            <h3>{group}</h3>
+            <dl>
+              {list.map(([k, what]) => (
+                <div><dt>{k.map((x) => <kbd class="a-kbd">{x}</kbd>)}</dt><dd>{what}</dd></div>
+              ))}
+            </dl>
+          </section>
+        ))}
+      </div>
+    </dialog>
+  </div>
 </Base>
 
 <script>
   import { initAdmin } from '../../scripts/admin.ts';
   void initAdmin();
 </script>
-
-<style>
-  .login {
-    max-width: 420px;
-    margin-inline: auto;
-  }
-  .admin-head {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  .admin-head h1 {
-    margin: 0;
-  }
-  .admin-head button {
-    margin-left: auto;
-  }
-  .pane {
-    margin-top: 1rem;
-  }
-  .pane[data-pane='leads'],
-  .pane[data-pane='attempts'] {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1rem;
-  }
-</style>

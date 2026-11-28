@@ -287,6 +287,178 @@ pub async fn get_paper(
     Ok(([(header::CACHE_CONTROL, "private, no-store")], Json(v)).into_response())
 }
 
+// ------------------------------------------------------------------ topic practice
+
+/// Questions per topic that anyone (no pass) may practise.
+const FREE_PER_TOPIC: i64 = 10;
+
+/// Signed-in with a pass for this exam, or admin.
+async fn bank_unlocked(state: &AppState, headers: &HeaderMap, exam: &str) -> bool {
+    match auth::current_user(state, headers).await {
+        Some(u) if u.is_admin() => true,
+        Some(u) => passes_for(db(state), u.phone.as_deref()).await.iter().any(|e| e == exam),
+        None => false,
+    }
+}
+
+/// `{ en, hi }` from a question body field, falling back to the English column.
+fn bi_or(v: Value, en: &str) -> Value {
+    if v.get("en").and_then(|x| x.as_str()).is_some() {
+        json!({ "en": v["en"], "hi": v.get("hi").and_then(|x| x.as_str()).unwrap_or(en) })
+    } else {
+        json!({ "en": en, "hi": en })
+    }
+}
+
+/// Subjects with their topics and question counts (statuses from PRACTICE_STATUSES).
+pub async fn practice_topics(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Path(exam): Path<String>,
+) -> ApiResult<Response> {
+    if !content::valid_exam(&exam) {
+        return Err(ApiError::not_found());
+    }
+    let unlocked = bank_unlocked(&state, &headers, &exam).await;
+    let rows: Vec<(String, String, Value, Value, i64)> = sqlx::query_as(
+        "SELECT subject, topic, (array_agg(body->'subject' ORDER BY id))[1], (array_agg(body->'topic' ORDER BY id))[1], COUNT(*)
+         FROM questions WHERE exam = $1 AND status = ANY($2)
+         GROUP BY subject, topic ORDER BY subject, topic",
+    )
+    .bind(&exam)
+    .bind(&state.cfg.practice_statuses)
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
+    let mut subjects: Vec<Value> = Vec::new();
+    let mut total = 0i64;
+    for (subject, topic, sbody, tbody, count) in rows {
+        total += count;
+        let topic_v = json!({ "topic": bi_or(tbody, &topic), "count": count, "free": count.min(FREE_PER_TOPIC) });
+        match subjects.last_mut() {
+            Some(last) if last["subject"]["en"] == subject.as_str() => {
+                last["count"] = json!(last["count"].as_i64().unwrap_or(0) + count);
+                if let Some(t) = last["topics"].as_array_mut() {
+                    t.push(topic_v);
+                }
+            }
+            _ => subjects.push(json!({ "subject": bi_or(sbody, &subject), "count": count, "topics": [topic_v] })),
+        }
+    }
+    let body = json!({
+        "exam": exam, "locked": !unlocked, "free_per_topic": FREE_PER_TOPIC, "total": total, "subjects": subjects
+    });
+    Ok(([(header::CACHE_CONTROL, "private, no-store")], Json(body)).into_response())
+}
+
+#[derive(Deserialize)]
+pub struct PracticeQuery {
+    subject: Option<String>,
+    topic: Option<String>,
+    limit: Option<i64>,
+    offset: Option<i64>,
+}
+
+/// Full questions (answer and explanation included) for one subject and/or topic.
+/// Without a pass, only the first FREE_PER_TOPIC questions of each topic (by id).
+pub async fn practice_questions(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Path(exam): Path<String>,
+    Query(q): Query<PracticeQuery>,
+) -> ApiResult<Response> {
+    if !content::valid_exam(&exam) {
+        return Err(ApiError::not_found());
+    }
+    let unlocked = bank_unlocked(&state, &headers, &exam).await;
+    let subject = q.subject.as_deref().map(str::trim).filter(|s| !s.is_empty());
+    let topic = q.topic.as_deref().map(str::trim).filter(|s| !s.is_empty());
+    let limit = q.limit.unwrap_or(10).clamp(1, 50);
+    let offset = q.offset.unwrap_or(0).max(0);
+    const SEL: &str = "WITH sel AS (
+        SELECT id, subject, topic, body, ROW_NUMBER() OVER (PARTITION BY subject, topic ORDER BY id) AS rn
+        FROM questions
+        WHERE exam = $1 AND status = ANY($2) AND ($3::text IS NULL OR subject = $3) AND ($4::text IS NULL OR topic = $4)
+    )";
+    let (total, free): (i64, i64) =
+        sqlx::query_as(&format!("{SEL} SELECT COUNT(*), COUNT(*) FILTER (WHERE rn <= $5) FROM sel"))
+            .bind(&exam)
+            .bind(&state.cfg.practice_statuses)
+            .bind(subject)
+            .bind(topic)
+            .bind(FREE_PER_TOPIC)
+            .fetch_one(db(&state))
+            .await
+            .map_err(ApiError::internal)?;
+    let items: Vec<Value> = sqlx::query_scalar(&format!(
+        "{SEL} SELECT body FROM sel WHERE ($5 OR rn <= $6) ORDER BY subject, topic, id LIMIT $7 OFFSET $8"
+    ))
+    .bind(&exam)
+    .bind(&state.cfg.practice_statuses)
+    .bind(subject)
+    .bind(topic)
+    .bind(unlocked)
+    .bind(FREE_PER_TOPIC)
+    .bind(limit)
+    .bind(offset)
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
+    let available = if unlocked { total } else { free };
+    let body = json!({
+        // locked: more questions exist here than this user may open (free preview only).
+        "locked": available < total,
+        "preview": !unlocked,
+        "total": total,
+        "available": available,
+        "offset": offset,
+        "limit": limit,
+        "items": items,
+    });
+    Ok(([(header::CACHE_CONTROL, "private, no-store")], Json(body)).into_response())
+}
+
+// ------------------------------------------------------------------ the student's own attempts
+
+#[derive(Deserialize)]
+pub struct MyAttemptsQuery {
+    exam: Option<String>,
+    limit: Option<i64>,
+}
+
+/// The signed-in user's attempts, newest first (answers left out).
+pub async fn my_attempts(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Query(q): Query<MyAttemptsQuery>,
+) -> ApiResult<Response> {
+    let user = auth::current_user(&state, &headers).await.ok_or_else(ApiError::unauthorized)?;
+    let exam = q.exam.as_deref().filter(|e| !e.is_empty());
+    if exam.is_some_and(|e| !content::valid_exam(e)) {
+        return Err(ApiError::bad("unknown exam"));
+    }
+    let limit = q.limit.unwrap_or(200).clamp(1, 1000);
+    let found: Vec<(i64, String, String, f64, i64, Value, i64)> = sqlx::query_as(
+        "SELECT id, exam, paper, score, total, topics, created_at FROM attempts
+         WHERE user_id = $1 AND ($2::text IS NULL OR exam = $2) ORDER BY created_at DESC, id DESC LIMIT $3",
+    )
+    .bind(user.id)
+    .bind(exam)
+    .bind(limit)
+    .fetch_all(db(&state))
+    .await
+    .map_err(ApiError::internal)?;
+    let rows: Vec<Value> = found
+        .into_iter()
+        .map(|r| {
+            json!({
+                "id": r.0, "exam": r.1, "paper": r.2, "score": r.3, "total": r.4, "topics": r.5, "created_at": r.6
+            })
+        })
+        .collect();
+    Ok(([(header::CACHE_CONTROL, "private, no-store")], Json(Value::Array(rows))).into_response())
+}
+
 // ------------------------------------------------------------------ chatbot
 
 const PRODUCT_FACTS: &str = r#"PRODUCT FACTS (the only facts you may state about Prashnottar):

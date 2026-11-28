@@ -1,12 +1,16 @@
 """Build papers from the question bank, in web/src/data/PAPER_FORMAT.md format.
 
-    .venv/bin/python pipeline/assemble.py [--exam ctet] [--seed 2026] [--max-overlap 0.2]
+    .venv/bin/python pipeline/assemble.py [--exam ctet] [--seed 2026] [--mocks 5] [--max-overlap 0.2]
+                                          [--mocks-only] [--dry-run]
 
 Per exam (rejected questions are never used):
 - free-01      20 mixed questions, kind "free", free: true -> web/src/data/papers/<exam>/free-01.json (public)
-- mock-NN      full papers in the exam's pattern length, as many as the bank supports
-               with at most --max-overlap of each mock's questions reused from earlier
-               mocks                                     -> content/papers/<exam>/mock-NN.json
+- mock-NN      full papers in the exam's pattern length. Mocks are append-only: existing
+               mock files are never rewritten or deleted (students have attempts against
+               them); new ones continue the numbering until the exam has --mocks of them
+               or the next one would share more than --max-overlap of its questions with
+               any single other mock of the exam    -> content/papers/<exam>/mock-NN.json
+               (delete the mock files by hand to rebuild them from scratch)
 - sample-01    one sample paper, kind "sample"           -> content/papers/<exam>/sample-01.json
 - probable-01  "most probable" paper: subjects and topics picked by weight from
                output/reports/<exam>-weights.json (analyze.py; PYQ-based when PYQs are
@@ -16,6 +20,10 @@ Per exam (rejected questions are never used):
 Selection is deterministic: questions are ranked by a hash of (seed, paper, qid),
 so reruns on the same bank give the same papers, and new bank questions only
 shift a few picks. Each paper question keeps its bank id as "qid".
+
+--mocks-only adds mocks and touches nothing else (no free/sample/probable, no
+weights report); its summary goes to output/reports/assemble-mocks.json.
+Every paper is checked against PAPER_FORMAT (validate.check_paper) before it is written.
 """
 from __future__ import annotations
 
@@ -32,11 +40,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import analyze  # noqa: E402
 import patterns  # noqa: E402
+import validate  # noqa: E402
 from common import (EXAMS, PAPERS, REPORTS, WEB_PAPERS, bi, load_bank, rel, subject_slug,  # noqa: E402
                     write_json_atomic)
 
 FREE_SIZE = 20
 MAX_MOCKS = 30
+DEFAULT_MOCKS = 5
 DIFF_MIX = {"easy": 0.3, "medium": 0.5, "hard": 0.2}
 STATUS_RANK = {"reviewed": 0, "draft": 1}
 
@@ -293,7 +303,191 @@ def finalize_status(doc: dict, status_by_id: dict[str, str]) -> dict:
     return doc
 
 
-def assemble_exam(exam: str, seed: int, max_overlap: float, write: bool = True) -> dict:
+# --------------------------------------------------------------------------- #
+# Mocks: append-only, pairwise overlap limit
+# --------------------------------------------------------------------------- #
+MOCK_RE = re.compile(r"mock-(\d+)\.json$")
+
+
+def paper_qids(doc: dict) -> list[str]:
+    return [q.get("qid") or f"{doc.get('id')}:{q.get('id')}"
+            for s in doc.get("sections") or [] for q in s.get("questions") or []]
+
+
+def existing_mocks(exam: str) -> dict[str, list[str]]:
+    """mock id -> bank qids of the mocks already on disk, in numeric order.
+    An unreadable mock file raises: better to stop than to build around it."""
+    d = PAPERS / exam
+    found = []
+    for f in d.glob("mock-*.json") if d.is_dir() else []:
+        m = MOCK_RE.fullmatch(f.name)
+        if m:
+            found.append((int(m.group(1)), f))
+    out = {}
+    for _, f in sorted(found):
+        out[f.stem] = paper_qids(json.loads(f.read_text(encoding="utf-8")))
+    return out
+
+
+def other_paper_use(exam: str) -> Counter:
+    """How often each qid appears in the exam's non-mock papers on disk (sample,
+    probable, free): new mocks avoid those questions when it costs nothing."""
+    c = Counter()
+    for d in (PAPERS / exam, WEB_PAPERS / exam):
+        for f in sorted(d.glob("*.json")) if d.is_dir() else []:
+            if f.name.startswith((".", "mock-")):
+                continue
+            try:
+                c.update(paper_qids(json.loads(f.read_text(encoding="utf-8"))))
+            except (OSError, ValueError):
+                continue
+    return c
+
+
+def pick_mock(picker: Picker, pid: str, counts: dict[str, int], earlier: dict[str, set[str]],
+              cap: int, other_use: Counter, diff_first: bool = False) -> tuple[dict[str, list[dict]], int]:
+    """One mock with `counts` questions per subject, keeping its overlap with each
+    earlier mock as low and as even as possible. Greedy over all subjects at once;
+    each step takes the unit with the lowest
+      (pushes some overlap past cap, times already used in mocks, largest overlap
+       with any one earlier mock after taking it, outside the difficulty mix,
+       use in sample/probable/free, status, ai_checked, hash).
+    Fresh questions therefore go first; repeats are spread over the earlier mocks.
+    diff_first moves "outside the difficulty mix" to the front (after the cap), as
+    Picker.pick does: a closer DIFF_MIX at the price of more repeats.
+    Like Picker.pick, variants stay apart and passage groups whole unless the
+    subject cannot be filled otherwise. Does not touch picker.use."""
+    mock_use = Counter(i for ids in earlier.values() for i in ids)
+    overlap = dict.fromkeys(earlier, 0)
+    need = dict(counts)
+    chosen: dict[str, list[dict]] = {s: [] for s in counts}
+    taken: set[str] = set()      # unit keys
+    families: set = set()
+    diff_have = {s: Counter() for s in counts}
+    target = {s: {d: c * f for d, f in DIFF_MIX.items()} for s, c in counts.items()}
+    static = {}
+    for s in counts:
+        for u in picker.by_subject.get(s, []):
+            status = min(STATUS_RANK.get(q.get("status"), 2) for q in u.qs)
+            checked = 0 if all(q.get("ai_checked") or q.get("status") == "reviewed" for q in u.qs) else 1
+            static[u.key] = (sum(other_use[i] for i in u.ids), status, checked, h(picker.seed, picker.exam, pid, u.key))
+    relaxed = 0
+    for level in (1, 2, 3):  # 2: a variant may sit next to its original; 3: part of a passage group
+        while any(n > 0 for n in need.values()):
+            best, best_key = None, None
+            for s, n in need.items():
+                if n <= 0:
+                    continue
+                for u in picker.by_subject.get(s, []):
+                    if u.key in taken:
+                        continue
+                    if level < 2 and u.family & families:
+                        continue
+                    qs = u.qs
+                    if u.size > n:
+                        if level < 3:
+                            continue
+                        qs = u.qs[:n]
+                    ids = [q["id"] for q in qs]
+                    new_max = max((overlap[m] + sum(i in e for i in ids) for m, e in earlier.items()), default=0)
+                    over = 0
+                    if u.size == 1:
+                        d = qs[0].get("difficulty", "medium")
+                        over = int(diff_have[s][d] + 1 > target[s].get(d, 0) + 0.999)
+                    used = sum(mock_use[i] for i in ids)
+                    key = ((new_max > cap, over, used, new_max) if diff_first else
+                           (new_max > cap, used, new_max, over)) + static[u.key]
+                    if best_key is None or key < best_key:
+                        best, best_key = (s, u, qs), key
+            if best is None:
+                break
+            s, u, qs = best
+            taken.add(u.key)
+            families |= u.family
+            chosen[s].extend(qs)
+            need[s] -= len(qs)
+            if level > 1:
+                relaxed += len(qs)
+            for q in qs:
+                diff_have[s][q.get("difficulty", "medium")] += 1
+                for m, e in earlier.items():
+                    overlap[m] += q["id"] in e
+    return chosen, relaxed
+
+
+def build_mocks(exam: str, picker: Picker, counts: dict[str, int], pat: dict, target: int, max_overlap: float,
+                notes: list[str], order: list[str], names: dict, common_assembly: dict,
+                status_by_id: dict[str, str]) -> tuple[list[tuple[Path, dict]], dict]:
+    """Keep the exam's existing mocks, add new ones up to `target` mocks in total.
+    Records every mock's qids in picker.use / picker.mock_used (for sample/probable/free).
+    Returns (new files to write, info for the summary)."""
+    size = pat["questions"]
+    cap = int(math.floor(max_overlap * size + 1e-9))
+    have = existing_mocks(exam)
+    earlier = {p: set(ids) for p, ids in have.items()}
+    for ids in have.values():
+        picker.use.update(ids)
+        picker.mock_used |= set(ids)
+    other_use = other_paper_use(exam)
+    outputs: list[tuple[Path, dict]] = []
+    stop = None
+    nxt = max((int(p.split("-")[1]) for p in have), default=0) + 1
+    while len(earlier) < min(target, MAX_MOCKS):
+        if sum(counts.values()) < size:
+            stop = f"bank can't fill one full mock ({sum(counts.values())} of {size} questions)"
+            break
+        pid = f"mock-{nxt:02d}"
+        # keep the difficulty mix when the overlap limit allows it, else minimise repeats
+        for diff_first in (True, False):
+            chosen, relaxed = pick_mock(picker, pid, counts, earlier, cap, other_use, diff_first)
+            ids = [q["id"] for qs in chosen.values() for q in qs]
+            ov = {m: len(set(ids) & e) for m, e in earlier.items()}
+            if len(ids) == size and max(ov.values(), default=0) <= cap:
+                break
+        if len(ids) < size:
+            stop = f"{pid} came out short ({len(ids)}/{size})"
+            break
+        worst = max(ov, key=lambda m: (ov[m], m)) if ov else None
+        if worst and ov[worst] > cap:
+            stop = (f"{pid} would share {ov[worst]}/{size} questions ({ov[worst] / size:.0%}) with {worst}; "
+                    f"limit {cap} ({max_overlap:.0%}): the bank cannot support more mocks this different")
+            break
+        seen = sum(i in picker.mock_used for i in ids)
+        secs = sections_from(chosen, order, names)
+        doc = paper_doc(exam, pid, "mock", {"en": f"Full Mock Test {nxt}", "hi": f"फुल मॉक टेस्ट {nxt}"}, secs, pat,
+                        pat["duration_minutes"],
+                        common_assembly | {"subject_counts": counts, "reused_from_earlier_mocks": seen,
+                                           "overlap_rule": f"pairwise: at most {cap} of {size} questions "
+                                                           f"({max_overlap:.0%}) shared with any one other mock",
+                                           "overlap_with_mocks": ov,
+                                           "selection": "difficulty mix first" if diff_first else "fewest repeats first",
+                                           "relaxed_rule_questions": relaxed,
+                                           "notes": notes})
+        doc = finalize_status(doc, status_by_id)
+        problems = validate.check_paper(doc, exam, pid, free_dir=False)
+        if problems:
+            stop = f"{pid} failed the paper format check, not written: {'; '.join(problems[:3])}"
+            break
+        outputs.append((PAPERS / exam / f"{pid}.json", doc))
+        picker.use.update(ids)
+        picker.mock_used |= set(ids)
+        earlier[pid] = set(ids)
+        nxt += 1
+    # overlap table over all mocks, old and new
+    table, seen_before = [], set()
+    for p, e in earlier.items():
+        table.append({"id": p, "new": p not in have, "questions": len(e),
+                      "overlap": {o: len(e & f) for o, f in earlier.items() if o != p},
+                      "seen_in_earlier_mocks": len(e & seen_before)})
+        seen_before |= e
+    if stop is None and len(earlier) >= target:
+        stop = f"target of {target} mocks reached"
+    return outputs, {"kept": list(have), "added": [d["id"] for _, d in outputs], "cap": cap,
+                     "stop": stop, "table": table}
+
+
+def assemble_exam(exam: str, seed: int, max_overlap: float, write: bool = True, mocks: int = DEFAULT_MOCKS,
+                  mocks_only: bool = False) -> dict:
     loaded, _ = load_bank(exam)
     bank = [L.q for L in loaded if L.q.get("status") != "rejected" and isinstance(L.q.get("id"), str)
             and isinstance(L.q.get("options"), list) and isinstance(L.q.get("answer"), int)]
@@ -329,37 +523,23 @@ def assemble_exam(exam: str, seed: int, max_overlap: float, write: bool = True) 
                        "pattern_source": pat["source"], "pattern_notes": pat.get("notes")}
     outputs: list[tuple[Path, dict]] = []
 
-    # ---- mocks ------------------------------------------------------------
+    # ---- mocks (append-only) ----------------------------------------------
     counts, notes = subject_counts(exam, pat["questions"], bank_counts)
     summary["notes"] += notes
     full = sum(counts.values())
-    k = 0
-    while k < MAX_MOCKS:
-        if full < pat["questions"]:
-            summary["notes"].append(f"bank can't fill one full mock ({usable} usable questions, "
-                                    f"{pat['questions']} needed); no mocks built")
-            break
-        pid = f"mock-{k + 1:02d}"
-        trial = Picker(exam, units, seed)
-        trial.use = Counter(picker.use)
-        chosen = trial.pick(pid, counts)
-        ids = [q["id"] for qs in chosen.values() for q in qs]
-        reused = sum(i in picker.mock_used for i in ids)
-        if len(ids) < pat["questions"] or (k > 0 and reused > max_overlap * len(ids)):
-            if k == 0:
-                summary["notes"].append(f"first mock came out short ({len(ids)}/{pat['questions']})")
-            break
-        picker.use = trial.use
-        picker.mock_used |= set(ids)
-        k += 1
-        secs = sections_from(chosen, order, names)
-        doc = paper_doc(exam, pid, "mock", {"en": f"Full Mock Test {k}", "hi": f"फुल मॉक टेस्ट {k}"}, secs, pat,
-                        pat["duration_minutes"],
-                        common_assembly | {"subject_counts": counts, "reused_from_earlier_mocks": reused,
-                                           "relaxed_rule_questions": trial.relaxed[pid],
-                                           "notes": notes})
-        outputs.append((PAPERS / exam / f"{pid}.json", finalize_status(doc, status_by_id)))
-    summary["mocks"] = k
+    new_mocks, minfo = build_mocks(exam, picker, counts, pat, mocks, max_overlap, notes, order, names,
+                                   common_assembly, status_by_id)
+    outputs += new_mocks
+    summary["mocks"] = len(minfo["table"])
+    summary["mock_info"] = minfo
+    summary["notes"].append(f"mocks: kept {len(minfo['kept'])}, added {len(minfo['added'])}; stopped: {minfo['stop']}")
+    if mocks_only:
+        for path, d in outputs:
+            if write:
+                write_json_atomic(path, d)
+            summary["papers"].append({"id": d["id"], "kind": d["kind"], "questions": d["questions"],
+                                      "path": rel(path), "status": d["status"]})
+        return summary
 
     # ---- sample -----------------------------------------------------------
     if full >= pat["questions"] * 0.5:
@@ -451,18 +631,18 @@ def assemble_exam(exam: str, seed: int, max_overlap: float, write: bool = True) 
 
     paid = [q["qid"] for p, d in outputs if d["kind"] != "free" for s in d["sections"] for q in s["questions"]]
     free_ids = [q["qid"] for s in doc["sections"] for q in s["questions"]]
-    summary["free_overlap_with_paid"] = len(set(free_ids) & set(paid))
+    paid_set = set(paid) | picker.mock_used
+    summary["free_overlap_with_paid"] = len(set(free_ids) & paid_set)
     for path, d in outputs:
+        if d["kind"] != "mock":  # new mocks were checked in build_mocks
+            problems = validate.check_paper(d, exam, d["id"], free_dir=d["kind"] == "free")
+            if problems:
+                summary["notes"].append(f"{d['id']} failed the paper format check, not written: {'; '.join(problems[:3])}")
+                continue
         if write:
             write_json_atomic(path, d)
         summary["papers"].append({"id": d["id"], "kind": d["kind"], "questions": d["questions"],
                                   "path": rel(path), "status": d["status"]})
-    # remove stale mocks from an earlier, bigger run
-    if write:
-        for old in sorted((PAPERS / exam).glob("mock-*.json")):
-            m = re.match(r"mock-(\d+)\.json$", old.name)
-            if m and int(m.group(1)) > k:
-                old.unlink()
     return summary
 
 
@@ -470,22 +650,34 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--exam", nargs="*", choices=EXAMS, default=list(EXAMS))
     ap.add_argument("--seed", type=int, default=2026)
+    ap.add_argument("--mocks", type=int, default=DEFAULT_MOCKS,
+                    help=f"mocks wanted per exam, counting the ones already on disk (default {DEFAULT_MOCKS}); "
+                         "fewer are built when the overlap limit stops it")
     ap.add_argument("--max-overlap", type=float, default=0.2,
-                    help="max share of a mock's questions already used in earlier mocks")
+                    help="max share of a new mock's questions shared with any one other mock of the exam")
+    ap.add_argument("--mocks-only", action="store_true",
+                    help="only add mocks; leave free, sample and probable papers and the weights report alone")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(argv)
     all_s = []
     for ex in a.exam:
-        s = assemble_exam(ex, a.seed, a.max_overlap, write=not a.dry_run)
+        s = assemble_exam(ex, a.seed, a.max_overlap, write=not a.dry_run, mocks=a.mocks, mocks_only=a.mocks_only)
         all_s.append(s)
         ps = ", ".join(f"{p['id']}({p['questions']})" for p in s["papers"])
-        print(f"assemble {ex:11s} usable={s['bank_usable']:4d} mocks={s.get('mocks', 0)}  {ps}")
+        print(f"assemble {ex:11s} usable={s['bank_usable']:4d} mocks={s.get('mocks', 0)}  "
+              f"{'wrote' if not a.dry_run else 'would write'}: {ps or '-'}")
         for n in s["notes"]:
             print(f"    note: {n}")
+        for e in s.get("mock_info", {}).get("table", []):
+            ov = ", ".join(f"{o} {n}" for o, n in e["overlap"].items()) or "-"
+            print(f"    {e['id']}{' (new)' if e['new'] else ''}: {e['questions']} questions; shared with {ov}; "
+                  f"seen in earlier mocks {e['seen_in_earlier_mocks']}")
     if not a.dry_run:
-        write_json_atomic(REPORTS / "assemble.json", {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                                                       "seed": a.seed, "exams": all_s})
-        print(f"summary: {rel(REPORTS / 'assemble.json')}")
+        name = "assemble-mocks.json" if a.mocks_only else "assemble.json"
+        write_json_atomic(REPORTS / name, {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                           "seed": a.seed, "mocks": a.mocks, "max_overlap": a.max_overlap,
+                                           "exams": all_s})
+        print(f"summary: {rel(REPORTS / name)}")
     return 0
 
 

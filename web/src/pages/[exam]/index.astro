@@ -6,7 +6,7 @@ import Syllabus from '../../components/Syllabus.astro';
 import PricingLadder from '../../components/PricingLadder.astro';
 import EmptyState from '../../components/EmptyState.astro';
 import { durationLabel, EXAMS, EXAM_INFO, KIND_LABEL, papersFor, questionCount, TENTATIVE, type Exam } from '../../lib/exams.ts';
-import { modeUrl, paperUrl } from '../../lib/url.ts';
+import { href, modeUrl, paperUrl } from '../../lib/url.ts';
 import { whatsappUrl } from '../../config.ts';
 
 export function getStaticPaths() {
@@ -47,6 +47,25 @@ const wa = whatsappUrl(`Hi, please send me the free ${info.short.en} practice se
         <a class="btn btn-lg" href="#pricing"><L en="See packs" hi="पैक देखें" /></a>
       </div>
       <p class="muted small"><L en="No sign-up needed for the free questions." hi="मुफ़्त प्रश्नों के लिए साइन-अप ज़रूरी नहीं।" /></p>
+    </div>
+  </section>
+
+  <section class="container block" aria-label="Practice">
+    <div class="grid-2 study-links">
+      <a class="panel card-link study-link" href={href(`/${exam}/practice/`)}>
+        <span class="study-text">
+          <span class="h-sm study-title"><L en="Topic-wise practice" hi="विषयवार अभ्यास" /></span>
+          <span class="muted small"><L en="Pick a topic and practise ten questions at a time, with an explanation after each answer." hi="टॉपिक चुनें और एक बार में दस प्रश्न हल करें, हर उत्तर के बाद व्याख्या के साथ।" /></span>
+        </span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
+      <a class="panel card-link study-link" href={href(`/${exam}/mocks/`)}>
+        <span class="study-text">
+          <span class="h-sm study-title"><L en="Mock tests" hi="मॉक टेस्ट" /></span>
+          <span class="muted small"><L en="Every full-length paper for this exam, with your best and last score." hi="इस परीक्षा के सभी पूरे प्रश्नपत्र, आपके सर्वश्रेष्ठ और पिछले स्कोर के साथ।" /></span>
+        </span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </section>
 
@@ -135,5 +154,30 @@ const wa = whatsappUrl(`Hi, please send me the free ${info.short.en} practice se
   }
   .syl-foot {
     margin: 1rem 0 0;
+  }
+  .study-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--ink);
+  }
+  .study-link svg {
+    flex: none;
+    color: var(--muted);
+  }
+  .study-link:hover svg {
+    color: var(--accent);
+  }
+  .study-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .study-title {
+    font-weight: 700;
+  }
+  .study-links .panel + .panel {
+    margin-top: 0;
   }
 </style>

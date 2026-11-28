@@ -13,12 +13,22 @@ interface State {
 export interface PracticeOptions {
   examHref: string;
   testHref?: string;
+  /** localStorage key for resuming (default: one per paper). */
+  storageKey?: string;
+  /** Number questions as part of a longer run: "Question offset+n of total". */
+  numberOffset?: number;
+  numberTotal?: number;
+  /** Extra buttons/links on the finish screen, and extra HTML after the result panel. */
+  finishActions?: string;
+  finishHtml?: string;
 }
 
 export function mountPractice(root: HTMLElement, paper: PaperData, opts: PracticeOptions) {
   const list = items(paper);
   const N = list.length;
-  const KEY = `pq-practice:${paper.exam}/${paper.id}`;
+  const KEY = opts.storageKey ?? `pq-practice:${paper.exam}/${paper.id}`;
+  const OFF = opts.numberOffset ?? 0;
+  const ALL = opts.numberTotal ?? N;
   let st: State = load<State>(KEY) ?? { answers: Array(N).fill(null), pos: 0, startedAt: Date.now() };
   if (!Array.isArray(st.answers) || st.answers.length !== N) st = { answers: Array(N).fill(null), pos: 0, startedAt: Date.now() };
 
@@ -68,7 +78,7 @@ export function mountPractice(root: HTMLElement, paper: PaperData, opts: Practic
     const a = st.answers[i];
     const answered = a !== null;
     qEl.innerHTML = `
-      <header class="q-head"><span class="qno">${bi(tr(`Question ${it.n} of ${N}`, `प्रश्न ${it.n} / ${N}`))}</span><span class="muted small">${bi(it.q.topic)}</span></header>
+      <header class="q-head"><span class="qno">${bi(tr(`Question ${it.n + OFF} of ${ALL}`, `प्रश्न ${it.n + OFF} / ${ALL}`))}</span><span class="muted small">${bi(it.q.topic)}</span></header>
       <div class="q-text">${bi(it.q.text, 'p')}</div>
       <div class="opts" role="group" aria-label="Options">
         ${it.q.options
@@ -111,10 +121,12 @@ export function mountPractice(root: HTMLElement, paper: PaperData, opts: Practic
         <h1 class="h-md">${bi(tr('Set complete', 'सेट पूरा'))}</h1>
         ${summaryHtml(paper, o, null)}
         <div class="row-actions">
+          ${opts.finishActions ?? ''}
           ${opts.testHref ? `<a class="btn" href="${esc(opts.testHref)}">${bi(tr('Now try it as a timed test', 'अब समयबद्ध टेस्ट दें'))}</a>` : ''}
           <button class="btn btn-quiet" type="button" data-again>${bi(tr('Practise again', 'फिर अभ्यास करें'))}</button>
         </div>
       </div>
+      ${opts.finishHtml ?? ''}
       ${paper.free ? `<div data-lead-slot>${leadHtml(paper.exam, 'p')}</div>` : ''}
       <div class="panel">${topicTable(o)}</div>
       <div class="panel">${solutionsHtml(list, st.answers)}</div>`;

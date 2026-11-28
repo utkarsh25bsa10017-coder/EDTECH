@@ -49,12 +49,22 @@ const { exam, page } = Astro.props;
           <L t={EXAM_INFO[e].short} />
         </a>
       ))}
+      <a class="progress-link" href={href('/progress/')} aria-current={page === 'progress' ? 'page' : undefined} data-progress-link hidden>
+        <L en="Progress" hi="प्रगति" />
+      </a>
       <a class="pricing-link" href={pricingUrl()} aria-current={page === 'pricing' ? 'page' : undefined}>
         <L en="Pricing" hi="कीमत" />
       </a>
     </div>
   </nav>
 </header>
+
+<script>
+  // The Progress link is for signed-in students (the session is cached at sign-in).
+  import { cachedUser } from '../scripts/api.ts';
+  const link = document.querySelector<HTMLElement>('[data-progress-link]');
+  if (link && (cachedUser() || link.getAttribute('aria-current') === 'page')) link.hidden = false;
+</script>
 
 <style>
   .site-header {
@@ -161,8 +171,16 @@ const { exam, page } = Astro.props;
     color: var(--accent-ink);
     background: var(--accent);
   }
-  .pricing-link {
+  .progress-link[hidden] {
+    display: none !important;
+  }
+  .progress-link {
     margin-left: auto;
+  }
+  .pricing-link {
     border: 1px solid var(--line-strong);
+  }
+  .progress-link[hidden] + .pricing-link {
+    margin-left: auto;
   }
 </style>

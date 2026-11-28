@@ -1,0 +1,23 @@
+---
+// Signed-in student's progress: score trend per exam, weak topics, recent attempts.
+import Base from '../layouts/Base.astro';
+import L from '../components/L.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+---
+<Base title="Your progress" page="progress" noindex>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ label: { en: 'Your progress', hi: 'आपकी प्रगति' }, href: '' }]} />
+  </div>
+  <section class="container narrow block">
+    <h1><L en="Your progress" hi="आपकी प्रगति" /></h1>
+    <div data-progress-page>
+      <p class="muted"><L en="Loading your attempts…" hi="आपके प्रयास लोड हो रहे हैं…" /></p>
+      <noscript><p>Please turn on JavaScript to use this page. / कृपया इस पेज के लिए जावास्क्रिप्ट चालू करें।</p></noscript>
+    </div>
+  </section>
+</Base>
+
+<script>
+  import { initProgress } from '../scripts/progress.ts';
+  void initProgress();
+</script>

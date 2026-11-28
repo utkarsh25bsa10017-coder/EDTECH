@@ -121,22 +121,26 @@ pub async fn set_question_status(state: &AppState, id: &str, status: &str) -> Re
         .get(id)
         .cloned()
         .ok_or("question not found")?;
-    let text = std::fs::read_to_string(&file).map_err(|e| e.to_string())?;
-    let mut arr: Vec<Value> = serde_json::from_str(&text).map_err(|e| e.to_string())?;
-    let mut found = false;
-    for q in arr.iter_mut() {
-        if q.get("id").and_then(|x| x.as_str()) == Some(id) {
-            q["status"] = Value::String(status.to_string());
-            found = true;
+    {
+        // No await while this is held (std mutex): the whole read-edit-write is synchronous.
+        let _guard = state.bank_write.lock().map_err(|_| "bank lock")?;
+        let text = std::fs::read_to_string(&file).map_err(|e| e.to_string())?;
+        let mut arr: Vec<Value> = serde_json::from_str(&text).map_err(|e| e.to_string())?;
+        let mut found = false;
+        for q in arr.iter_mut() {
+            if q.get("id").and_then(|x| x.as_str()) == Some(id) {
+                q["status"] = Value::String(status.to_string());
+                found = true;
+            }
         }
+        if !found {
+            return Err("question not found in its file".into());
+        }
+        let tmp = file.with_extension("json.tmp");
+        let pretty = serde_json::to_string_pretty(&arr).map_err(|e| e.to_string())?;
+        std::fs::write(&tmp, pretty + "\n").map_err(|e| e.to_string())?;
+        std::fs::rename(&tmp, &file).map_err(|e| e.to_string())?;
     }
-    if !found {
-        return Err("question not found in its file".into());
-    }
-    let tmp = file.with_extension("json.tmp");
-    let pretty = serde_json::to_string_pretty(&arr).map_err(|e| e.to_string())?;
-    std::fs::write(&tmp, pretty + "\n").map_err(|e| e.to_string())?;
-    std::fs::rename(&tmp, &file).map_err(|e| e.to_string())?;
 
     sqlx::query(
         "UPDATE questions SET status = $1, body = jsonb_set(body, '{status}', to_jsonb($1::text)), updated_at = $2 WHERE id = $3",

@@ -1,0 +1,54 @@
+---
+// Mock hub: every paper for the exam (free and paid), lock state, the
+// student's best and last score, and start buttons (scripts/mocks.ts).
+import Base from '../../layouts/Base.astro';
+import L from '../../components/L.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { durationLabel, EXAMS, EXAM_INFO, KIND_LABEL, papersFor, questionCount, type Exam } from '../../lib/exams.ts';
+import { examUrl, href, modeUrl } from '../../lib/url.ts';
+
+export function getStaticPaths() {
+  return EXAMS.map((exam) => ({ params: { exam } }));
+}
+
+const exam = Astro.params.exam as Exam;
+const info = EXAM_INFO[exam];
+const free = papersFor(exam);
+---
+<Base
+  title={`${info.short.en}: mock tests`}
+  description={`${info.name.en}: full-length timed mock tests, sample papers and most-probable sets in Hindi and English.`}
+  exam={exam}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ label: info.short, href: examUrl(exam) }, { label: { en: 'Mock tests', hi: 'मॉक टेस्ट' }, href: '' }]} />
+  </div>
+  <section class="container narrow block">
+    <h1><L en="Mock tests" hi="मॉक टेस्ट" /></h1>
+    <p class="muted"><L en="Timed papers that work like the real exam: sections, question palette, mark for review and negative marking." hi="असली परीक्षा जैसे समयबद्ध प्रश्नपत्र: खण्ड, प्रश्न पैलेट, समीक्षा के लिए चिह्नित करें और नकारात्मक अंकन।" /></p>
+    <div data-mocks data-exam={exam} data-static={free.map((p) => p.id).join(',')}>
+      <ul class="paper-list">
+        {free.map((p) => (
+          <li class="paper-item">
+            <div class="paper-meta">
+              <span class="tag tag-ok"><L t={KIND_LABEL.free} /></span>
+              <h3 class="h-sm"><L t={p.title} /></h3>
+              <p class="muted small"><L t={{ en: `${questionCount(p)} questions · ${durationLabel(p.duration_minutes).en}`, hi: `${questionCount(p)} प्रश्न · ${durationLabel(p.duration_minutes).hi}` }} /></p>
+            </div>
+            <div class="row-actions">
+              <a class="btn btn-primary" href={modeUrl(exam, p.id, 'test')}><L en="Start test" hi="टेस्ट शुरू करें" /></a>
+              <a class="btn btn-quiet" href={modeUrl(exam, p.id, 'practice')}><L en="Practice" hi="अभ्यास" /></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p class="muted small"><L en="Loading paid papers…" hi="पेड प्रश्नपत्र लोड हो रहे हैं…" /></p>
+    </div>
+    <p class="muted small topics-foot"><a href={href(`/${exam}/practice/`)}><L en="Want to work on one topic first? Try topic-wise practice." hi="पहले किसी एक टॉपिक पर काम करना है? विषयवार अभ्यास करें।" /></a></p>
+  </section>
+</Base>
+
+<script>
+  import { initMocks } from '../../scripts/mocks.ts';
+  void initMocks();
+</script>

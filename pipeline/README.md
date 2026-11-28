@@ -23,7 +23,7 @@ Every step can be rerun. Other agents may still be writing the bank, so rerun af
 
 | Step | Script | Reads | Writes |
 |---|---|---|---|
-| validate | `validate.py` | `content/bank/**`, `content/pyq/**` | `output/reports/validate.{md,json}` |
+| validate | `validate.py` | `content/bank/**`, `content/pyq/**`, `content/papers/**`, `web/src/data/papers/**` | `output/reports/validate.{md,json}` |
 | review | `review.py` | draft questions | `output/reviews/<exam>.jsonl`; updates `ai_checked` / `status` in the bank |
 | analyze | `analyze.py` | `content/pyq/<exam>`, bank, `_pattern.md` | `output/reports/<exam>-weights.json` |
 | assemble | `assemble.py` | bank (not `rejected`), weights | `web/src/data/papers/<exam>/free-01.json` (public), `content/papers/<exam>/{mock-NN,sample-01,probable-01}.json` |
@@ -75,7 +75,7 @@ then follow the bank's topic mix. The report states which source it used.
 ### assemble
 Built for every exam:
 - `free-01`: 20 mixed, stand-alone, easy or medium questions (`kind: "free"`, `free: true`). It avoids questions the paid papers use.
-- `mock-NN`: full papers in the exam's pattern length, as many as the bank supports. No mock reuses more than 20% of its questions from earlier mocks (`--max-overlap`).
+- `mock-NN`: full papers in the exam's pattern length. Mocks are append-only: existing files are never rewritten or deleted (students have attempts against them). New ones continue the numbering until the exam has `--mocks` (default 5), or until the next one would share more than `--max-overlap` (default 20%) of its questions with any one other mock. `--mocks-only` adds mocks and touches nothing else (summary in `output/reports/assemble-mocks.json`). To rebuild mocks from scratch, delete their files.
 - `sample-01`: one sample paper.
 - `probable-01`: subjects and topics chosen in proportion to the analyze weights, favouring high-frequency topics. The paper's `assembly.weights` says how the weights were derived.
 

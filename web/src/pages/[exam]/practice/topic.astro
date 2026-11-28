@@ -1,0 +1,27 @@
+---
+// One round of topic practice: /<exam>/practice/topic/?subject=&topic=&offset=
+// Questions come from the API (the bank is never in the static build).
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import { EXAMS, EXAM_INFO, type Exam } from '../../../lib/exams.ts';
+
+export function getStaticPaths() {
+  return EXAMS.map((exam) => ({ params: { exam } }));
+}
+
+const exam = Astro.params.exam as Exam;
+const info = EXAM_INFO[exam];
+---
+<Base title={`${info.short.en}: topic practice`} exam={exam} bare noindex>
+  <div id="app" data-exam={exam}>
+    <div class="container narrow page-pad">
+      <p class="muted"><L en="Loading questions…" hi="प्रश्न लोड हो रहे हैं…" /></p>
+      <noscript><p>Please turn on JavaScript to use this page. / कृपया इस पेज के लिए जावास्क्रिप्ट चालू करें।</p></noscript>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { startTopicPractice } from '../../../scripts/topicsession.ts';
+  void startTopicPractice();
+</script>

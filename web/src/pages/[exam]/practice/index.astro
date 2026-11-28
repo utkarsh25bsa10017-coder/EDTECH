@@ -1,0 +1,38 @@
+---
+// Topic-wise practice: pick a subject and topic (scripts/topics.ts).
+import Base from '../../../layouts/Base.astro';
+import L from '../../../components/L.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import { EXAMS, EXAM_INFO, type Exam } from '../../../lib/exams.ts';
+import { examUrl, href } from '../../../lib/url.ts';
+
+export function getStaticPaths() {
+  return EXAMS.map((exam) => ({ params: { exam } }));
+}
+
+const exam = Astro.params.exam as Exam;
+const info = EXAM_INFO[exam];
+---
+<Base
+  title={`${info.short.en}: topic-wise practice questions`}
+  description={`${info.name.en}: practise question by question, topic by topic, in Hindi and English, with an explanation after every answer.`}
+  exam={exam}
+>
+  <div class="container narrow">
+    <Breadcrumbs items={[{ label: info.short, href: examUrl(exam) }, { label: { en: 'Topic practice', hi: 'विषयवार अभ्यास' }, href: '' }]} />
+  </div>
+  <section class="container narrow block">
+    <h1><L en="Topic-wise practice" hi="विषयवार अभ्यास" /></h1>
+    <p class="muted"><L en="Choose a topic. Answer one question at a time and see the explanation straight away. Ten questions per round." hi="टॉपिक चुनें। एक-एक प्रश्न हल करें और तुरंत व्याख्या देखें। हर दौर में दस प्रश्न।" /></p>
+    <div data-topics data-exam={exam}>
+      <p class="muted"><L en="Loading topics…" hi="टॉपिक लोड हो रहे हैं…" /></p>
+      <noscript><p>Please turn on JavaScript to use this page. / कृपया इस पेज के लिए जावास्क्रिप्ट चालू करें।</p></noscript>
+    </div>
+    <p class="muted small topics-foot"><a href={href(`/${exam}/mocks/`)}><L en="Ready for a full paper? See the mock tests." hi="पूरा प्रश्नपत्र देना है? मॉक टेस्ट देखें।" /></a></p>
+  </section>
+</Base>
+
+<script>
+  import { initTopics } from '../../../scripts/topics.ts';
+  void initTopics();
+</script>

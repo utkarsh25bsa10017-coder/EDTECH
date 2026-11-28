@@ -64,6 +64,7 @@ Free papers: `web/src/data/papers/<exam>/<paper-id>.json` (public, in the static
 - `kind`: `free` | `mock` | `sample` | `probable` | `pyq`
 - options: 4 or 5
 - each question keeps its bank `id` as `qid`
+- mock ids are never reused or regenerated; new mocks get the next number
 
 ## API (served by `server/`, base path `/api`)
 
@@ -88,9 +89,18 @@ Auth: an HttpOnly cookie `pr_session` **or** `Authorization: Bearer <token>` (th
 | `GET /api/admin/attempts` | `?limit=` | attempts | admin |
 | `GET /api/papers/{exam}` | | `[{ "id", "kind", "title", "free", "questions", "duration_minutes" }]` free and paid | anyone |
 | `GET /api/papers/{exam}/{id}` | | full paper JSON; paid papers need a pass for that exam (or admin) | signed in for paid |
+| `GET /api/practice/{exam}/topics` | | `{ "exam", "locked", "free_per_topic": 10, "total", "subjects": [{ "subject": {en,hi}, "count", "topics": [{ "topic": {en,hi}, "count", "free" }] }] }` | anyone (`locked` = no pass for this exam) |
+| `GET /api/practice/{exam}/questions` | `?subject=&topic=&limit=&offset=` (subject/topic are the English names; limit ≤ 50, default 10) | `{ "locked", "preview", "total", "available", "offset", "limit", "items": [full bank question incl. answer and explanation] }` | anyone: a pass for that exam or admin gets every question; others get the first 10 of each topic (by id), `preview: true`, and `locked: true` when more exist |
+| `GET /api/me/attempts` | `?exam=&limit=` (limit ≤ 1000, default 200) | `[{ "id", "exam", "paper", "score", "total", "topics", "created_at" }]` newest first | signed in (own attempts only) |
 | `POST /api/payments/razorpay` | Razorpay webhook | | Razorpay (signature checked; placeholder until keys arrive) |
 
+Topic practice serves only the question statuses in `PRACTICE_STATUSES` (comma list of `reviewed` / `draft`, default `reviewed`); `rejected` is never served. Topic-practice sessions are saved through `POST /api/attempts` with `paper` = `topic:<subject-slug>[:<topic-slug>]` (at most 64 chars) and `topics` filled, so they appear on `/progress/`.
+
+Student pages: `/<exam>/practice/` (topic picker), `/<exam>/practice/topic/?subject=&topic=&offset=` (one round of ten), `/<exam>/mocks/` (every paper with lock state and best/last score), `/progress/` (signed in: score trend per exam, weak topics, recent attempts).
+
 The web reads the API base from `PUBLIC_API_BASE` (empty = same origin).
+
+**Supabase keep-alive.** Until 1 January 2027, cron runs `automation/keepalive/supabase-ping.sh` twice a day (a real query plus an HTTP request) so the free project doesn't pause; on that date it removes its own cron line. Log: `~/.cache/prashnottar-supabase-ping.log`.
 
 **Hosting.** The website is on Vercel (https://edtech-ashy-three.vercel.app, project root `web/`). `web/vercel.json` proxies `/api/*` to the API server at `https://api.161-97-97-207.sslip.io`, which Dokploy's Traefik publishes with a Let's Encrypt certificate (labels in `deploy/docker-compose.yml`, host from `API_HOST` in `deploy/.env`). To the browser it stays same-origin, so `PUBLIC_API_BASE` stays empty on Vercel. When a real domain arrives, change `API_HOST` and the rewrite destination together. The native app needs `PUBLIC_API_BASE` set to the API address, because it isn't served from Vercel.
 

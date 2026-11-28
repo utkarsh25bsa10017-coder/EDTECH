@@ -45,6 +45,9 @@ pub struct Config {
     pub meta_app_secret: String,
     pub wa_verify_token: String,
     pub n8n_inbound_url: String,
+    /// Question statuses topic practice serves (PRACTICE_STATUSES, default "reviewed").
+    /// "rejected" is never served, whatever the setting says.
+    pub practice_statuses: Vec<String>,
 }
 
 fn env_or(key: &str, default: &str) -> String {
@@ -79,8 +82,22 @@ impl Config {
             meta_app_secret: env_or("META_APP_SECRET", ""),
             wa_verify_token: env_or("WHATSAPP_VERIFY_TOKEN", ""),
             n8n_inbound_url: env_or("N8N_INBOUND_URL", "http://n8n:5678/webhook/wa-inbound"),
+            practice_statuses: practice_statuses(&env_or("PRACTICE_STATUSES", "reviewed")),
         }
     }
+}
+
+fn practice_statuses(raw: &str) -> Vec<String> {
+    let mut out: Vec<String> = Vec::new();
+    for s in raw.split(',').map(|s| s.trim().to_lowercase()) {
+        if matches!(s.as_str(), "reviewed" | "draft") && !out.contains(&s) {
+            out.push(s);
+        }
+    }
+    if out.is_empty() {
+        out.push("reviewed".into());
+    }
+    out
 }
 
 #[derive(Clone)]
@@ -92,6 +109,9 @@ pub struct AppState {
     pub rate: Arc<Mutex<HashMap<String, (i64, u32)>>>,
     /// question id -> bank file it lives in
     pub qfiles: Arc<Mutex<HashMap<String, PathBuf>>>,
+    /// Held while a bank file is read, edited and written back, so two status
+    /// changes to questions in the same file can't overwrite each other.
+    pub bank_write: Arc<Mutex<()>>,
 }
 
 pub fn now() -> i64 {
@@ -120,6 +140,7 @@ async fn main() {
         }
     };
     tracing::info!("database ready");
+    tracing::info!("topic practice serves statuses: {}", cfg.practice_statuses.join(", "));
 
     match auth::login_phone(&cfg.admin_phone) {
         Some(phone) if !cfg.admin_password.is_empty() => {
@@ -143,6 +164,7 @@ async fn main() {
             .expect("http client"),
         rate: Arc::new(Mutex::new(HashMap::new())),
         qfiles: Arc::new(Mutex::new(HashMap::new())),
+        bank_write: Arc::new(Mutex::new(())),
     };
 
     match content::import_bank(&state).await {
@@ -160,6 +182,9 @@ async fn main() {
         .route("/chat", post(api::chat))
         .route("/papers/{exam}", get(api::list_papers))
         .route("/papers/{exam}/{id}", get(api::get_paper))
+        .route("/practice/{exam}/topics", get(api::practice_topics))
+        .route("/practice/{exam}/questions", get(api::practice_questions))
+        .route("/me/attempts", get(api::my_attempts))
         .route("/whatsapp/webhook", get(api::wa_verify).post(api::wa_webhook))
         .route("/bot/whatsapp", post(api::bot_whatsapp))
         .route("/automation/followups", get(api::due_followups))
